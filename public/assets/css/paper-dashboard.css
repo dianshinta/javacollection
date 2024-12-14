@@ -3066,9 +3066,8 @@ License - nucleoapp.com/license/
       display: block;
       text-decoration: none;
       position: relative;
-      text-transform: uppercase;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 15px;
       padding: 10px 8px;
       line-height: 30px;
       opacity: .7; }
