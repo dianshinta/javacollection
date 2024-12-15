@@ -1445,7 +1445,7 @@ p.description {
 
 .text-primary,
 a.text-primary:focus, a.text-primary:hover {
-  color: #51cbce !important; }
+  color: maroon !important; }
 
 .text-info,
 a.text-info:focus, a.text-info:hover {
@@ -1461,7 +1461,7 @@ a.text-warning:focus, a.text-warning:hover {
 
 .text-danger,
 a.text-danger:focus, a.text-danger:hover {
-  color: #ef8157 !important; }
+  color: #650404 !important; }
 
 .text-gray,
 a.text-gray:focus, a.text-gray:hover {
@@ -1627,8 +1627,8 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   background-color: #fbc658; }
 
 .badge.badge-danger {
-  border-color: #ef8157;
-  background-color: #ef8157; }
+  border-color: #650404;
+  background-color: #650404; }
 
 .badge.badge-neutral {
   border-color: #FFFFFF;
@@ -1947,7 +1947,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   background-color: #6bd098 !important; }
 
 .bg-danger {
-  background-color: #ef8157 !important; }
+  background-color: #650404 !important; }
 
 .bg-warning {
   background-color: #fbc658 !important; }
@@ -3311,7 +3311,7 @@ License - nucleoapp.com/license/
   .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] i,
   .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] ~ div > ul > li.active .sidebar-mini-icon,
   .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] ~ div > ul > li.active > a {
-    color: #ef8157;
+    color: maroon;
     opacity: 1; }
   .sidebar[data-active-color="default"] .nav li.active > a,
   .sidebar[data-active-color="default"] .nav li.active > a i,
@@ -3345,7 +3345,7 @@ License - nucleoapp.com/license/
   position: relative;
   float: right;
   width: calc(100% - 260px);
-  background-color: #f4f3ef;
+  background-color: #fff2f2;
   transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1); }
   .main-panel > .content {
     padding: 0 30px 30px;

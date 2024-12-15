@@ -1,0 +1,95 @@
+
+.header {
+    background-color: #fff2f2;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.btn-save {
+    background-color: #5bdaf2;
+    color: black;
+}
+
+/* Container */
+.button-container {
+    display: inline-block;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 10px;
+    /* Membulat di container */
+}
+
+/* Tombol */
+.custom-button {
+    background-color: white;
+    /* Latar tombol */
+    border: none;
+    /* Hilangkan border default */
+    border-radius: 12px;
+    /* Membulat seperti gambar */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* Bayangan halus */
+    padding: 3px 10px;
+    /* Ruang dalam tombol */
+    /* Font sederhana */
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    /* Warna teks */
+    cursor: pointer;
+    /* Pointer untuk interaksi */
+    outline: none;
+}
+
+.custom-button:hover {
+    background-color: #f1f1f1;
+    /* Warna saat di-hover */
+}
+
+#lampiranModal .modal-content {
+    border-radius: 20px;
+    border: 1px solid;
+}
+
+#lampiranModal .modal-title {
+    text-align: center;
+    font-size: medium;
+    background-color: black;
+    color: white;
+    padding: 3px;
+}
+
+#lampiranModal .modal-body {
+    margin: 0 30px 0 30px;
+}
+
+#lampiranModal .modal-body p {
+    margin: 1px;
+}
+
+#lampiranModal .modal-footer .btn {
+    border-radius: 50px;
+    border: 1px solid;
+}
+
+#lampiranModal .tanggal {
+    font-size: smaller;
+    align-items: center;
+    color: black;
+}
+
+/* Styling untuk label yang digunakan sebagai pengganti tombol Pilih File */
+#lampiranModal .modal-body .file-label {
+    display: inline-block;
+    background-color: #e0e0e0; /* Warna latar belakang */
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer; /* Mengubah pointer menjadi tangan */
+}
+
+/* Styling untuk input file yang disembunyikan */
+#lampiranModal .modal-body input[type="file"] {
+    display: none; /* Menyembunyikan input file asli */
+}

@@ -17,10 +17,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/gaji/atur/', function () {
-    return view('/gaji/atur');
+Route::get('/karyawan/atur/', function () {
+    return view('/karyawan/atur');
 });
 
-Route::get('/kasbon/lihat/', function () {
-    return view('/kasbon/lihat');
+Route::get('/karyawan/lihat/', function () {
+    return view('/karyawan/lihat');
 });
+
+Route::get('/karyawan/beranda/', function () {
+    return view('/karyawan/beranda');
+})->name('beranda');
+
+Route::get('/karyawan/perizinan/', function () {
+    return view('/karyawan/perizinan');
+})->name('perizinan');
+
+Route::get('/karyawan/presensi/', function () {
+    return view('/karyawan/presensi');
+})->name('presensi');
+
+Route::get('/karyawan/kasbon/', function () {
+    return view('/karyawan/kasbon');
+})->name('kasbon');
