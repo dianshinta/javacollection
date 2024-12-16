@@ -42,5 +42,13 @@ Route::get('/karyawan/kasbon/', function () {
 })->name('kasbon');
 
 Route::get('/supervisor/beranda/', function () {
-    return view('/supervisor/beranda');
+    return view('/supervisor/beranda', [
+        "title" => "Beranda"
+    ]);
 })->name('beranda');
+
+Route::get('/supervisor/perizinan/', function () {
+    return view('/supervisor/perizinan', [
+        "title" => "Perizinan"
+    ]);
+})->name('perizinan');
