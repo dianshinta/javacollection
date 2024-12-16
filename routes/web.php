@@ -45,10 +45,10 @@ Route::get('/supervisor/beranda/', function () {
     return view('/supervisor/beranda', [
         "title" => "Beranda"
     ]);
-})->name('beranda');
+})->name('supervisor.beranda');
 
 Route::get('/supervisor/perizinan/', function () {
     return view('/supervisor/perizinan', [
         "title" => "Perizinan"
     ]);
-})->name('perizinan');
+})->name('supervisor.perizinan');

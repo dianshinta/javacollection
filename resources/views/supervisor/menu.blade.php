@@ -2,7 +2,7 @@
     <ul class="nav">
         <!-- Beranda -->
         <li class="{{ ($title === 'Beranda') ? 'active' : '' }}">
-            <a href="{{route('beranda')}}">
+            <a href="{{route('supervisor.beranda')}}">
             <i class="nc-icon nc-layout-11"></i>
             <p>Beranda</p>
             </a>
@@ -17,7 +17,7 @@
                 <ul class="nav" style="margin-left: 62px;">
                     <!-- Sub menu perizinan -->
                     <li class="{{($title === 'Perizinan') ? 'active' : '' }}">
-                        <a href="{{route('perizinan')}}">
+                        <a href="{{route('supervisor.perizinan')}}">
                             <p>Perizinan</p>
                         </a>
                     </li>
