@@ -40,3 +40,7 @@ Route::get('/karyawan/presensi/', function () {
 Route::get('/karyawan/kasbon/', function () {
     return view('/karyawan/kasbon');
 })->name('kasbon');
+
+Route::get('/supervisor/beranda/', function () {
+    return view('/supervisor/beranda');
+})->name('beranda');
