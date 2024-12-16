@@ -47,7 +47,7 @@
     /* Warna saat di-hover */
 }
 
-#lampiranModal .modal-content {
+#lampiranModal #buktiModal .modal-content {
     border-radius: 20px;
     border: 1px solid;
 }
@@ -79,17 +79,3 @@
     color: black;
 }
 
-/* Styling untuk label yang digunakan sebagai pengganti tombol Pilih File */
-#lampiranModal .modal-body .file-label {
-    display: inline-block;
-    background-color: #e0e0e0; /* Warna latar belakang */
-    color: black;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer; /* Mengubah pointer menjadi tangan */
-}
-
-/* Styling untuk input file yang disembunyikan */
-#lampiranModal .modal-body input[type="file"] {
-    display: none; /* Menyembunyikan input file asli */
-}
