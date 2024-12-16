@@ -69,12 +69,12 @@ Coded by www.creative-tim.com
                         </a>
                         <div class="collapse" id="pengajuanDropdown">
                             <ul class="nav" style="margin-left: 62px;">
-                                <li class="active">
+                                <li>
                                     <a href="{{route('perizinan')}}" ">
                                         <p>Perizinan</p>
                                     </a>
                                 </li>
-                                <li>
+                                <li class="active">
                                     <a href="{{route('kasbon')}}">
                                         <p>Kasbon</p>
                                     </a>
