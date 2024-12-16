@@ -1,0 +1,12 @@
+/* status */
+.badge {
+    display: inline-flex; /* Membuat badge berperilaku seperti tombol */
+    align-items: center; /* Memusatkan teks secara vertikal */
+    justify-content: center; /* Memusatkan teks secara horizontal */
+    height: 35px; /* Tinggi yang sama dengan tombol */
+    padding: 0 15px; /* Padding horizontal untuk menyesuaikan ukuran */
+    font-size: 0.8rem; /* Sesuaikan ukuran font */
+    border-radius: 5px; /* Agar menyerupai tombol */
+    color: #fff; /* Warna teks */
+    text-transform: uppercase; /* Opsional: Semua huruf besar */
+  }
