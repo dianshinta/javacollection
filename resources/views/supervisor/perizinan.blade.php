@@ -41,23 +41,23 @@
     <div class="main-panel">
         <div class="content">
             <div class="mb-4">
-                <small class="text-muted d-block">Beranda</small>
-                <h5 class="font-weight-bold">Selamat datang!</h5>
+                <small class="text-muted d-block">Perizinan</small>
+                <h5 class="font-weight-bold">Daftar Perizinan</h5>
             </div>
-            {{-- coba hua --}}
+
             <div class="top-0 start-0">
-                <div class="container-fluid">
-                    <div>
-                        <!-- Main Content -->
-                        <div class="col">
-                            <div class="p-4">
-                                <h5>Perizinan</h5>
-                                <div class="input-group search-bar">
-                                    <input type="text" class="form-control search-bar" id="searchBar" placeholder="Cari Karyawan..">
-                                    <span class="input-group-text ">
-                                      <i class="bi bi-search"></i>
-                                    </span>
-                                  </div>
+                <div>
+                    <!-- Main Content -->
+                    <div class="col">
+                        
+                        <div class="input-group search-bar">
+                            <input type="text" class="form-control search-bar" id="searchBar" placeholder="Cari Karyawan..">
+                            <span class="input-group-text ">
+                              <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
@@ -111,6 +111,9 @@
                         </div>
                     </div>
                 </div>
+                {{-- <div class="container-fluid">
+                    
+                </div> --}}
             </div>        
 
             <!-- Modal -->

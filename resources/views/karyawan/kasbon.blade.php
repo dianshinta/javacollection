@@ -69,7 +69,7 @@ Coded by www.creative-tim.com
                         </a>
                         <div class="collapse" id="pengajuanDropdown">
                             <ul class="nav" style="margin-left: 62px;">
-                                <li class=" active">
+                                <li class="active">
                                     <a href="{{route('perizinan')}}" ">
                                         <p>Perizinan</p>
                                     </a>
