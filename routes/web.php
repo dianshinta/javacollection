@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PresensiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,9 +35,9 @@ Route::get('/karyawan/perizinan/', function () {
     return view('/karyawan/perizinan');
 })->name('perizinan');
 
-Route::get('/karyawan/presensi/', function () {
-    return view('/karyawan/presensi');
-})->name('presensi');
+Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('presensi');
+
+Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
 
 Route::get('/karyawan/kasbon/', function () {
     return view('/karyawan/kasbon');
@@ -52,3 +54,15 @@ Route::get('/supervisor/perizinan/', function () {
         "title" => "Perizinan"
     ]);
 })->name('supervisor.perizinan');
+
+Route::get('/supervisor/pembayaran/', function () {
+    return view('/supervisor/pembayaran', [
+        "title" => "Pembayaran"
+    ]);
+})->name('supervisor.pembayaran');
+
+Route::get('/supervisor/kasbon/', function () {
+    return view('/supervisor/pengajuan', [
+        "title" => "Pengajuan"
+    ]);
+})->name('supervisor.pengajuan');
