@@ -41,7 +41,7 @@
                 <h5 class="font-weight-bold">Selamat datang!</h5>
                 </div>
                 <!-- Nama, Hari, dan Lokasi -->
-                <div class="row ms-4">
+                <div>
                     <div class="d-flex justify-content-start align-items-center gap-4 mb-4">
                         <div class="d-flex align-items-center mr-5">
                             <i class="nc-icon nc-circle-10 text-primary mr-2"></i>          
