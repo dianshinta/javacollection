@@ -58,3 +58,9 @@ Route::get('/supervisor/pembayaran/', function () {
         "title" => "Pembayaran"
     ]);
 })->name('supervisor.pembayaran');
+
+Route::get('/supervisor/kasbon/', function () {
+    return view('/supervisor/lihat', [
+        "title" => "Pengajuan"
+    ]);
+})->name('supervisor.pengajuan');
