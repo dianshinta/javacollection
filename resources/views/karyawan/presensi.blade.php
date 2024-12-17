@@ -33,6 +33,8 @@ Coded by www.creative-tim.com
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="">
@@ -124,7 +126,19 @@ Coded by www.creative-tim.com
                     <div class="row">
                       <div class="col-12 d-flex justify-content-start align-items-center">
                         <span id="time-display" class="mr-3 font-weight-bold" style="font-size:1.5rem;">07.10</span>
-                        <button class="btn btn-success" style="font-size: 1rem; color: black;">Hadir</button>
+                          <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
+                            @csrf <!-- Token keamanan Laravel -->
+
+                            <input type="hidden" name="status" value="Hadir">
+                            <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
+                            <input type="hidden" name="waktu" value="{{ date('H:i:s') }}">
+                            <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
+                            <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
+
+                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black;">
+                                Presensi
+                            </button>
+                          </form>
                       </div>
             
                     </div>
@@ -146,7 +160,7 @@ Coded by www.creative-tim.com
             <div class="card ">
                 <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table">
+                      <table class="table" id="riwayat-presensi">
                         <thead class=" text-primary">
                           <th>
                             No
@@ -159,89 +173,13 @@ Coded by www.creative-tim.com
                           </th>
                         </thead>
                         <tbody>
+                          @foreach ($riwayatPresensi as $riwayat)
                           <tr>
-                            <td>
-                              Dakota Rice
-                            </td>
-                            <td>
-                              Niger
-                            </td>
-                            <td>
-                              Oud-Turnhout
-                            </td>
-                            
+                            <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
+                            <td>{{ $riwayat->tanggal }}</td>
+                            <td>{{ $riwayat->waktu }}</td>
                           </tr>
-                          <tr>
-                            <td>
-                              Minerva Hooper
-                            </td>
-                            <td>
-                              Curaçao
-                            </td>
-                            <td>
-                              Sinaai-Waas
-                            </td>
-                            
-                          </tr>
-                          <tr>
-                            <td>
-                              Sage Rodriguez
-                            </td>
-                            <td>
-                              Netherlands
-                            </td>
-                            <td>
-                              Baileux
-                            </td>
-                            
-                          </tr>
-                          <tr>
-                            <td>
-                              Philip Chaney
-                            </td>
-                            <td>
-                              Korea, South
-                            </td>
-                            <td>
-                              Overland Park
-                            </td>
-                           
-                          </tr>
-                          <tr>
-                            <td>
-                              Doris Greene
-                            </td>
-                            <td>
-                              Malawi
-                            </td>
-                            <td>
-                              Feldkirchen in Kärnten
-                            </td>
-                            
-                          </tr>
-                          <tr>
-                            <td>
-                              Mason Porter
-                            </td>
-                            <td>
-                              Chile
-                            </td>
-                            <td>
-                              Gloucester
-                            </td>
-                            
-                          </tr>
-                          <tr>
-                            <td>
-                              Jon Porter
-                            </td>
-                            <td>
-                              Portugal
-                            </td>
-                            <td>
-                              Gloucester
-                            </td>
-                          </tr>
+                          @endforeach
                         </tbody>
                       </table>
                     </div>
@@ -292,6 +230,64 @@ Coded by www.creative-tim.com
       demo.initChartsPages();
     });
   </script>
+
+  <!-- @if (session(key: 'success')) -->
+  <script>
+    document.getElementById('form-presensi').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form submission
+
+        // Kirim data presensi via AJAX
+        $.ajax({
+            url: "{{ route('presensi.store') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                status: "Hadir", // Status yang dipilih
+                tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
+                waktu: new Date().toLocaleTimeString(), // Format HH:MM:SS
+                toko: "Toko A", // Ganti dengan toko yang sesuai
+                nip: "123456" // NIP yang sesuai
+            },
+            success: function(response) {
+                // Menampilkan SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Presensi Berhasil!',
+                    text: response.message || 'Data presensi telah berhasil disimpan.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+
+                // Menambahkan data presensi ke tabel dengan increment No
+                const rowCount = $('#riwayat-presensi tbody tr').length + 1;
+                $('#riwayat-presensi tbody').append(`
+                    <tr>
+                        <td>${rowCount}</td>
+                        <td>${response.tanggal || new Date().toISOString().split('T')[0]}</td>
+                        <td>${response.waktu || new Date().toLocaleTimeString()}</td>
+                    </tr>
+                `);
+
+                // Nonaktifkan tombol setelah ditekan dan ubah teks tombol menjadi "Hadir"
+                $('#btn-presensi').prop('disabled', true).text('Hadir');
+            },
+            error: function(xhr, status, error) {
+                // Menampilkan pesan kesalahan dengan informasi dari server (jika ada)
+                const errorMessage = xhr.responseJSON?.message || 'Gagal melakukan presensi. Silakan coba lagi.';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan!',
+                    text: errorMessage,
+                    showConfirmButton: true
+                });
+            }
+        });
+    });
+
+
+  </script>
+  <!-- @endif -->
+
 </body>
 
 </html>
