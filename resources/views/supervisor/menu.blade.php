@@ -41,11 +41,11 @@
             <div class="collapse" id="pengajuanDropdown">
                 <ul class="nav" style="margin-left: 62px;">
                     <!-- Sub menu pengajuan -->
-                    {{-- <li class="{{($title === 'Pengajuan') ? 'active' : '' }}">
+                    <li class="{{($title === 'Pengajuan') ? 'active' : '' }}">
                         <a href="{{route('supervisor.pengajuan')}}">
                             <p>Pengajuan</p>
                         </a>
-                    </li> --}}
+                    </li>
                     <!-- Sub menu pembayaran -->
                     <li>
                         <li class="{{($title === 'Pembayaran') ? 'active' : '' }}">

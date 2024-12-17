@@ -496,7 +496,7 @@ Copyright (c) 2015 Daniel Eden
       box-shadow: none; }
 
 .btn-info {
-  background-color: #51bcda;
+  background-color: #6299ed;
   color: #FFFFFF; }
   .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .btn-info:active:focus, .btn-info:active:hover, .btn-info.active:focus, .btn-info.active:hover,
   .show > .btn-info.dropdown-toggle,
@@ -514,21 +514,21 @@ Copyright (c) 2015 Daniel Eden
   fieldset[disabled] .btn-info.focus,
   fieldset[disabled] .btn-info:active,
   fieldset[disabled] .btn-info.active {
-    background-color: #51bcda;
-    border-color: #51bcda; }
+    background-color: #6299ed;
+    border-color: #6299ed; }
   .btn-info.btn-simple {
-    color: #51bcda;
-    border-color: #51bcda; }
+    color: #6299ed;
+    border-color: #6299ed; }
     .btn-info.btn-simple:hover, .btn-info.btn-simple:focus, .btn-info.btn-simple:active {
       background-color: transparent;
       color: #2ba9cd;
-      border-color: #2ba9cd;
+      border-color: #6299ed;
       box-shadow: none; }
   .btn-info.btn-link {
-    color: #51bcda; }
+    color: #6299ed; }
     .btn-info.btn-link:hover, .btn-info.btn-link:focus, .btn-info.btn-link:active, .btn-info.btn-link:active:focus {
       background-color: transparent;
-      color: #2ba9cd;
+      color: #6299ed;
       text-decoration: none;
       box-shadow: none; }
 
@@ -686,15 +686,15 @@ Copyright (c) 2015 Daniel Eden
 
 .btn-outline-info {
   background: transparent;
-  border: 2px solid #51bcda !important;
+  border: 2px solid #6299ed !important;
   color: #51bcda;
   opacity: 1;
   filter: alpha(opacity=100); }
   .btn-outline-info:hover, .btn-outline-info:focus, .btn-outline-info:active, .btn-outline-info:focus:active, .btn-outline-info.active,
   .open > .btn-outline-info.dropdown-toggle {
-    background-color: #51bcda !important;
+    background-color: #6299ed !important;
     color: rgba(255, 255, 255, 0.8) !important;
-    border-color: #51bcda !important; }
+    border-color: #6299ed !important; }
     .btn-outline-info:hover .caret, .btn-outline-info:focus .caret, .btn-outline-info:active .caret, .btn-outline-info:focus:active .caret, .btn-outline-info.active .caret,
     .open > .btn-outline-info.dropdown-toggle .caret {
       border-top-color: rgba(255, 255, 255, 0.8) !important; }
@@ -708,7 +708,7 @@ Copyright (c) 2015 Daniel Eden
   fieldset[disabled] .btn-outline-info:active,
   fieldset[disabled] .btn-outline-info.active {
     background-color: transparent !important;
-    border-color: #51bcda !important; }
+    border-color: #6299ed !important; }
 
 .btn-outline-warning {
   background: transparent;
