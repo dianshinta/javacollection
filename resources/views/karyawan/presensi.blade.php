@@ -134,7 +134,7 @@ Coded by www.creative-tim.com
                             <input type="hidden" name="waktu" value="{{ date('H:i:s') }}">
                             <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
                             <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
-
+                            <input type="hidden" name="redirect_to" value="karyawan.presensi">
                             <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black;">
                                 Presensi
                             </button>
@@ -171,6 +171,9 @@ Coded by www.creative-tim.com
                           <th>
                             Waktu
                           </th>
+                          <th>
+                            Status
+                          </th>
                         </thead>
                         <tbody>
                           @foreach ($riwayatPresensi as $riwayat)
@@ -178,6 +181,7 @@ Coded by www.creative-tim.com
                             <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
                             <td>{{ $riwayat->tanggal }}</td>
                             <td>{{ $riwayat->waktu }}</td>
+                            <td>{{ $riwayat->status }}</td>
                           </tr>
                           @endforeach
                         </tbody>
@@ -273,10 +277,10 @@ Coded by www.creative-tim.com
             },
             error: function(xhr, status, error) {
                 // Menampilkan pesan kesalahan dengan informasi dari server (jika ada)
-                const errorMessage = xhr.responseJSON?.message || 'Gagal melakukan presensi. Silakan coba lagi.';
+                const errorMessage = xhr.responseJSON?.message || 'Mohon periksa jaringan Anda, hidupkan lokasi perangkat, atau coba lagi saat Anda berada dalam radius 100 meter dari toko.';
                 Swal.fire({
                     icon: 'error',
-                    title: 'Terjadi Kesalahan!',
+                    title: 'Gagal melakukan presensi!',
                     text: errorMessage,
                     showConfirmButton: true
                 });
