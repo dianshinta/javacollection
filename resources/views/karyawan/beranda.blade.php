@@ -55,7 +55,7 @@ Coded by www.creative-tim.com
             </a>
           </li>
           <li>
-            <a href="./icons.html">
+            <a href="{{route('presensi')}}">
               <i class="nc-icon nc-touch-id"></i>
               <p>Presensi</p>
             </a>
@@ -68,31 +68,30 @@ Coded by www.creative-tim.com
             <div class="collapse" id="pengajuanDropdown">
               <ul class="nav" style="margin-left: 62px;">
                 <li>
-                  <a href="./perizinan.html" ">
+                  <a href="{{route('perizinan')}}">
                     <p>Perizinan</p>
                   </a>
                 </li>
                 <li>
-                  <a href="./pengajuan2.html">
+                  <a href="{{route('kasbon')}}">
                     <p>Kasbon</p>
                   </a>
                 </li>
               </ul>
             </div>
           </li>
-          
           <li>
             <a href="./notifications.html">
-              <i class="nc-icon nc-money-coins"></i>
-              <p>Gaji</p>
+                <i class="nc-icon nc-money-coins"></i>
+                <p>Gaji</p>
             </a>
-          </li>
-          <li>
+        </li>
+        <li>
             <a href="./user.html">
-              <i class="nc-icon nc-single-02"></i>
-              <p>User Profile</p>
+                <i class="nc-icon nc-single-02"></i>
+                <p>User Profile</p>
             </a>
-          </li>
+        </li>
         </ul>
       </div>
     </div>
