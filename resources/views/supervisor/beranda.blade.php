@@ -15,9 +15,11 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
     <!-- CSS Files -->
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/bootstrap.min-supervisor.css" rel="stylesheet" />
     <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <link href="../assets/css/supervisor-beranda.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 
 <body class="">
@@ -67,13 +69,105 @@
                 </div>
                 <hr>
                 <!-- Cabang -->
-                <div class="mt-4 mb-4 d-flex justify-content-start">
-                    <select class="form-select w-auto" id="branch">
-                        <option>Cabang A</option>
-                        <option>Cabang B</option>
-                        <option>Cabang C</option>
-                    </select>
+                <div class="cabang">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                          <div class="card">
+                            <div class="card-body ">
+                              <div class="selected-menu">
+                                <div class="selected-btn">
+                                  <span class="sBtn-text">Cabang A</span>
+                                  <i class="bx bx-chevron-down"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+              
+                    <div class="overlay" id="overlay-cabang">
+                        <ul class="options">
+                            <li class="option" id="option-first">
+                                <span class="option-text">Cabang A</span>
+                            </li>
+                            <li class="option">
+                                <span class="option-text">Cabang B</span>
+                            </li>
+                            <li class="option">
+                                <span class="option-text">Cabang C</span>
+                            </li>
+                            <li class="option" id="option-last">
+                                <span class="option-text">Cabang D</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+
+                <!-- Grafik -->
+                <div class="row">
+                    <div class="col-md-8">
+                      <div class="card card-chart">
+                        <div class="card-header">
+                          <h5 class="card-title">
+                            Kehadiran<br>
+                            Karyawan
+                          </h5>
+                          <p class="card-category">Mingguan</p>
+                        </div>
+                        <div class="card-body">
+                          <canvas id="barChart"></canvas>
+                        </div>
+                        <div class="card-footer ">
+                          <div class="legend">
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
+                            </div>
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
+                            </div>
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
+                            </div>
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+          
+                    <div class="col-md-4">
+                      <div class="card ">
+                        <div class="card-header ">
+                          <h5 class="card-title">
+                            Kehadiran<br>
+                            Karyawan
+                          </h5>
+                          <p class="card-category">Desember</p>
+                        </div>
+                        <div class="card-body ">
+                          <canvas id="doughnutChart"></canvas>
+                        </div>
+                        <div class="card-footer ">
+                          <div class="legend">
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
+                            </div>
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
+                            </div>
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
+                            </div>
+                            <div class="legend-list">
+                              <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 <!-- Tabel -->
                 <div class="row">
                     <p class="font-weight-bold" style="margin-left: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Riwayat</p>
@@ -139,11 +233,13 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
     <!-- Chart JS -->
     <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <script src="../assets/demo/demo-supervisor.js"></script>
     <!--  Notifications Plugin    -->
     <script src="../assets/js/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
     <script src="../assets/demo/demo.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
     <script>
         $(document).ready(function() {
         // Javascript method's body can be found in assets/assets-for-demo/js/demo.js

@@ -12,35 +12,35 @@ demo = {
         }
       });
     },
-
+  
     initChartsPages: function() {
       chartColor = "#FFFFFF";
   
       const bar = document.getElementById('barChart').getContext('2d');
       const data = {
-        labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+        labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
         datasets: [
           {
             label: 'Hadir',
-            data: [6, 7, 8, 7, 6, 8, 9, 6, 7, 8, 7, 6],
+            data: [6, 7, 8, 7, 6, 8, 9],
             backgroundColor: 'rgba(0, 183, 255, 0.8)',
             stack: 'Stack 0',
           },
           {
             label: 'Izin',
-            data: [1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1],
+            data: [1, 1, 0, 1, 1, 0, 0],
             backgroundColor: 'rgba(139, 69, 19, 0.8)',
             stack: 'Stack 0',
           },
           {
             label: 'Terlambat',
-            data: [2, 1, 2, 1, 2, 0, 1, 2, 1, 2, 1, 2],
+            data: [2, 1, 2, 1, 2, 0, 1],
             backgroundColor: 'rgba(255, 255, 0, 0.8)',
             stack: 'Stack 0',
           },
           {
             label: 'Tanpa Keterangan',
-            data: [1, 1, 0, 1, 1, 2, 0, 1, 1, 0, 1, 1],
+            data: [1, 1, 0, 1, 1, 2, 0],
             backgroundColor: 'rgba(255, 0, 0, 0.8)',
             stack: 'Stack 0',
           },
@@ -72,6 +72,74 @@ demo = {
         type: 'bar',
         data,
         options,
+      });
+      
+      ctx = document.getElementById('doughnutChart').getContext("2d");
+  
+      myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Hadir', 'Izin', 'Terlambat', 'Tanpa Keterangan'],
+          datasets: [{
+            label: "Karyawan",
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            backgroundColor: [
+              'rgba(0, 183, 255, 0.8)',
+              'rgba(139, 69, 19, 0.8)',
+              'rgba(255, 255, 0, 0.8)',
+              'rgba(255, 0, 0, 0.8)'
+            ],
+            borderWidth: 0,
+            data: [342, 480, 530, 120]
+          }]
+        },
+  
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false, // Menghapus legend
+            },
+          },
+  
+          pieceLabel: {
+            render: 'percentage',
+            fontColor: ['white'],
+            precision: 2
+          },
+  
+          tooltips: {
+            enabled: false
+          },
+  
+  /*        scales: {
+            yAxes: [{
+  
+              ticks: {
+                display: false
+              },
+              gridLines: {
+                drawBorder: false,
+                zeroLineColor: "transparent",
+                color: 'rgba(255,255,255,0.05)'
+              }
+  
+            }],
+  
+            xAxes: [{
+              barPercentage: 1.6,
+              gridLines: {
+                drawBorder: false,
+                color: 'rgba(255,255,255,0.1)',
+                zeroLineColor: "transparent"
+              },
+              ticks: {
+                display: false,
+              }
+            }]
+          },*/
+        }
       });
     }
   };

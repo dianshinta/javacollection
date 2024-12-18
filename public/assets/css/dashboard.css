@@ -4,7 +4,7 @@
   
   .selected-menu .selected-btn{
     display: flex;
-    height: 55px;
+    height: 40px;
     background-color: white;
     padding: 20px;
     font-size: 18px;
@@ -41,12 +41,18 @@
   
   .options .option{
     display: flex;
-    height: 55px;
     cursor: pointer;
     padding: 0 0 0 19px;
-    border-radius: 8px;
     align-items: center;
     background: white;
+  }
+
+  .options #option-first{
+    border-radius: 8px 8px 0 0;
+  }
+
+  .options #option-last{
+    border-radius: 0 0 8px 8px;
   }
   
   .options .option:hover{
@@ -69,7 +75,6 @@
   
   .options {
     position: absolute;
-    top: 400px;
     margin-left: 15px;
     padding-left: 0;
     width: 180px;
@@ -97,4 +102,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .cabang{
+    display: flex;
+    flex-direction: column;
   }
