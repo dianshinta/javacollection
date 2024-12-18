@@ -35,9 +35,13 @@ Route::get('/karyawan/perizinan/', function () {
     return view('/karyawan/perizinan');
 })->name('karyawan.perizinan');
 
-Route::get('/karyawan/presensi/', function () {
-    return view('/karyawan/presensi');
-})->name('karyawan.presensi');
+// Route::get('/karyawan/presensi/', function () {
+//     return view('/karyawan/presensi');
+// })->name('karyawan.presensi');
+
+Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('karyawan.presensi');
+
+Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
 
 Route::get('/karyawan/kasbon/', function () {
     return view('/karyawan/kasbon');
