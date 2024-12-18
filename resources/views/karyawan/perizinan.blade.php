@@ -52,13 +52,13 @@ Coded by www.creative-tim.com
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li>
-                        <a href="{{route('presensi')}}">
+                        <a href="{{route('karyawan.beranda')}}">
                             <i class="nc-icon nc-layout-11"></i>
                             <p>Beranda</p>
                         </a>
                     </li>
                     <li>
-                        <a href="{{route('presensi')}}">
+                        <a href="{{route('karyawan.presensi')}}">
                             <i class="nc-icon nc-touch-id"></i>
                             <p>Presensi</p>
                         </a>
@@ -72,12 +72,12 @@ Coded by www.creative-tim.com
                         <div class="collapse" id="pengajuanDropdown">
                             <ul class="nav" style="margin-left: 62px;">
                                 <li class=" active">
-                                    <a href="{{route('perizinan')}}" ">
+                                    <a href="{{route('karyawan.perizinan')}}" ">
                     <p>Perizinan</p>
                   </a>
                 </li>
                 <li>
-                  <a href="{{route('kasbon')}}">
+                  <a href="{{route('karyawan.kasbon')}}">
                                         <p>Kasbon</p>
                                     </a>
                                 </li>

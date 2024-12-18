@@ -27,19 +27,19 @@ Route::get('/karyawan/lihat/', function () {
 
 Route::get('/karyawan/beranda/', function () {
     return view('/karyawan/beranda');
-})->name('beranda');
+})->name('karyawan.beranda');
 
 Route::get('/karyawan/perizinan/', function () {
     return view('/karyawan/perizinan');
-})->name('perizinan');
+})->name('karyawan.perizinan');
 
 Route::get('/karyawan/presensi/', function () {
     return view('/karyawan/presensi');
-})->name('presensi');
+})->name('karyawan.presensi');
 
 Route::get('/karyawan/kasbon/', function () {
     return view('/karyawan/kasbon');
-})->name('kasbon');
+})->name('karyawan.kasbon');
 
 Route::get('/supervisor/beranda/', function () {
     return view('/supervisor/beranda', [
@@ -67,4 +67,4 @@ Route::get('/supervisor/kasbon/', function () {
 
 Route::get('/manajer/beranda/', function () {
     return view('/manajer/beranda');
-})->name('beranda');
+})->name('manager.beranda');
