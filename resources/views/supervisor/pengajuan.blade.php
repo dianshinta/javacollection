@@ -86,7 +86,7 @@
                                                         <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
                                                             <i class="bi bi-eye"></i> Lihat
                                                         </a>
-                                                    </td>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

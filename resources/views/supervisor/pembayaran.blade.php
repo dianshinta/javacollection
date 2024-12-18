@@ -74,9 +74,9 @@
                                                 <td>Rafliansyah Dwi S...</td>
                                                 <td>Rp 0</td>
                                                 <td><span class="badge bg-success">Lunas</span></td>
-                                                <td><a href="#" class="btn btn-lihat" data-bs-toggle="modal" data-bs-target="#pembayaranModal">
-                                                        <i class="bi bi-eye"></i> Lihat
-                                                    </a>
+                                                <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#pembayaranModal">
+                                                    <i class="bi bi-eye"></i> Lihat
+                                                </a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -86,10 +86,10 @@
                                                 <td>Kurodia</td>
                                                 <td>Rp 100.000,00</td>
                                                 <td><span class="badge bg-danger">Belum Lunas</span></td>
-                                                <td><a href="#" class="btn btn-lihat" data-bs-toggle="modal" data-bs-target="#pembayaranModal">
+                                                <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#pembayaranModal">
                                                     <i class="bi bi-eye"></i> Lihat
                                                 </a>
-                                            </td>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
