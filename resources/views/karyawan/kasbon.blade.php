@@ -21,7 +21,7 @@ Coded by www.creative-tim.com
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Perizinan
+        Kasbon | JAVA COLLECTION
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
@@ -137,24 +137,45 @@ Coded by www.creative-tim.com
                     <small class="text-muted d-block">Kasbon</small>
                     <h5 class="font-weight-bold">Riwayat</h5>
                 </div>
-
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <button class="btn"
-                            style="background-color: #FFBA6B; border-radius: 18px; font-size: 0.75rem; color: black; padding: 0.8em;">
-                            <i class="nc-icon nc-simple-add mr-2"></i>
-                            Ajukan izin
+            
+                <div class="row align-items-start">
+                    <!-- Kolom Tombol -->
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <button class="btn w-40 mb-2"
+                            style="background-color: #FFD7A9; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em;">
+                            <i class="nc-icon nc-simple-add mr-2"></i> Ajukan Kasbon
+                        </button>
+                        <button class="btn w-45"
+                            style="background-color: #FFBA6B; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em;">
+                            <i class="nc-icon nc-money-coins mr-2"></i> Bayar
                         </button>
                     </div>
-                </div>
-                <div class="row">
-
+            
+                    <!-- Kolom Card Sisa Limit -->
+                    <div class="d-flex justify-content-end col-lg-8 col-md-6 ">
+                        <div class="card shadow-sm w-100" style="border-radius: 12px;">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="font-weight-bold">Sisa limit: </span>
+                                    <span class="font-weight-bold text-dark"> 2.100.000</span>
+                                </div>
+                                <!-- Progress Bar -->
+                                <div class="progress" style="height: 24px; border-radius: 12px;">
+                                    <div class="progress-bar bg-danger text-white font-weight-bold" role="progressbar"
+                                        style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                        900.000
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
                     <div class="col-md-12">
                         <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table">
-                                        <thead class=" text-primary">
+                                        <thead class="text-center text-primary">
                                             <th>
                                                 No
                                             </th>
@@ -165,14 +186,17 @@ Coded by www.creative-tim.com
                                                 Keterangan
                                             </th>
                                             <th>
-                                                Status
+                                                Nominal
+                                            </th>
+                                            <th>
+                                                Alasan
                                             </th>
                                             <th class="text-right">
                                                 Lampiran
                                             </th>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <tr class="text-center">
                                                 <td>
                                                     1
                                                 </td>
@@ -185,16 +209,19 @@ Coded by www.creative-tim.com
                                                 <td>
                                                     Pending
                                                 </td>
+                                                <td class="text-center">
+                                                    -
+                                                </td>
                                                 <td class="text-right">
                                                     <div class="button-container">
                                                         <button type="button" class="custom-button" data-toggle="modal"
                                                             data-target="#lampiranModal">
-                                                            Tambah
+                                                            Lihat
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
-
+            
                                         </tbody>
                                     </table>
                                 </div>
