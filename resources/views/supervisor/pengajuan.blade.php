@@ -52,41 +52,47 @@
                                       <i class="bi bi-search"></i>
                                     </span>
                                 </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>NIP</th>
-                                            <th>Nama</th>
-                                            <th>Tanggal Pengajuan</th>
-                                            <th>Jumlah</th>
-                                            <th>Keterangan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="gaji-row" id="tableBody">
-                                        <tr>
-                                            <td>NIP</td>
-                                            <td>Nama</td>
-                                            <td>Tanggal Pengajuan</td>
-                                            <td>Jumlah</td>
-                                            <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
-                                                    <i class="bi bi-eye"></i> Lihat
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tbody class="gaji-row" id="tableBody">
-                                        <tr>
-                                            <td>NIP</td>
-                                            <td>Nama</td>
-                                            <td>Tanggal Pengajuan</td>
-                                            <td>Jumlah</td>
-                                            <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
-                                                <i class="bi bi-eye"></i> Lihat
-                                            </a>
-                                        </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>NIP</th>
+                                                        <th>Nama</th>
+                                                        <th>Tanggal Pengajuan</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Keterangan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="gaji-row" id="tableBody">
+                                                    <tr>
+                                                        <td>NIP</td>
+                                                        <td>Nama</td>
+                                                        <td>Tanggal Pengajuan</td>
+                                                        <td>Jumlah</td>
+                                                        <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
+                                                                <i class="bi bi-eye"></i> Lihat
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody class="gaji-row" id="tableBody">
+                                                    <tr>
+                                                        <td>NIP</td>
+                                                        <td>Nama</td>
+                                                        <td>Tanggal Pengajuan</td>
+                                                        <td>Jumlah</td>
+                                                        <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
+                                                            <i class="bi bi-eye"></i> Lihat
+                                                        </a>
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

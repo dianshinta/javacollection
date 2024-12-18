@@ -67,7 +67,7 @@
                 </div>
                 <hr>
                 <!-- Cabang -->
-                <div class="mt-4 mb-4 d-flex justify-content-end">
+                <div class="mt-4 mb-4 d-flex justify-content-start">
                     <select class="form-select w-auto" id="branch">
                         <option>Cabang A</option>
                         <option>Cabang B</option>
