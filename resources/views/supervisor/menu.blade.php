@@ -9,11 +9,11 @@
         </li>
         <!-- Karyawan -->
         <li class="dropdown {{($title === 'Perizinan' || $title === "Informasi") ? 'active' : '' }}">
-            <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#pengajuanDropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#karyawanDropdown">
                 <i class="nc-icon nc-single-02"></i>
             <p class="d-inline-block mr-5">Karyawan</p>
             </a>
-            <div class="collapse" id="pengajuanDropdown">
+            <div class="collapse" id="karyawanDropdown">
                 <ul class="nav" style="margin-left: 62px;">
                     <!-- Sub menu perizinan -->
                     <li class="{{($title === 'Perizinan') ? 'active' : '' }}">
@@ -34,11 +34,11 @@
         </li>
         <!-- Kasbon -->
         <li class="dropdown {{($title === 'Pengajuan' || $title === "Pembayaran") ? 'active' : '' }}">
-            <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#pengajuanDropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#kasbonDropdown">
             <i class="nc-icon nc-money-coins"></i>
             <p class="d-inline-block mr-5">Kasbon</p>
             </a>
-            <div class="collapse" id="pengajuanDropdown">
+            <div class="collapse" id="kasbonDropdown">
                 <ul class="nav" style="margin-left: 62px;">
                     <!-- Sub menu pengajuan -->
                     <li class="{{($title === 'Pengajuan') ? 'active' : '' }}">
