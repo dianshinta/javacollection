@@ -30,8 +30,8 @@ Coded by www.creative-tim.com
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <!-- CSS Files -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
@@ -135,7 +135,6 @@ Coded by www.creative-tim.com
                     <span id="time-display" class="mr-3 font-weight-bold" style="font-size:1.5rem;">07.10</span>
                     <button class="btn btn-success" style="font-size: 1rem; color: black;">Hadir</button>
                   </div>
-        
                 </div>
               </div>
               <div class="card-footer ">
@@ -147,84 +146,20 @@ Coded by www.creative-tim.com
               </div>
             </div>
           </div>
-          
         </div>
-
-        <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card">
-              <div class="card-body ">
-                <div class="selected-menu">
-                  <div class="selected-btn">
-                    <span class="sBtn-text">Cabang A</span>
-                    <i class="bx bx-chevron-down"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="overlay" id="overlay-cabang">
-          <ul class="options">
-            <li class="option">
-              <span class="option-text">Cabang A</span>
-            </li>
-            <li class="option">
-              <span class="option-text">Cabang B</span>
-            </li>
-            <li class="option">
-              <span class="option-text">Cabang C</span>
-            </li>
-            <li class="option">
-              <span class="option-text">Cabang D</span>
-            </li>
-          </ul>
-        </div>
-
+        
         <div class="row">
           <div class="col-md-8">
             <div class="card card-chart">
               <div class="card-header">
                 <h5 class="card-title">
-                  Kehadiran<br>
-                  Karyawan
+                    Kehadiran<br>
+                    Karyawan
                 </h5>
-                <p class="card-category">Mingguan</p>
+                <p class="card-category">Bulanan</p>
               </div>
               <div class="card-body">
                 <canvas id="barChart"></canvas>
-              </div>
-              <div class="card-footer ">
-                <div class="legend">
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
-                  </div>
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
-                  </div>
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
-                  </div>
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <div class="card ">
-              <div class="card-header ">
-                <h5 class="card-title">
-                  Kehadiran<br>
-                  Karyawan
-                </h5>
-                <p class="card-category">Desember</p>
-              </div>
-              <div class="card-body ">
-                <canvas id="doughnutChart"></canvas>
               </div>
               <div class="card-footer ">
                 <div class="legend">
@@ -281,8 +216,7 @@ Coded by www.creative-tim.com
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets/demo/demo.js"></script>
-  <script src="../assets/js/dashboard.js"></script>
+  <script src="../assets/demo/demo-employee.js"></script>
 
   <script>
     $(document).ready(function() {

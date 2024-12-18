@@ -1,0 +1,100 @@
+.selected-menu{
+    width: 180px;
+  }
+  
+  .selected-menu .selected-btn{
+    display: flex;
+    height: 55px;
+    background-color: white;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 8px;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+  }
+  
+  .selected-btn i{
+    font-size: 25px;
+    transition: 0,3s;
+  }
+  
+  .selected-menu .options{
+    position: relative;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+    background: white;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 1);
+    display: none;
+  }
+  
+  .selected-menu.active .options{
+    display: block;
+  }
+  
+  .selected-menu.active .selected-btn i{
+    transform: rotate(-180deg);
+  }
+  
+  .options .option{
+    display: flex;
+    height: 55px;
+    cursor: pointer;
+    padding: 0 0 0 19px;
+    border-radius: 8px;
+    align-items: center;
+    background: white;
+  }
+  
+  .options .option:hover{
+    background: #F2F2F2;
+  }
+  
+  .options .option-text{
+    font-size: 18px;
+    color: black;
+  }
+  
+  .overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Overlay disembunyikan secara default */
+    z-index: 2; /* Pastikan di bawah opsi dropdown */
+  }
+  
+  .options {
+    position: absolute;
+    top: 400px;
+    margin-left: 15px;
+    padding-left: 0;
+    width: 180px;
+    z-index: 3;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 1);
+    border-radius: 8px;
+  }
+  
+  .legend{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .legend .legend-list{
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
