@@ -35,6 +35,8 @@ Coded by www.creative-tim.com
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body class="">
@@ -132,7 +134,20 @@ Coded by www.creative-tim.com
                 <div class="row">
                   <div class="col-12 d-flex justify-content-start align-items-center">
                     <span id="time-display" class="mr-3 font-weight-bold" style="font-size:1.5rem;">07.10</span>
-                    <button class="btn btn-success" style="font-size: 1rem; color: black;">Hadir</button>
+                    <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
+                      @csrf <!-- Token keamanan Laravel -->
+                    
+                      <input type="hidden" name="status" value="Hadir">
+                      <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
+                      <input type="hidden" name="waktu" value="{{ date('H:i:s') }}">
+                      <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
+                      <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
+                      <input type="hidden" name="redirect_to" value="karyawan.beranda">
+
+                      <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black;">
+                        Presensi
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -223,6 +238,61 @@ Coded by www.creative-tim.com
       demo.initChartsPages();
     });
   </script>
+
+  <script>
+      document.getElementById('form-presensi').addEventListener('submit', function(event) {
+          event.preventDefault(); // Prevent the form submission
+
+          // Kirim data presensi via AJAX
+          $.ajax({
+              url: "{{ route('presensi.store') }}",
+              method: "POST",
+              data: {
+                  _token: "{{ csrf_token() }}",
+                  status: "Hadir", // Status yang dipilih
+                  tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
+                  waktu: new Date().toLocaleTimeString(), // Format HH:MM:SS
+                  toko: "Toko A", // Ganti dengan toko yang sesuai
+                  nip: "123456" // NIP yang sesuai
+              },
+              success: function(response) {
+                  // Menampilkan SweetAlert
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Presensi Berhasil!',
+                      text: response.message || 'Data presensi telah berhasil disimpan.',
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+
+                  // Menambahkan data presensi ke tabel dengan increment No
+                  const rowCount = $('#riwayat-presensi tbody tr').length + 1;
+                  $('#riwayat-presensi tbody').append(`
+                      <tr>
+                          <td>${rowCount}</td>
+                          <td>${response.tanggal || new Date().toISOString().split('T')[0]}</td>
+                          <td>${response.waktu || new Date().toLocaleTimeString()}</td>
+                      </tr>
+                  `);
+
+                  // Nonaktifkan tombol setelah ditekan dan ubah teks tombol menjadi "Hadir"
+                  $('#btn-presensi').prop('disabled', true).text('Hadir');
+              },
+              error: function(xhr, status, error) {
+                  // Menampilkan pesan kesalahan dengan informasi dari server (jika ada)
+                  const errorMessage = xhr.responseJSON?.message || 'Mohon periksa jaringan Anda, hidupkan lokasi perangkat, atau coba lagi saat Anda berada dalam radius 100 meter dari toko.';
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Gagal melakukan presensi!',
+                      text: errorMessage,
+                      showConfirmButton: true
+                  });
+              }
+          });
+      });
+
+
+    </script>
 </body>
 
 </html>
