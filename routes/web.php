@@ -64,3 +64,7 @@ Route::get('/supervisor/kasbon/', function () {
         "title" => "Pengajuan"
     ]);
 })->name('supervisor.pengajuan');
+
+Route::get('/manajer/beranda/', function () {
+    return view('/manajer/beranda');
+})->name('beranda');
