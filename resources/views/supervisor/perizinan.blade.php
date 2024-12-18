@@ -75,7 +75,7 @@
                                                 <td>Rafliansyah Dwi S...</td>
                                                 <td>02/07/2024</td>
                                                 <td><span class="badge bg-warning">Diproses</span></td>
-                                                <td><a href="#" class="btn btn-lihat" data-bs-toggle="modal" data-bs-target="#perizinanModal">
+                                                <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#perizinanModal">
                                                         <i class="bi bi-eye"></i> Lihat
                                                     </a>
                                                 </td>
@@ -87,10 +87,10 @@
                                                 <td>Kurodia</td>
                                                 <td>02/07/2024</td>
                                                 <td><span class="badge bg-success">Diterima</span></td>
-                                                <td><a href="#" class="btn btn-lihat" data-bs-toggle="modal" data-bs-target="#perizinanModal">
+                                                <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#perizinanModal">
                                                     <i class="bi bi-eye"></i> Lihat
                                                 </a>
-                                            </td>
+                                                </td>
                                             </tr>
                                         </tbody>
                                         <tbody class="gaji-row" id="tableBody">
@@ -99,7 +99,7 @@
                                                 <td>Amalia</td>
                                                 <td>02/07/2024</td>
                                                 <td><span class="badge bg-danger">Ditolak</span></td>
-                                                <td><a href="#" class="btn btn-lihat" data-bs-toggle="modal" data-bs-target="#perizinanModal">
+                                                <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#perizinanModal">
                                                     <i class="bi bi-eye"></i> Lihat
                                                 </a>
                                             </td>
