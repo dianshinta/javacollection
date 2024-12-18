@@ -1,0 +1,122 @@
+/* status */
+.badge {
+    display: inline-flex; /* Membuat badge berperilaku seperti tombol */
+    align-items: center; /* Memusatkan teks secara vertikal */
+    justify-content: center; /* Memusatkan teks secara horizontal */
+    height: 35px; /* Tinggi yang sama dengan tombol */
+    padding: 0 15px; /* Padding horizontal untuk menyesuaikan ukuran */
+    font-size: 0.8rem; /* Sesuaikan ukuran font */
+    border-radius: 5px; /* Agar menyerupai tombol */
+    color: #fff; /* Warna teks */
+    text-transform: uppercase; /* Opsional: Semua huruf besar */
+  }
+  
+  /* search bar */
+  .search-bar {
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .search-bar input {
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+  .search-bar .input-group-text {
+    background-color: #f8f9fa;
+    border: none;
+  }
+  .search-bar .input-group-text i {
+    color: #6c757d;
+    font-size: 1rem;
+  }
+  .search-bar input::placeholder {
+    color: #adb5bd;
+    font-style: italic;
+  }
+  
+  /* Styling Tombol */
+  .btn-rounded {
+    border-radius: 15px;
+    padding: 10px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-accept {
+    background-color: #28a745;
+    color: white;
+    border: 1px solid #218838;
+  }
+  
+  .btn-accept:hover {
+    background-color: #218838;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn-reject {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #c82333;
+  }
+  
+  .btn-reject:hover {
+    background-color: #c82333;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Responsif Tombol */
+  .btn-group-custom {
+    display: flex;
+    justify-content: center; /* Pusatkan tombol */
+    gap: 15px; /* Jarak antar tombol */
+  }
+  
+  /* Media Query untuk layar kecil */
+  @media (max-width: 576px) {
+    .btn-group-custom {
+      flex-direction: row; /* Tetap sejajar horizontal */
+    }
+  }
+  
+  /* pop up */
+  #pembayaranModal .modal-content {
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  
+  #pembayaranModal .modal-title {
+      text-align: center;
+      font-size: medium;
+      background-color: black;
+      color: white;
+      padding: 3px;
+  }
+  
+  #pembayaranModal .modal-body {
+      margin: 0 30px 0 30px;
+  }
+  
+  #pembayaranModal .modal-body p {
+      margin: 1px;
+  }
+  
+  #confirmModal .modal-content {
+    border-radius: 20px;
+    border: 1px solid #500606;
+  }
+  
+  #confirmModal .modal-body {
+      font-weight: 900;
+      text-align: center;
+      margin: 0 30px 0 30px;
+  }
+  
+  #confirmModal .modal-body .btn {
+      color: black;
+      margin: 25px 10px 0 10px;
+      border-radius: 15px;
+  }
+  

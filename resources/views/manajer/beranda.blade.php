@@ -49,7 +49,7 @@ Coded by www.creative-tim.com
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="active ">
-            <a href="./dashboard.html">
+            <a href="{{route('manager.beranda')}}">
               <i class="nc-icon nc-layout-11"></i>
               <p>Beranda</p>
             </a>

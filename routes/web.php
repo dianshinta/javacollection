@@ -29,19 +29,19 @@ Route::get('/karyawan/lihat/', function () {
 
 Route::get('/karyawan/beranda/', function () {
     return view('/karyawan/beranda');
-})->name('beranda');
+})->name('karyawan.beranda');
 
 Route::get('/karyawan/perizinan/', function () {
     return view('/karyawan/perizinan');
-})->name('perizinan');
+})->name('karyawan.perizinan');
 
-Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('presensi');
-
-Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
+Route::get('/karyawan/presensi/', function () {
+    return view('/karyawan/presensi');
+})->name('karyawan.presensi');
 
 Route::get('/karyawan/kasbon/', function () {
     return view('/karyawan/kasbon');
-})->name('kasbon');
+})->name('karyawan.kasbon');
 
 Route::get('/supervisor/beranda/', function () {
     return view('/supervisor/beranda', [
@@ -66,3 +66,7 @@ Route::get('/supervisor/kasbon/', function () {
         "title" => "Pengajuan"
     ]);
 })->name('supervisor.pengajuan');
+
+Route::get('/manajer/beranda/', function () {
+    return view('/manajer/beranda');
+})->name('manager.beranda');
