@@ -68,7 +68,7 @@ Coded by www.creative-tim.com
             <div class="collapse" id="pengajuanDropdown">
               <ul class="nav" style="margin-left: 62px;">
                 <li>
-                  <a href="./perizinan.html" ">
+                  <a href="./perizinan.html">
                     <p>Perizinan</p>
                   </a>
                 </li>
@@ -82,7 +82,7 @@ Coded by www.creative-tim.com
           </li>
           
           <li>
-            <a href="./notifications.html">
+            <a href="{{route('manajer.gaji')}}">
               <i class="nc-icon nc-money-coins"></i>
               <p>Gaji</p>
             </a>

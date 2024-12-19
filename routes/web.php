@@ -74,3 +74,9 @@ Route::get('/supervisor/kasbon/', function () {
 Route::get('/manajer/beranda/', function () {
     return view('/manajer/beranda');
 })->name('manager.beranda');
+
+Route::get('/manajer/gaji', function() {
+    return view('/manajer/gaji', [
+        "title" => "Gaji"
+    ]);
+})->name('manajer.gaji');

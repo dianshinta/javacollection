@@ -8,11 +8,6 @@
     color: black;
 }
 
-body {
-    background-color: #fff2f2;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
 .container-fluid {
     width: 100%;
 }
@@ -22,12 +17,6 @@ body {
     padding: 15px;
     font-size: 24px;
     font-weight: bold;
-}
-
-.col h5 {
-    color: gray;
-    font-size: 15px;
-    padding: 0 0 15px 35px;
 }
 
 .search-bar {
