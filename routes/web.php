@@ -74,3 +74,14 @@ Route::get('/supervisor/kasbon/', function () {
 Route::get('/manajer/beranda/', function () {
     return view('/manajer/beranda');
 })->name('manager.beranda');
+
+Route::get('/manajer/gaji', function() {
+    return view('/manajer/gaji', [
+        "title" => "Gaji"
+    ]);
+})->name('manajer.gaji');
+
+// Menampilkan halaman login
+Route::get('/login', function () {
+    return view('auth.login'); // Pastikan ada file `auth/login.blade.php`
+})->name('login');

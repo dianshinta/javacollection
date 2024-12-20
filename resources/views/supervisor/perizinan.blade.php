@@ -125,7 +125,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>    
                     </div>
-                    <h5 class="modal-title" id="perizinanModalLabel">Pengajuan Kasbon</h5>
+                    <h5 class="modal-title" id="perizinanModalLabel">Formulir Perizinan</h5>
                     <div class="modal-body">
                         <div class="row mb-2">
                             <div class="col-5 label-bold">NIP:</div>
@@ -165,7 +165,7 @@
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-5 label-bold">Bukti Pembayaran:</div>
+                            <div class="col-5 label-bold">Bukti:</div>
                             <a id="bukti_pembayaran" href="#" target="_blank" class="btn btn-sm btn-light ml-3">
                                 Unduh </a>
                         </div>

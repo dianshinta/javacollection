@@ -58,13 +58,7 @@
                             <span>Sabtu</span>
                             <small class="text-muted d-block">26 Oktober 2024</small>
                             </div>
-                        </div>  
-                        <div class="d-flex align-items-center me-4">
-                            <i class="nc-icon nc-pin-3 text-primary "></i>
-                            <div>
-                            <span>Cab. Tanah Abang</span>
-                            </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
                 <hr>
