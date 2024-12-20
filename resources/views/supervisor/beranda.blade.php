@@ -78,7 +78,7 @@
                           </div>
                         </div>
                     </div>
-              
+                    <!-- Dropdown Cabang -->
                     <div class="overlay" id="overlay-cabang">
                         <ul class="options">
                             <li class="option" id="option-first">
@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <!-- Grafik -->
+                <!-- Grafik Mingguan -->
                 <div class="row">
                     <div class="col-md-8">
                       <div class="card card-chart">
@@ -129,7 +129,8 @@
                         </div>
                       </div>
                     </div>
-          
+                    
+                    <!-- Grafik Bulanan -->
                     <div class="col-md-4">
                       <div class="card ">
                         <div class="card-header ">
@@ -169,30 +170,30 @@
                         <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                <table class="table">
-                                    <thead class=" text-primary">
-                                    <th>Nama</th>
-                                    <th>Status</th>
-                                    <th>Waktu</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Rafliansyah Dwi Setiawan Tondauu</td>
-                                            <td><span class="badge bg-success">Hadir</span></td>
-                                            <td>09.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>khaledd</td>
-                                            <td><span class="badge bg-secondary">none</span></td>
-                                            <td>none</td>
-                                        </tr>
-                                        <tr>
-                                            <td>khaledd</td>
-                                            <td><span class="badge bg-warning text-dark">terlambat</span></td>
-                                            <td>11.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                  <table class="table">
+                                      <thead class=" text-primary">
+                                      <th>Nama</th>
+                                      <th>Status</th>
+                                      <th>Waktu</th>
+                                      </thead>
+                                      <tbody>
+                                          <tr>
+                                              <td>Rafliansyah Dwi Setiawan Tondauu</td>
+                                              <td><span class="badge bg-success">Hadir</span></td>
+                                              <td>09.00</td>
+                                          </tr>
+                                          <tr>
+                                              <td>khaledd</td>
+                                              <td><span class="badge bg-secondary">none</span></td>
+                                              <td>none</td>
+                                          </tr>
+                                          <tr>
+                                              <td>khaledd</td>
+                                              <td><span class="badge bg-warning text-dark">terlambat</span></td>
+                                              <td>11.00</td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +202,7 @@
             </div>
 
             <!-- Footer -->
-            <footer class="footer footer-black  footer-white ">
+            {{-- <footer class="footer footer-black  footer-white ">
                 <div class="container-fluid">
                 <div class="row">
                     <nav class="footer-nav">
@@ -213,7 +214,7 @@
                     </nav>
                 </div>
                 </div>
-            </footer>
+            </footer> --}}
         </div>
         <!-- End Content -->
     </div>
