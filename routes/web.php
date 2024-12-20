@@ -80,3 +80,8 @@ Route::get('/manajer/gaji', function() {
         "title" => "Gaji"
     ]);
 })->name('manajer.gaji');
+
+// Menampilkan halaman login
+Route::get('/login', function () {
+    return view('auth.login'); // Pastikan ada file `auth/login.blade.php`
+})->name('login');
