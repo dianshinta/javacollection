@@ -54,7 +54,7 @@
           </li>
           <li>
             <a href="./icons.html">
-              <i class="nc-icon nc-touch-id"></i>
+              <i class="nc-icon nc-single-02"></i>
               <p>Karyawan</p>
             </a>
           </li>
