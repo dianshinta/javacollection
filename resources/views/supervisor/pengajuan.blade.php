@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body class="">
-    <div class="wrapper ">
+    <div class="wrapper m-auto">
         <div class="sidebar" data-color="white" data-active-color="danger">
             <div class="logo">
                 <span class="simple-text font-weight-bold">
@@ -89,6 +89,18 @@
                                                         </td>
                                                     </tr>
                                                 </tbody>
+                                                <tbody class="gaji-row" id="tableBody">
+                                                    <tr>
+                                                        <td>NIP</td>
+                                                        <td>Nama</td>
+                                                        <td>Tanggal Pengajuan</td>
+                                                        <td>Jumlah</td>
+                                                        <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
+                                                            <i class="bi bi-eye"></i> Lihat
+                                                        </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -98,45 +110,61 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Modal -->
-        <div class="modal fade" id="kasbonModal" tabindex="-1" aria-labelledby="kasbonModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>    
-                    </div>
-                    <h5 class="modal-title" id="kasbonModalLabel">Pengajuan Kasbon</h5>
-                    <div class="modal-body">
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">NIP :</div>
-                            <div class="col-7 bg-gray">212</div>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="kasbonModal" tabindex="-1" aria-labelledby="kasbonModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>    
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Nama :</div>
-                            <div class="col-7 bg-gray">Nama</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Tanggal :</div>
-                            <div class="col-7 bg-gray">02/07/2024</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Alasan Pengajuan :</div>
-                            <div class="col-7">Beli Obat</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Limit Kasbon :</div>
-                            <div class="col-7 bg-gray">Rp. 1.500.000</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Pengajuan :</div>
-                            <div class="col-7">Rp. 1.500.000</div>
+                        <h5 class="modal-title" id="kasbonModalLabel">Pengajuan Kasbon</h5>
+                        <div class="modal-body">
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">NIP :</div>
+                                <div class="col-7 bg-gray">212</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Nama :</div>
+                                <div class="col-7 bg-gray">Nama</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Tanggal :</div>
+                                <div class="col-7 bg-gray">02/07/2024</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Alasan Pengajuan :</div>
+                                <div class="col-7">Beli Obat</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Limit Kasbon :</div>
+                                <div class="col-7 bg-gray">Rp. 1.500.000</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Pengajuan :</div>
+                                <div class="col-7">Rp. 1.500.000</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Footer -->
+            <footer class="footer footer-black  footer-white ">
+                <div class="container-fluid">
+                <div class="row">
+                    <nav class="footer-nav">
+                    <ul>
+                        <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+                        <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+                        <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+                    </ul>
+                    </nav>
+                </div>
+                </div>
+            </footer>
         </div>
     </div>
 

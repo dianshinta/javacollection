@@ -29,11 +29,13 @@ Coded by www.creative-tim.com
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- CSS Files -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <link href="../assets/css/perizinan-modal.css" rel="stylesheet" />
-
+    <link href="../assets/css/pengajuan-modal.css" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
 </head>
@@ -97,7 +99,6 @@ Coded by www.creative-tim.com
                 </ul>
             </div>
         </div>
-    
 
         <!-- Modal Box for Tambah Lampiran -->
         <div class="modal fade" id="lampiranModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
@@ -128,8 +129,86 @@ Coded by www.creative-tim.com
                 </div>
             </div>
         </div>
-
-
+        
+        <!-- Modal Box for Pengajuan Kasbon -->
+        <div class="modal fade" id="pengajuanModal" tabindex="-1" role="dialog" aria-labelledby="pengajuanModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <h5 class="modal-title">Formulir Pengajuan Kasbon</h5>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tanggal">Tanggal:</label>
+                            <input type="text" id="tanggal" class="form-control" value="02/07/2024" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="nominal">Nominal:</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </span>
+                                <input type="number" id="nominal" class="form-control" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="alasan">Alasan:</label>
+                            <textarea id="alasan" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn">Ajukan 
+                                <i class="bi bi-caret-right-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        
+        <!-- Modal Box for Pembayaran Kasbon -->
+        <div class="modal fade" id="pembayaranModal" tabindex="-1" role="dialog" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <h5 class="modal-title">Formulir Pembayaran Kasbon</h5>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="tanggal">Tanggal:</label>
+                            <input type="text" id="tanggal" class="form-control" value="02/07/2024" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="nominal">Nominal:</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </span>
+                                <input type="number" id="nominal" class="form-control" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="alasan">Bukti:</label>
+                            <div class="button-container">
+                                <button type="button" class="custom-button">
+                                    Tambah
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn">Kirim 
+                                <i class="bi bi-caret-right-fill"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="main-panel">
             <div class="content">
@@ -141,12 +220,12 @@ Coded by www.creative-tim.com
                 <div class="row align-items-start">
                     <!-- Kolom Tombol -->
                     <div class="col-lg-4 col-md-6 mb-3">
-                        <button class="btn w-40 mb-2"
-                            style="background-color: #FFD7A9; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em;">
+                        <button type="button" class="btn w-40 mb-2" data-toggle="modal" data-target="#pengajuanModal"
+                            style="background-color: #FFBA6B; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em; border: 1px solid black">
                             <i class="nc-icon nc-simple-add mr-2"></i> Ajukan Kasbon
                         </button>
-                        <button class="btn w-45"
-                            style="background-color: #FFBA6B; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em;">
+                        <button class="btn w-45" data-toggle="modal" data-target="#pembayaranModal"
+                            style="background-color: #FFD7A9; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em; border: 1px solid black">
                             <i class="nc-icon nc-money-coins mr-2"></i> Bayar
                         </button>
                     </div>
@@ -274,8 +353,6 @@ Coded by www.creative-tim.com
                 demo.initChartsPages();
             });
         </script>
-
-
 </body>
 
 </html>
