@@ -126,29 +126,6 @@ Coded by www.creative-tim.com
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-12 d-flex justify-content-start align-items-center">
-                    <span id="time-display" class="mr-3 font-weight-bold" style="font-size:1.5rem;">07.10</span>
-                    <button class="btn btn-success" style="font-size: 1rem; color: black;">Hadir</button>
-                  </div>
-        
-                </div>
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-clock-o"></i>
-                  In the last hour
-                </div>
-              </div>
-            </div>
-          </div>
-          
-        </div>
 
         <!-- Cabang -->
         <div class="cabang">
