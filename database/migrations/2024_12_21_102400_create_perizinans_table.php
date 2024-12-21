@@ -6,24 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('perizinan', function (Blueprint $table) {
             $table->string('nip', 20)->primary();
-            $table->text('lampiran');
+            $table->string('nama');
+            $table->string('lampiran')->nullable();
             $table->date('tanggal');
             $table->enum('jenis', ['Sakit', 'Cuti', 'Lainnya']);
             $table->text('keterangan');
             $table->enum('status', ['Diproses', 'Disetujui', 'Ditolak']);
+            $table->timestamps(); // Menambahkan kolom created_at dan updated_at
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('perizinan');

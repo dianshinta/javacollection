@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\supervisorPerizinanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Menampilkan halaman karyawan
 Route::get('/karyawan/atur/', function () {
     return view('/karyawan/atur');
 });
@@ -47,17 +49,24 @@ Route::get('/karyawan/kasbon/', function () {
     return view('/karyawan/kasbon');
 })->name('karyawan.kasbon');
 
+// Menampilkan halaman supervisor
+
 Route::get('/supervisor/beranda/', function () {
     return view('/supervisor/beranda', [
         "title" => "Beranda"
     ]);
 })->name('supervisor.beranda');
 
-Route::get('/supervisor/perizinan/', function () {
-    return view('/supervisor/perizinan', [
-        "title" => "Perizinan"
-    ]);
-})->name('supervisor.perizinan');
+// Route::get('/supervisor/beranda/', [supervisorPerizinanController::class, 'index'])->name('supervisor.beranda');
+
+// Route::get('/supervisor/perizinan/', function () {
+//     return view('/supervisor/perizinan', [
+//         "title" => "Perizinan"
+//     ]);
+// })->name('supervisor.perizinan');
+
+Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'index'])->name('supervisor.perizinan');
+ROute::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])->name('perizinan.update-status');
 
 Route::get('/supervisor/pembayaran/', function () {
     return view('/supervisor/pembayaran', [
@@ -71,6 +80,7 @@ Route::get('/supervisor/kasbon/', function () {
     ]);
 })->name('supervisor.pengajuan');
 
+// Menampilkan halaman manager
 Route::get('/manajer/beranda/', function () {
     return view('/manajer/beranda');
 })->name('manager.beranda');
