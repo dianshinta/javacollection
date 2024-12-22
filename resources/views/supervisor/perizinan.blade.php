@@ -106,43 +106,7 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
-                                            </tbody>                                        
-                                            {{-- <tbody class="gaji-row" id="tableBody">
-                                                <tr>
-                                                    <td>001</td>
-                                                    <td>Rafliansyah Dwi S...</td>
-                                                    <td>02/07/2024</td>
-                                                    <td><span class="badge bg-warning">Diproses</span></td>
-                                                    <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#perizinanModal">
-                                                            <i class="bi bi-eye"></i> Lihat
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody> --}}
-                                            {{-- <tbody class="gaji-row" id="tableBody">
-                                                <tr>
-                                                    <td>321</td>
-                                                    <td>Kurodia</td>
-                                                    <td>02/07/2024</td>
-                                                    <td><span class="badge bg-success">Diterima</span></td>
-                                                    <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#perizinanModal">
-                                                        <i class="bi bi-eye"></i> Lihat
-                                                    </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody> --}}
-                                            {{-- <tbody class="gaji-row" id="tableBody">
-                                                <tr>
-                                                    <td>320</td>
-                                                    <td>Amalia</td>
-                                                    <td>02/07/2024</td>
-                                                    <td><span class="badge bg-danger">Ditolak</span></td>
-                                                    <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#perizinanModal">
-                                                        <i class="bi bi-eye"></i> Lihat
-                                                    </a>
-                                                </td>
-                                                </tr>
-                                            </tbody> --}}
+                                            </tbody> 
                                         </table>
                                     </div>
                                 </div>
@@ -178,25 +142,6 @@
                                 <div class="col-5 label-bold">Jenis:</div>
                                 <div class="col-7 bg-gray" id="modal-jenis"></div>
                             </div>
-                            {{-- <div class="row mb-2">
-                                <div class="col-5 label-bold">Jenis:</div>
-                                <div class="col-2">
-                                    <div class="container">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="jenis" id="jenisSakit" value="sakit" checked>
-                                            <label class="form-check-label text-black" for="jenisSakit">Sakit</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="jenis" id="jenisCuti" value="cuti">
-                                            <label class="form-check-label text-black" for="jenisCuti">Cuti</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="jenis" id="jenisLain" value="lain-lain">
-                                            <label class="form-check-label text-black" for="jenisLain">Lain lain</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Keterangan:</div>
                                 <div class="col-7">
@@ -204,11 +149,9 @@
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                {{-- <div class="col-5 label-bold">Lampiran:</div>
-                                <a href="#" target="_blank" class="btn btn-sm btn-light ml-3" id="modal-lampiran">
-                                    Unduh </a> --}}
-                                    <label for="lampiran" class="form-label">Lampiran</label>
-                                    <input type="file" class="form-control" name="lampiran" id="modal-lampiran" accept="image/png">
+                                <div class="col-5 label-bold">Lampiran:</div>
+                                <a href="#" target="_blank" class="btn btn-sm btn-secondary ml-3" id="modal-lampiran">
+                                    Preview </a>
                             </div>
                             <div class="container mt-5 text-center">
                                 <div class="btn-group-custom justify-content-center">
@@ -271,27 +214,6 @@
 
   <!-- JavaScript -->
     <script>
-        // // Event untuk tombol "Terima Pembayaran"
-        // document.getElementById('btnTerima').addEventListener('click', function() {
-        //     // Tampilkan modal konfirmasi
-        //     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-        //     confirmModal.show();
-        // });
-
-        // // Event untuk tombol "Yakin"
-        // document.getElementById('btnYakin').addEventListener('click', function () {
-        //     // Logika untuk aksi "Yakin" (misalnya, submit data)
-        //     alert('Perizinan berhasil diterima!');
-        //     // Tutup modal
-        //     const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
-        //     confirmModal.hide();
-        // });
-
-        // // Event untuk tombol "Tolak Pembayaran"
-        // document.getElementById('btnTolak').addEventListener('click', function() {
-        //     console.log('Perizinan dibatalkan.');
-        // });
-
         // Event untuk menampilkan data di modal
         document.addEventListener('DOMContentLoaded', function(){
             const perizinanModal = document.getElementById('perizinanModal');
@@ -314,7 +236,15 @@
                 document.getElementById('modal-tanggal').textContent = tanggal;
                 document.getElementById('modal-jenis').textContent = jenis;
                 document.getElementById('modal-keterangan').value = keterangan;
-                document.getElementById('modal-lampiran').href = lampiran;
+
+                // Update link di modal
+                const modalLampiran = document.getElementById('modal-lampiran');
+                if (lampiran) {
+                    modalLampiran.href = `/storage/${lampiran}`; // Path file untuk unduhan
+                    modalLampiran.style.display = 'inline'; // Tampilkan tombol
+                } else {
+                    modalLampiran.style.display = 'none'; // Sembunyikan tombol jika lampiran kosong
+                }
             });
         });
 

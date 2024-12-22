@@ -13,14 +13,6 @@ class perizinan extends Model
     protected $primaryKey = 'nip'; // Kolom nip sebagai primary key
     protected $keyType = 'string'; // Primary key bertipe string
     public $incrementing = false; // Karena primary key tidak auto-increment
-    // protected $fillable = [
-    //     'nip',
-    //     'lampiran',
-    //     'tanggal',
-    //     'jenis',
-    //     'keterangan',
-    //     'status',
-    // ];
     protected $casts = [
         'tanggal' => 'date',
         'jenis' => 'string',

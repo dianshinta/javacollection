@@ -4,18 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\supervisorPerizinanController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -59,14 +47,9 @@ Route::get('/supervisor/beranda/', function () {
 
 // Route::get('/supervisor/beranda/', [supervisorPerizinanController::class, 'index'])->name('supervisor.beranda');
 
-// Route::get('/supervisor/perizinan/', function () {
-//     return view('/supervisor/perizinan', [
-//         "title" => "Perizinan"
-//     ]);
-// })->name('supervisor.perizinan');
-
 Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'index'])->name('supervisor.perizinan');
-ROute::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])->name('perizinan.update-status');
+
+Route::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])->name('perizinan.update-status');
 
 Route::get('/supervisor/pembayaran/', function () {
     return view('/supervisor/pembayaran', [

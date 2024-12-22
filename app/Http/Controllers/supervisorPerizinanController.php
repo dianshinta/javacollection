@@ -77,18 +77,7 @@ class supervisorPerizinanController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nip' => 'required|string',
-            'nama' => 'required|string',
-            'tanggal' => 'required|date',
-            'jenis' => 'required|string',
-            'keterangan' => 'required|string',
-            'status' => 'required|string',
-            'lampiran' => 'required|file|mimes:png|max:2048', // Validasi PNG
-        ]);
-
-        // Simpan file lampiran
-        $filePath = $request->file('lampiran')->store('lampiran', 'public');
+        //
     }
 
     /**
