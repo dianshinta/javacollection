@@ -23,6 +23,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <!-- Alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="">
@@ -291,12 +293,29 @@
                 .then(response => {
                 if (response.status === 403) {
                     return response.json().then(data => {
-                        alert(data.message); // Tampilkan pesan error jika status bukan "Diproses"
+                        // Menampilkan pesan error dengan SweetAlert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal Memperbarui Status',
+                            text: data.message || 'Kesalahan saat memperbarui status.',
+                            confirmButtonText: 'OK'
+                        });
+                        // alert(data.message); 
                     });
                 } else if (response.ok) {
                     return response.json().then(data => {
-                        alert(data.message); // Tampilkan pesan sukses
-                        location.reload(); // Reload halaman untuk memperbarui tabel
+                        // Menampilkan pesan sukses dengan SweetAlert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: data.message || 'Status berhasil diperbarui.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload(); // Reload halaman untuk memperbarui tabel
+                        });
+                        // alert(data.message); // Tampilkan pesan sukses
+                        // location.reload(); // Reload halaman untuk memperbarui tabel
                     });
                 } else {
                     throw new Error('Terjadi kesalahan saat memperbarui status');
@@ -304,7 +323,14 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Terjadi kesalahan saat memperbarui status');
+                    // alert('Terjadi kesalahan saat memperbarui status');
+                    // Menampilkan pesan error dengan SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kesalahan',
+                        text: 'Terjadi kesalahan saat memperbarui status.',
+                        confirmButtonText: 'OK'
+                    });
                 });
             }
         });

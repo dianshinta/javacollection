@@ -20,6 +20,7 @@ class supervisorPerizinanController extends Controller
             $perizinan = Perizinan::when($search, function ($query, $search){
                 $query -> where('nama', 'like',"%{$search}%")
                        -> orWhere('nip','like',"%{$search}%")
+                       -> orWhere('tanggal','like',"%{$search}%")
                        -> orWhere('status','like',"%{$search}%");
             })
             ->orderBy('updated_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
@@ -27,8 +28,8 @@ class supervisorPerizinanController extends Controller
             ->get();
         } else {
             // Ambil data perizinan dari database
-            $perizinan = Perizinan::orderBy('updated_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
-            -> orderBy('created_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
+            $perizinan = Perizinan::orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
+            -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
             ->get();
         }
         
@@ -55,7 +56,7 @@ class supervisorPerizinanController extends Controller
 
         // Cek apakah status saat ini "Diproses"
         if ($perizinan->status !== 'Diproses') {
-            return response()->json(['message' => 'Perubahan status hanya bisa dilakukan jika status saat ini adalah "Diproses".'], 403);
+            return response()->json(['message' => 'Status sudah pernah disetujui/ditolak'], 403);
         }
 
         // Update status
