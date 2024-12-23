@@ -87,15 +87,9 @@ Coded by www.creative-tim.com
                         </div>
                     </li>
                     <li>
-                        <a href="./notifications.html">
+                        <a href="{{route('karyawan.gaji')}}">
                             <i class="nc-icon nc-money-coins"></i>
                             <p>Gaji</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./user.html">
-                            <i class="nc-icon nc-single-02"></i>
-                            <p>User Profile</p>
                         </a>
                     </li>
                 </ul>
