@@ -36,6 +36,8 @@ Coded by www.creative-tim.com
     <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <link href="../assets/css/perizinan-modal.css" rel="stylesheet" />
     <link href="../assets/css/pengajuan-modal.css" rel="stylesheet" />
+    <link href="../assets/css/supervisor-perizinan.css" rel="stylesheet" />
+
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
 </head>
@@ -85,15 +87,9 @@ Coded by www.creative-tim.com
                         </div>
                     </li>
                     <li>
-                        <a href="./notifications.html">
+                        <a href="{{route('karyawan.gaji')}}">
                             <i class="nc-icon nc-money-coins"></i>
                             <p>Gaji</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./user.html">
-                            <i class="nc-icon nc-single-02"></i>
-                            <p>User Profile</p>
                         </a>
                     </li>
                 </ul>
@@ -221,11 +217,11 @@ Coded by www.creative-tim.com
                     <!-- Kolom Tombol -->
                     <div class="col-lg-4 col-md-6 mb-3">
                         <button type="button" class="btn w-40 mb-2" data-toggle="modal" data-target="#pengajuanModal"
-                            style="background-color: #FFBA6B; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em; border: 1px solid black">
+                            style="background-color: #FFBA6B; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em;">
                             <i class="nc-icon nc-simple-add mr-2"></i> Ajukan Kasbon
                         </button>
                         <button class="btn w-45" data-toggle="modal" data-target="#pembayaranModal"
-                            style="background-color: #FFD7A9; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em; border: 1px solid black">
+                            style="background-color: #FFD7A9; border-radius: 18px; font-size: 0.9rem; color: black; padding: 0.8em;">
                             <i class="nc-icon nc-money-coins mr-2"></i> Bayar
                         </button>
                     </div>
@@ -270,6 +266,9 @@ Coded by www.creative-tim.com
                                             <th>
                                                 Alasan
                                             </th>
+                                            <th>
+                                                Status
+                                            </th>
                                             <th class="text-right">
                                                 Lampiran
                                             </th>
@@ -283,12 +282,15 @@ Coded by www.creative-tim.com
                                                     12 Desember 2024
                                                 </td>
                                                 <td>
-                                                    Sakit
+                                                    <span class="badge" style="background-color: #FFBA6B;">Pengajuan</span>
                                                 </td>
                                                 <td>
-                                                    Pending
+                                                    900000
                                                 </td>
                                                 <td class="text-center">
+                                                    Beli ATK
+                                                </td>
+                                                <td>
                                                     -
                                                 </td>
                                                 <td class="text-right">
@@ -300,7 +302,34 @@ Coded by www.creative-tim.com
                                                     </div>
                                                 </td>
                                             </tr>
-            
+                                            <tr class="text-center">
+                                                <td>
+                                                    2
+                                                </td>
+                                                <td>
+                                                    13 Desember 2024
+                                                </td>
+                                                <td>
+                                                    <span class="badge" style="background-color: #FFD7A9; padding: 0.85em">Pembayaran</span>
+                                                </td>
+                                                <td>
+                                                    900000
+                                                </td>
+                                                <td class="text-center">
+                                                    Beli ATK
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-warning">Diproses</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="button-container">
+                                                        <button type="button" class="custom-button" data-toggle="modal"
+                                                            data-target="#lampiranModal">
+                                                            Lihat
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
