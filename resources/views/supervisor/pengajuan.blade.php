@@ -123,28 +123,28 @@
                         <h5 class="modal-title" id="kasbonModalLabel">Pengajuan Kasbon</h5>
                         <div class="modal-body">
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">NIP :</div>
+                                <div class="col-5 label-bold">NIP:</div>
                                 <div class="col-7 bg-gray">212</div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">Nama :</div>
+                                <div class="col-5 label-bold">Nama:</div>
                                 <div class="col-7 bg-gray">Nama</div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">Tanggal :</div>
+                                <div class="col-5 label-bold">Tanggal:</div>
                                 <div class="col-7 bg-gray">02/07/2024</div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">Alasan Pengajuan :</div>
+                                <div class="col-5 label-bold">Alasan:</div>
                                 <div class="col-7">Beli Obat</div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">Limit Kasbon :</div>
-                                <div class="col-7 bg-gray">Rp. 1.500.000</div>
+                                <div class="col-5 label-bold">Nominal Pengajuan:</div>
+                                <div class="col-7">Rp. 1.500.000</div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">Pengajuan :</div>
-                                <div class="col-7">Rp. 1.500.000</div>
+                                <div class="col-5 label-bold">Saldo Kasbon:</div>
+                                <div class="col-7 bg-gray">Rp. 1.500.000</div>
                             </div>
                         </div>
                     </div>

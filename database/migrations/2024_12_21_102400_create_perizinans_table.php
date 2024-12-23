@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('perizinan', function (Blueprint $table) {
             $table->string('nip', 20)->primary();
-            $table->string('nama');
+            $table->string('nama', 50);
             $table->string('lampiran')->nullable();
             $table->date('tanggal');
             $table->enum('jenis', ['Sakit', 'Cuti', 'Lainnya']);

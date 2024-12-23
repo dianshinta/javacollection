@@ -54,7 +54,7 @@
                             <!-- Pencarian -->
                             <form method="GET" action="{{ route('supervisor.perizinan') }}" class="d-flex">
                                 <div class="input-group search-bar">
-                                    <input type="text" class="form-control search-bar" name="search"  id="searchBar" placeholder="Cari Karyawan.." value="{{ $search ?? '' }}" >
+                                    <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." value="{{ $search ?? '' }}" >
                                     <span class="input-group-text">
                                         <button type="submit">
                                             <i class="bi bi-search"></i>
@@ -338,3 +338,5 @@
 </body>
 
 </html>
+
+

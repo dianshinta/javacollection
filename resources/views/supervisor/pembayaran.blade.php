@@ -22,172 +22,186 @@
   <link href="../assets/demo/demo.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="">
-  <div class="wrapper ">
-    <div class="sidebar" data-color="white" data-active-color="danger">
-        <div class="logo">
-            <span class="simple-text font-weight-bold">
-            JAVA COLLECTION
-            </span>
-        </div>
-        <!-- Menu -->
-        @include('supervisor.menu')
-        <!-- END MENU -->
-    </div>
-
-    <!-- Content -->
-    <div class="main-panel">
-        <div class="content">
-            <div class="mb-4">
-                <small class="text-muted d-block">Kasbon</small>
-                <h5 class="font-weight-bold">Daftar Pembayaran</h5>
+    <div class="wrapper ">
+        <div class="sidebar" data-color="white" data-active-color="danger">
+            <div class="logo">
+                <span class="simple-text font-weight-bold">
+                JAVA COLLECTION
+                </span>
             </div>
+            <!-- Menu -->
+            @include('supervisor.menu')
+            <!-- END MENU -->
+        </div>
 
-            <div class="top-0 start-0">
-                <div>
-                    <!-- Main Content -->
-                    <div class="col">
-                        <div class="input-group search-bar">
-                            <input type="text" class="form-control search-bar" id="searchBar" placeholder="Cari Karyawan..">
-                            <span class="input-group-text ">
-                              <i class="bi bi-search"></i>
-                            </span>
-                        </div>
-                        <div class="card ">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>NIP</th>
-                                                <th>Nama</th>
-                                                <th>Saldo Kasbon</th>
-                                                <th>Status</th>
-                                                <th>Lampiran</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="pembayaran-row" id="tableBody">
-                                            <tr>
-                                                <td>001</td>
-                                                <td>Rafliansyah Dwi S...</td>
-                                                <td>Rp 0</td>
-                                                <td><span class="badge bg-success">Lunas</span></td>
-                                                <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#pembayaranModal">
-                                                    <i class="bi bi-eye"></i> Lihat
-                                                </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tbody class="pembayaran-row" id="tableBody">
-                                            <tr>
-                                                <td>321</td>
-                                                <td>Kurodia</td>
-                                                <td>Rp 100.000,00</td>
-                                                <td><span class="badge bg-danger">Belum Lunas</span></td>
-                                                <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#pembayaranModal">
-                                                    <i class="bi bi-eye"></i> Lihat
-                                                </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+        <!-- Content -->
+        <div class="main-panel">
+            <div class="content">
+                <div class="mb-4">
+                    <small class="text-muted d-block">Kasbon</small>
+                    <h5 class="font-weight-bold">Daftar Pembayaran</h5>
+                </div>
+
+                <div class="top-0 start-0">
+                    <div>
+                        <!-- Main Content -->
+                        <div class="col">
+                            <!-- Pencarian -->
+                            <form method="GET" action="{{ route('supervisor.pembayaran') }}"  class="d-flex">
+                                <div class="input-group search-bar">
+                                    <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan..">
+                                    <span class="input-group-text">
+                                        <button type="submit">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+
+                            <!-- Tabel Pembayaran -->
+                            <div class="card ">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>NIP</th>
+                                                    <th>Nama</th>
+                                                    <th>Tanggal Pembayaran</th>
+                                                    <th>Saldo Akhir</th>
+                                                    <th>Status</th>
+                                                    <th>Lampiran</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($pembayaran as $data)
+                                                <tr>
+                                                    <td>{{ $data->nip }}</td>
+                                                    <td>{{ $data->nama }}</td>
+                                                    <td>{{ $data->tanggal_pembayaran->format('d/m/Y') }}</td>
+                                                    <td>{{ 'Rp ' . number_format($data->saldo_akhir, 0, ',', '.') }}</td>
+                                                    <td>
+                                                        @if ($data->status === 'Lunas')
+                                                            <span class="badge bg-succes">Lunas</span>
+                                                        @else
+                                                            <span class="badge bg-danger">Belum Lunas</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" 
+                                                        class="btn btn-info btn-round" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#pembayaranModal"
+                                                        data-nip="{{ $data->nip }}"
+                                                        data-nama="{{ $data->nama }}"
+                                                        data-tanggal-bayar="{{ $data->tanggal_pembayaran->format('d/m/Y') }}"
+                                                        data-saldo-akhir="{{ $data->saldo_akhir }}"
+                                                        data-nominal-dibayar="{{ $data->nominal_dibayar }}"
+                                                        data-lampiran="{{ $data->lampiran }}">
+                                                            <i class="bi bi-eye"></i> Lihat
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                            {{-- <tbody class="pembayaran-row" id="tableBody">
+                                                <tr>
+                                                    <td>321</td>
+                                                    <td>Kurodia</td>
+                                                    <td>Rp 100.000,00</td>
+                                                    <td><span class="badge bg-danger">Belum Lunas</span></td>
+                                                    <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#pembayaranModal">
+                                                        <i class="bi bi-eye"></i> Lihat
+                                                    </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody> --}}
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>        
+                </div>        
 
-            <!-- Modal -->
-            <div class="modal fade" id="pembayaranModal" tabindex="-1" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>    
-                    </div>
-                    <h5 class="modal-title" id="pembayaranModalLabel">Pengajuan Kasbon</h5>
-                    <div class="modal-body">
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">NIP:</div>
-                            <div class="col-7 bg-gray">212</div>
+                <!-- Modal -->
+                <div class="modal fade" id="pembayaranModal" tabindex="-1" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>    
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Nama:</div>
-                            <div class="col-7 bg-gray">Laurent</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Tanggal:</div>
-                            <div class="col-7 bg-gray">02/07/2024</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Saldo Kasbon:</div>
-                            <div class="col-7">Rp 300.000,00 </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Nominal Pembayaran:</div>
-                            <div class="col-7 bg-gray">Rp 300.000,00</div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-5 label-bold">Bukti Pembayaran:</div>
-                            <a id="bukti_pembayaran" href="#" target="_blank" class="btn btn-sm btn-light ml-3">
-                                Unduh </a>
-                        </div>
-                        <div class="container mt-5 text-center">
-                            <div class="btn-group-custom justify-content-center">
-                              <!-- Tombol Terima -->
-                              <button class="btn btn-rounded btn-accept" id="btnTerima">
-                                Terima Pembayaran </button>
-                              <!-- Tombol Tolak -->
-                              <button class="btn btn-rounded btn-reject" id="btnTolak">
-                                Tolak Pembayaran </button>
+                        <h5 class="modal-title" id="pembayaranModalLabel">Pembayaran Kasbon</h5>
+                        <div class="modal-body">
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">NIP:</div>
+                                <div class="col-7 bg-gray" id="modal-nip"></div>
                             </div>
-                        </div>                  
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Nama:</div>
+                                <div class="col-7 bg-gray" id="modal-nama"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Tanggal:</div>
+                                <div class="col-7 bg-gray" id="modal-tanggal-bayar"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Nominal Pembayaran:</div>
+                                <div class="col-7 bg-gray" id="modal-nominal-dibayar"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Saldo Kasbon:</div>
+                                <div class="col-7" id="modal-saldo-akhir"></div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 label-bold">Bukti Pembayaran:</div>
+                                <a href="#" target="_blank" class="btn btn-sm btn-light ml-3" id="modal-lampiran">
+                                    Preview </a>
+                            </div>
+                            <div class="container mt-5 text-center">
+                                <div class="btn-group-custom justify-content-center">
+                                <!-- Tombol Terima -->
+                                <button class="btn btn-rounded btn-accept" id="btnTerima">
+                                    Terima Pembayaran </button>
+                                <!-- Tombol Tolak -->
+                                <button class="btn btn-rounded btn-reject" id="btnTolak">
+                                    Tolak Pembayaran </button>
+                                </div>
+                            </div>                  
+                        </div>
+                    </div>
                     </div>
                 </div>
-                </div>
-            </div>
 
-            <!-- Modal Konfirmasi -->
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- Modal Konfirmasi -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Apakah Anda yakin ingin menerima pembayaran ini?</p>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menerima pembayaran ini?</p>
-                    <div class="text-center">
-                        <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
                     </div>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        {{-- <footer class="footer footer-black  footer-white ">
-            <div class="container-fluid">
-            <div class="row">
-                <nav class="footer-nav">
-                <ul>
-                    <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-                    <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-                    <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-                </ul>
-                </nav>
-            </div>
-            </div>
-        </footer> --}}
+        <!-- end Content -->
     </div>
-    <!-- End Content -->
 
-    </div>
     <!--   Core JS Files   -->
     <script src="../assets/js/core/jquery.min.js"></script>
     <script src="../assets/js/core/popper.min.js"></script>
@@ -212,6 +226,53 @@
 
     <!-- JavaScript -->
     <script>
+        //fungsi format rupiah 
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(number);
+        }
+
+        // Event untuk menampilkan data di modal
+        document.addEventListener('DOMContentLoaded', function(){
+            const pembayaranModal = document.getElementById('pembayaranModal');
+
+            pembayaranModal.addEventListener('show.bs.modal', function(event){
+                // Tombol yang memicu modal
+                const button = event.relatedTarget;
+
+                // Ambil data dari tombol
+                const nip = button.getAttribute('data-nip');
+                const nama = button.getAttribute('data-nama');
+                const tanggalBayar = button.getAttribute('data-tanggal-bayar');
+                const nominalDibayar = button.getAttribute('data-nominal-dibayar');
+                const saldoAkhir = button.getAttribute('data-saldo-akhir');
+                const lampiran = button.getAttribute('data-lampiran');
+
+                // Format nominal dengan Rp
+                const formattedNominalDibayar = formatRupiah(nominalDibayar);
+                const formattedSaldoAkhir = formatRupiah(saldoAkhir);
+
+                // Isi elemen modal dengan data
+                document.getElementById('modal-nip').textContent = nip;
+                document.getElementById('modal-nama').textContent = nama;
+                document.getElementById('modal-tanggal-bayar').textContent = tanggalBayar;
+                document.getElementById('modal-nominal-dibayar').textContent = formattedNominalDibayar;
+                document.getElementById('modal-saldo-akhir').textContent = formattedSaldoAkhir;
+
+                // Update link di modal
+                const modalLampiran = document.getElementById('modal-lampiran');
+                if (lampiran) {
+                    modalLampiran.href = `/storage/${lampiran}`; // Path file untuk unduhan
+                    modalLampiran.style.display = 'inline'; // Tampilkan tombol
+                } else {
+                    modalLampiran.style.display = 'none'; // Sembunyikan tombol jika lampiran kosong
+                }
+            });
+        });
+
         // Event untuk tombol "Terima Pembayaran"
         document.getElementById('btnTerima').addEventListener('click', function() {
             // Tampilkan modal konfirmasi
@@ -232,6 +293,7 @@
         document.getElementById('btnTolak').addEventListener('click', function() {
             console.log('Pembayaran dibatalkan.');
         });
+
     </script>
 </body>
 </html>

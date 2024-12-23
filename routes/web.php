@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\supervisorPerizinanController;
+use App\Http\Controllers\supervisorPembayaranController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,11 +52,13 @@ Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'ind
 
 Route::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])->name('perizinan.update-status');
 
-Route::get('/supervisor/pembayaran/', function () {
-    return view('/supervisor/pembayaran', [
-        "title" => "Pembayaran"
-    ]);
-})->name('supervisor.pembayaran');
+// Route::get('/supervisor/pembayaran/', function () {
+//     return view('/supervisor/pembayaran', [
+//         "title" => "Pembayaran"
+//     ]);
+// })->name('supervisor.pembayaran');
+
+Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'index'])->name('supervisor.pembayaran');
 
 Route::get('/supervisor/kasbon/', function () {
     return view('/supervisor/pengajuan', [
