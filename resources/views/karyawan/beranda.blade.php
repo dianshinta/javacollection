@@ -133,7 +133,7 @@ Coded by www.creative-tim.com
               <div class="card-body ">
                 <div class="row">
                   <div class="col-12 d-flex justify-content-start align-items-center">
-                    <span id="time-display" class="mr-3 font-weight-bold" style="font-size:1.5rem;">07.10</span>
+                    <span id="time-display" class="mr-3 font-weight-bold" style="font-size:1.5rem;">00.00</span>
                     <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
                       @csrf <!-- Token keamanan Laravel -->
                     
@@ -144,7 +144,7 @@ Coded by www.creative-tim.com
                       <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
                       <input type="hidden" name="redirect_to" value="karyawan.beranda">
 
-                      <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black;">
+                      <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.65em">
                         Presensi
                       </button>
                     </form>
@@ -228,8 +228,10 @@ Coded by www.creative-tim.com
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
   <!--  Notifications Plugin    -->
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+
+  <script src="../assets/js/plugins/presensi.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+  <!-- <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>Paper Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo-employee.js"></script>
 
   <script>
