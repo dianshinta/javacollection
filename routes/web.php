@@ -26,10 +26,6 @@ Route::get('/karyawan/perizinan/', function () {
     return view('/karyawan/perizinan');
 })->name('karyawan.perizinan');
 
-// Route::get('/karyawan/presensi/', function () {
-//     return view('/karyawan/presensi');
-// })->name('karyawan.presensi');
-
 Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('karyawan.presensi');
 
 Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
@@ -37,6 +33,10 @@ Route::post('/presensi/store', [PresensiController::class, 'store'])->name('pres
 Route::get('/karyawan/kasbon/', function () {
     return view('/karyawan/kasbon');
 })->name('karyawan.kasbon');
+
+Route::get('/karyawan/gaji/', function () {
+    return view('/karyawan/gaji');
+})->name('karyawan.gaji');
 
 // Menampilkan halaman supervisor
 
