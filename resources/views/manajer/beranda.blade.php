@@ -27,7 +27,6 @@
   <div class="wrapper ">
     <div class="sidebar" data-color="white" data-active-color="danger">
       <div class="logo">
-       
         <span class="simple-text font-weight-bold">
           JAVA COLLECTION
         </span>
@@ -38,12 +37,6 @@
             <a href="{{route('manager.beranda')}}">
               <i class="nc-icon nc-layout-11"></i>
               <p>Beranda</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="nc-icon nc-touch-id"></i>
-              <p>Presensi</p>
             </a>
           </li>
           <li>
@@ -124,8 +117,8 @@
                     <span class="option-text">Cabang D</span>
                 </li>
             </ul>
+          </div>
         </div>
-      </div>
 
         <div class="row">
           <div class="col-md-8">
