@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id(); // Membuat kolom id (integer, auto-increment, primary key)
             $table->string('nama', 50);
             $table->string('nip', 20); // NIP dengan panjang maksimal 20 karakter
-            $table->enum('status', ['Lunas', 'Belum Lunas']); // Enum untuk status
+            $table->enum('status_kasbon', ['Lunas', 'Belum Lunas']); // Enum untuk status
+            $table->enum('status_bayar', ['Diproses', 'Diterima', 'Ditolak']); // Enum untuk status
             $table->text('keterangan')->nullable(); // keterangan
             $table->date('tanggal_pengajuan')->nullable(); // Tanggal pengajuan
             $table->date('tanggal_pembayaran')->nullable(); // Tanggal pembayaran

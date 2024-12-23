@@ -22,7 +22,8 @@ class supervisorPembayaranController extends Controller
                        -> orWhere('nama','like',"%{$search}%")
                        -> orWhere('tanggal_pembayaran','like',"%{$search}%")
                        -> orWhere('saldo_akhir','like',"%{$search}%")
-                       -> orWhere('status','like',"%{$search}%");
+                       -> orWhere('status_kasbon','like',"%{$search}%")
+                       -> orWhere('status_bayar','like',"%{$search}%");
             })
             ->orderBy('updated_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
             ->orderBy('created_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
@@ -76,9 +77,48 @@ class supervisorPembayaranController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, $nip)
+    {   
+        // Validasi input
+        $request->validate([
+            'action' => 'required|in:terima,tolak', // Action bisa 'accept' atau 'reject'
+        ]);
+    
+        // Cari kasbon berdasarkan NIP
+        $kasbon = Kasbon::where('nip', $nip)->firstOrFail();
+        // if (!$kasbon){
+        //     return response()->json(['message' => 'A Data pembayaran tidak ditemukan'], 404);
+        // }
+
+        // Cek jika status_bayar sudah bukan "Diproses"
+        if ($kasbon->status_bayar !== 'Diproses') {
+            return response()->json([
+                'message' => 'Status sudah pernah disetujui/ditolak',
+            ], 403);
+        }
+        
+        
+        // Update Database
+        if ($request->action === 'terima') {
+            // Kurangi saldo akhir dengan nominal pembayaran
+            $kasbon->saldo_akhir -= $kasbon->nominal_dibayar;
+            // Perbarui status berdasarkan saldo akhir
+            $kasbon->status_kasbon = $kasbon->saldo_akhir <= 0 ? 'Lunas' : 'Belum Lunas';
+            // Perbarui status bayar menjadi "Diterima"
+            $kasbon->status_bayar = 'Diterima';
+        } elseif ($request->action === "tolak"){
+            // Tidak ada perubahan pada saldo akhir atau status kasbon
+            $kasbon->status_bayar = 'Ditolak';
+        }
+        // Simpan perubahan
+        $kasbon->save();
+            
+        return response()->json([
+            'message' => 'A Pembayaran berhasil diperbarui!',
+            'status_bayar' => $kasbon->status_bayar,
+            'status_kasbon' => $kasbon->status_kasbon,
+            'saldo_akhir' => $kasbon->saldo_akhir,
+        ]);
     }
 
     /**

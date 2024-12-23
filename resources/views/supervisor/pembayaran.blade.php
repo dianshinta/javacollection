@@ -22,6 +22,7 @@
   <link href="../assets/demo/demo.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -73,8 +74,9 @@
                                                     <th>NIP</th>
                                                     <th>Nama</th>
                                                     <th>Tanggal Pembayaran</th>
-                                                    <th>Saldo Akhir</th>
-                                                    <th>Status</th>
+                                                    <th>Nominal Bayar</th>
+                                                    <th>Status Kasbon</th>
+                                                    <th>Status Bayar</th>
                                                     <th>Lampiran</th>
                                                 </tr>
                                             </thead>
@@ -84,12 +86,21 @@
                                                     <td>{{ $data->nip }}</td>
                                                     <td>{{ $data->nama }}</td>
                                                     <td>{{ $data->tanggal_pembayaran->format('d/m/Y') }}</td>
-                                                    <td>{{ 'Rp ' . number_format($data->saldo_akhir, 0, ',', '.') }}</td>
+                                                    <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
                                                     <td>
-                                                        @if ($data->status === 'Lunas')
+                                                        @if ($data->status_kasbon === 'Lunas')
                                                             <span class="badge bg-succes">Lunas</span>
                                                         @else
                                                             <span class="badge bg-danger">Belum Lunas</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($data->status_bayar === 'Diproses')
+                                                            <span class="badge bg-warning">Diproses</span>
+                                                        @elseif ($data->status_bayar === 'Diterima')
+                                                            <span class="badge bg-success">Disetujui</span>
+                                                        @else
+                                                            <span class="badge bg-danger">Ditolak</span>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -185,10 +196,10 @@
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Apakah Anda yakin ingin menerima pembayaran ini?</p>
+                            <p id="confirmMessage"></p>  <!--Text confirm-->
                             <div class="text-center">
                                 <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
@@ -273,25 +284,226 @@
             });
         });
 
-        // Event untuk tombol "Terima Pembayaran"
-        document.getElementById('btnTerima').addEventListener('click', function() {
-            // Tampilkan modal konfirmasi
-            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-            confirmModal.show();
-        });
+        // Event untuk update status-bayar dan status-kasbon
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnTerima = document.getElementById('btnTerima');
+            const btnTolak = document.getElementById('btnTolak');
+            const btnYakin = document.getElementById('btnYakin');
+            const modalNip = document.getElementById('modal-nip');
+            const modalElement = document.getElementById('confirmModal');
+            const confirmModal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            const confirmMessage = document.getElementById('confirmMessage');
+            let actionToPerform = ''; // Menyimpan status yang dipilih (Terima/Tolak)
+            let nip = '';
 
-        // Event untuk tombol "Yakin"
-        document.getElementById('btnYakin').addEventListener('click', function () {
-            // Logika untuk aksi "Yakin" (misalnya, submit data)
-            alert('Pembayaran berhasil diterima!');
-            // Tutup modal
-            const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
-            confirmModal.hide();
-        });
+            // function processPayment(action, nip) {
+            //     fetch(`/kasbon/update-status`, {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            //         },
+            //         body: JSON.stringify({ nip: nip, action: action })
+            //     })
+            //     .then(response => {
+            //         if (response.status === 403) {
+            //             return response.json().then(data => {
+            //                 // Menampilkan pesan error jika status_bayar sudah disetujui atau ditolak
+            //                 Swal.fire({
+            //                     icon: 'error',
+            //                     title: 'Gagal Memperbarui Status',
+            //                     text: data.message || 'C Kesalahan saat memperbarui status.',
+            //                     confirmButtonText: 'OK'
+            //                 });
+            //             });
+            //         } else if (response.ok) {
+            //             return response.json().then(data => {
+            //                 // Menampilkan pesan sukses
+            //                 Swal.fire({
+            //                     icon: 'success',
+            //                     title: 'Berhasil',
+            //                     text: data.message || 'D Status pembayaran berhasil diperbarui.',
+            //                     showConfirmButton: false,
+            //                     timer: 1500
+            //                 }).then(() => {
+            //                     location.reload(); // Reload halaman untuk memperbarui tabel
+            //                 });
+            //             });
+            //         } else {
+            //             throw new Error('E Terjadi kesalahan saat memperbarui status');
+            //         }
+            //     })
+            //     .catch(error => {
+            //         console.error('Error:', error);
+            //         // Menampilkan pesan error untuk kesalahan umum
+            //         Swal.fire({
+            //             icon: 'error',
+            //             title: 'Kesalahan',
+            //             text: 'F Terjadi kesalahan saat memperbarui status.',
+            //             confirmButtonText: 'OK'
+            //         });
+            //     });
+            // }
 
-        // Event untuk tombol "Tolak Pembayaran"
-        document.getElementById('btnTolak').addEventListener('click', function() {
-            console.log('Pembayaran dibatalkan.');
+            // function processPayment(action, nip) {
+            //     fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            //         },
+            //         body: JSON.stringify({ action }),
+            //     })
+            //         .then((response) => {
+            //             if (!response.ok) {
+            //                 throw new Error('Network response was not ok');
+            //             }
+            //             return response.json();
+            //         })
+            //         .then((data) => {
+            //             confirmModal.hide(); // Tutup modal setelah sukses
+            //             Swal.fire({
+            //                 title: 'Sukses',
+            //                 text: data.message,
+            //                 icon: 'success',
+            //             }).then(() => {
+            //                 window.location.reload(); // Reload halaman setelah sukses
+            //             });
+            //         })
+            //         .catch((error) => {
+            //             console.error('Error:', error);
+            //             Swal.fire({
+            //                 title: 'Error',
+            //                 text: 'C Terjadi kesalahan saat memproses data.',
+            //                 icon: 'error',
+            //             });
+            //         });
+            // }
+
+            // coba 3
+            // function processPayment(action, nip) {
+            //     fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            //         },
+            //         body: JSON.stringify({ action }),
+            //     })
+            //         .then((response) => {
+            //             // Tangani error dengan status 403
+            //             if (response.status === 403) {
+            //                 return response.json().then((data) => {
+            //                     Swal.fire({
+            //                         icon: 'error',
+            //                         title: 'Gagal Memperbarui Status',
+            //                         text: data.message || 'Kesalahan saat memperbarui status.',
+            //                         confirmButtonText: 'OK',
+            //                     });
+            //                     throw new Error(data.message); // Hentikan eksekusi lebih lanjut
+            //                 });
+            //             }
+
+            //             // Tangani error lainnya
+            //             if (!response.ok) {
+            //                 throw new Error('Network response was not ok');
+            //             }
+
+            //             return response.json();
+            //         })
+            //         .then((data) => {
+            //             confirmModal.hide(); // Tutup modal setelah sukses
+            //             Swal.fire({
+            //                 title: 'Sukses',
+            //                 text: data.message,
+            //                 icon: 'success',
+            //             }).then(() => {
+            //                 window.location.reload(); // Reload halaman setelah sukses
+            //             });
+            //         })
+            //         .catch((error) => {
+            //             console.error('Error:', error.message); // Log error spesifik
+            //             Swal.fire({
+            //                 title: 'Error',
+            //                 text: error.message || 'Terjadi kesalahan saat memproses data.',
+            //                 icon: 'error',
+            //             });
+            //         });
+            // }
+
+            //coba 4
+            function processPayment(action, nip) {
+                fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({ action }),
+                })
+                    .then((response) => {
+                        if (response.status === 403) {
+                            // Jika status adalah 403, baca pesan error dari server
+                            return response.json().then((data) => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal Memperbarui Status',
+                                    text: data.message || 'Status sudah pernah disetujui/ditolak.',
+                                    confirmButtonText: 'OK',
+                                });
+                                throw new Error(data.message); // Hentikan eksekusi lebih lanjut
+                            });
+                        }
+
+                        if (!response.ok) {
+                            // Tangani error lain yang bukan 403
+                            throw new Error('Kesalahan jaringan atau server.');
+                        }
+
+                        return response.json();
+                    })
+                    .then((data) => {
+                        confirmModal.hide(); // Tutup modal setelah sukses
+                        Swal.fire({
+                            title: 'Sukses',
+                            text: data.message,
+                            icon: 'success',
+                        }).then(() => {
+                            window.location.reload(); // Reload halaman setelah sukses
+                        });
+                    })
+                    .catch((error) => {
+                        // Tangani error umum dan tampilkan pesan error
+                        console.error('Error:', error.message);
+                        Swal.fire({
+                            title: 'Error',
+                            text: error.message || 'Terjadi kesalahan saat memproses data.',
+                            icon: 'error',
+                        });
+                    });
+            }
+
+
+            // Event untuk tombol "Terima Pembayaran"
+            btnTerima.addEventListener('click', function () {
+                nip = document.getElementById('modal-nip').textContent;
+                actionToPerform = 'terima';
+                confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran ini?';
+                confirmModal.show();
+            });
+
+            // Event untuk tombol "Tolak Pembayaran"
+            btnTolak.addEventListener('click', function () {
+                nip = document.getElementById('modal-nip').textContent;
+                actionToPerform = 'tolak';
+                confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran ini?';
+                confirmModal.show();
+            });
+
+            // Event untuk tombol "Yakin"
+            btnYakin.addEventListener('click', function () {
+                processPayment(actionToPerform, nip);
+            });
         });
 
     </script>
