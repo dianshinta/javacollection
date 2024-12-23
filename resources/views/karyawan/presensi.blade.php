@@ -135,7 +135,7 @@ Coded by www.creative-tim.com
                             <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
                             <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
                             <input type="hidden" name="redirect_to" value="karyawan.presensi">
-                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black;">
+                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.65em">
                                 Presensi
                             </button>
                           </form>
@@ -225,6 +225,8 @@ Coded by www.creative-tim.com
   <script src="../assets/js/plugins/chartjs.min.js"></script>
   <!--  Notifications Plugin    -->
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+
+  <script src="../assets/js/plugins/presensi.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
