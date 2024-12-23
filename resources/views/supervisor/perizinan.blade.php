@@ -299,7 +299,6 @@
                             text: data.message || 'Kesalahan saat memperbarui status.',
                             confirmButtonText: 'OK'
                         });
-                        // alert(data.message); 
                     });
                 } else if (response.ok) {
                     return response.json().then(data => {
@@ -313,8 +312,6 @@
                         }).then(() => {
                             location.reload(); // Reload halaman untuk memperbarui tabel
                         });
-                        // alert(data.message); // Tampilkan pesan sukses
-                        // location.reload(); // Reload halaman untuk memperbarui tabel
                     });
                 } else {
                     throw new Error('Terjadi kesalahan saat memperbarui status');
