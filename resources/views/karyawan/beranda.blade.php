@@ -83,15 +83,9 @@ Coded by www.creative-tim.com
             </div>
           </li>
           <li>
-            <a href="./notifications.html">
+            <a href="{{route('karyawan.gaji')}}">
                 <i class="nc-icon nc-money-coins"></i>
                 <p>Gaji</p>
-            </a>
-        </li>
-        <li>
-            <a href="./user.html">
-                <i class="nc-icon nc-single-02"></i>
-                <p>User Profile</p>
             </a>
         </li>
         </ul>
@@ -242,59 +236,126 @@ Coded by www.creative-tim.com
   </script>
 
   <script>
-      document.getElementById('form-presensi').addEventListener('submit', function(event) {
-          event.preventDefault(); // Prevent the form submission
+    const targetCoords = { latitude: -6.235751726908368, longitude: 106.87610879412682 }; // Lokasi tujuan
+    const radiusAllowed = 100; // Radius dalam meter
 
-          // Kirim data presensi via AJAX
+    // Fungsi untuk menghitung jarak dengan formula Haversine
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const toRad = (value) => (value * Math.PI) / 180;
+      const R = 6371e3; // Radius Bumi dalam meter
+
+      const φ1 = toRad(lat1);
+      const φ2 = toRad(lat2);
+      const Δφ = toRad(lat2 - lat1);
+      const Δλ = toRad(lon2 - lon1);
+
+      const a =
+        Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+        Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      return R * c; // Jarak dalam meter
+    }
+
+    // Fungsi untuk memeriksa lokasi sebelum presensi
+    function validateLocation(callback) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userCoords = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+
+            const distance = calculateDistance(
+              userCoords.latitude,
+              userCoords.longitude,
+              targetCoords.latitude,
+              targetCoords.longitude
+            );
+
+            if (distance <= radiusAllowed) {
+              callback(true); // Lokasi valid
+            } else {
+              callback(false, `Koordinatmu: ${userCoords.latitude}, ${userCoords.longitude}. Anda terlalu jauh (${Math.round(distance)} meter) dari lokasi tujuan.`);
+            }
+          },
+          (error) => {
+            callback(false, 'Tidak dapat mendapatkan lokasi Anda. Pastikan GPS aktif.');
+            console.error(error);
+          }
+        );
+      } else {
+        callback(false, 'Geolocation tidak didukung di browser Anda.');
+      }
+    }
+
+    // Tambahkan event listener ke form presensi
+    document.getElementById('form-presensi').addEventListener('submit', function (event) {
+      event.preventDefault(); // Mencegah pengiriman form default
+
+      // Panggil fungsi validateLocation sebelum mengirim data
+      validateLocation((isValid, message) => {
+        if (isValid) {
+          // Kirim data presensi via AJAX jika lokasi valid
           $.ajax({
-              url: "{{ route('presensi.store') }}",
-              method: "POST",
-              data: {
-                  _token: "{{ csrf_token() }}",
-                  status: "Hadir", // Status yang dipilih
-                  tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
-                  waktu: new Date().toLocaleTimeString(), // Format HH:MM:SS
-                  toko: "Toko A", // Ganti dengan toko yang sesuai
-                  nip: "123456" // NIP yang sesuai
-              },
-              success: function(response) {
-                  // Menampilkan SweetAlert
-                  Swal.fire({
-                      icon: 'success',
-                      title: 'Presensi Berhasil!',
-                      text: response.message || 'Data presensi telah berhasil disimpan.',
-                      showConfirmButton: false,
-                      timer: 1500
-                  });
+            url: "{{ route('presensi.store') }}",
+            method: "POST",
+            data: {
+              _token: "{{ csrf_token() }}",
+              status: "Hadir", // Status yang dipilih
+              tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
+              waktu: new Date().toLocaleTimeString(), // Format HH:MM:SS
+              toko: "Toko A", // Ganti dengan toko yang sesuai
+              nip: "123456" // NIP yang sesuai
+            },
+            success: function (response) {
+              // Menampilkan SweetAlert
+              Swal.fire({
+                icon: 'success',
+                title: 'Presensi Berhasil!',
+                text: response.message || 'Data presensi telah berhasil disimpan.',
+                showConfirmButton: false,
+                timer: 1500
+              });
 
-                  // Menambahkan data presensi ke tabel dengan increment No
-                  const rowCount = $('#riwayat-presensi tbody tr').length + 1;
-                  $('#riwayat-presensi tbody').append(`
-                      <tr>
-                          <td>${rowCount}</td>
-                          <td>${response.tanggal || new Date().toISOString().split('T')[0]}</td>
-                          <td>${response.waktu || new Date().toLocaleTimeString()}</td>
-                      </tr>
-                  `);
+              // Menambahkan data presensi ke tabel dengan increment No
+              const rowCount = $('#riwayat-presensi tbody tr').length + 1;
+              $('#riwayat-presensi tbody').append(`
+                          <tr>
+                              <td>${rowCount}</td>
+                              <td>${response.tanggal || new Date().toISOString().split('T')[0]}</td>
+                              <td>${response.waktu || new Date().toLocaleTimeString()}</td>
+                          </tr>
+                      `);
 
-                  // Nonaktifkan tombol setelah ditekan dan ubah teks tombol menjadi "Hadir"
-                  $('#btn-presensi').prop('disabled', true).text('Hadir');
-              },
-              error: function(xhr, status, error) {
-                  // Menampilkan pesan kesalahan dengan informasi dari server (jika ada)
-                  const errorMessage = xhr.responseJSON?.message || 'Mohon periksa jaringan Anda, hidupkan lokasi perangkat, atau coba lagi saat Anda berada dalam radius 100 meter dari toko.';
-                  Swal.fire({
-                      icon: 'error',
-                      title: 'Gagal melakukan presensi!',
-                      text: errorMessage,
-                      showConfirmButton: true
-                  });
-              }
+              // Nonaktifkan tombol setelah ditekan dan ubah teks tombol menjadi "Hadir"
+              $('#btn-presensi').prop('disabled', true).text('Hadir');
+            },
+            error: function (xhr, status, error) {
+              // Menampilkan pesan kesalahan dengan informasi dari server (jika ada)
+              const errorMessage = xhr.responseJSON?.message || 'Terjadi kesalahan. Silakan coba lagi.';
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal melakukan presensi!',
+                text: errorMessage,
+                showConfirmButton: true
+              });
+            }
           });
+        } else {
+          // Tampilkan pesan kesalahan jika lokasi tidak valid
+          Swal.fire({
+            icon: 'error',
+            title: 'Lokasi Tidak Valid',
+            text: message,
+            showConfirmButton: true
+          });
+        }
       });
+    });
 
-
-    </script>
+  </script>
 </body>
 
 </html>
