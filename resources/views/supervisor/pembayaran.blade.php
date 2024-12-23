@@ -22,6 +22,7 @@
   <link href="../assets/demo/demo.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -185,10 +186,10 @@
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Apakah Anda yakin ingin menerima pembayaran ini?</p>
+                            <p id="confirmMessage"></p>  <!--Text confirm-->
                             <div class="text-center">
                                 <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
@@ -273,25 +274,192 @@
             });
         });
 
-        // Event untuk tombol "Terima Pembayaran"
-        document.getElementById('btnTerima').addEventListener('click', function() {
-            // Tampilkan modal konfirmasi
-            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-            confirmModal.show();
-        });
+        // Event untuk update status dan saldo akhir
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const btnTerima = document.getElementById('btnTerima');
+        //     const btnTolak = document.getElementById('btnTolak');
+        //     const btnYakin = document.getElementById('btnYakin');
+        //     const modalNip = document.getElementById('modal-nip');
+        //     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        //     const confirmMessage = document.getElementById('confirmMessage');
+        //     let selectedAction = ''; // Untuk menyimpan aksi (terima/tolak)
 
-        // Event untuk tombol "Yakin"
-        document.getElementById('btnYakin').addEventListener('click', function () {
-            // Logika untuk aksi "Yakin" (misalnya, submit data)
-            alert('Pembayaran berhasil diterima!');
-            // Tutup modal
-            const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
-            confirmModal.hide();
-        });
+        //     // Event untuk tombol "Terima Pembayaran"
+        //     btnTerima.addEventListener('click', function () {
+        //         selectedAction = 'terima'; // Tetapkan aksi
+        //         confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran tersebut?';
+        //         confirmModal.show(); // Tampilkan modal
+        //     });
 
-        // Event untuk tombol "Tolak Pembayaran"
-        document.getElementById('btnTolak').addEventListener('click', function() {
-            console.log('Pembayaran dibatalkan.');
+        //     // Event untuk tombol "Tolak Pembayaran"
+        //     btnTolak.addEventListener('click', function () {
+        //         selectedAction = 'tolak'; // Tetapkan aksi
+        //         confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran tersebut?';
+        //         confirmModal.show(); // Tampilkan modal
+        //     });
+
+        //     // Event untuk tombol "Yakin" di modal konfirmasi
+        //     btnYakin.addEventListener('click', function () {
+        //         const nip = modalNip.textContent; // Ambil NIP dari modal
+        //         processPayment(selectedAction, nip); // Panggil fungsi untuk memproses pembayaran
+        //     });
+
+        //     // Fungsi untuk memproses pembayaran
+        //     function processPayment(action, nip) {
+        //         // fetch(`/kasbon/${nip}/update`, {
+        //         fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        //             },
+        //             body: JSON.stringify({ action }),
+        //         })
+        //             .then((response) => response.json())
+        //             .then((data) => {
+        //                 confirmModal.hide(); // Tutup modal konfirmasi
+        //                 Swal.fire({
+        //                     title: 'Sukses',
+        //                     text: data.message,
+        //                     icon: 'success',
+        //                 }).then(() => {
+        //                     window.location.reload(); // Reload halaman setelah sukses
+        //                 });
+        //             })
+        //             .catch((error) => {
+        //                 confirmModal.hide(); // Tutup modal jika terjadi error
+        //                 Swal.fire({
+        //                     title: 'Error',
+        //                     text: 'Terjadi kesalahan saat memproses data.',
+        //                     icon: 'error',
+        //                 });
+        //                 console.error('Error:', error);
+        //             });
+        //     }
+
+        //     // Event untuk tombol "Yakin" di modal konfirmasi
+        //     // btnYakin.addEventListener('click', function () {
+        //     //     // Ambil NIP dari modal
+        //     //     const nip = document.getElementById('modal-nip').textContent;
+
+        //     //     // Bangun URL berdasarkan route Laravel
+        //     //     const url = "{{ route('kasbon.update', ':id') }}".replace(':id', nip);
+
+        //     //     // Kirim data ke server jika aksi adalah "terima"
+        //     //     if (selectedAction === 'terima') {
+        //     //         fetch(url, {
+        //     //             method: 'POST',
+        //     //             headers: {
+        //     //                 'Content-Type': 'application/json',
+        //     //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        //     //             },
+        //     //             body: JSON.stringify({ action: 'terima' }),
+        //     //         })
+        //     //             .then((response) => {
+        //     //                 if(!response.ok) {
+        //     //                     throw new Error(`HTTP error! Status: ${response.status}`);
+        //     //                 }
+        //     //                 return response.json();
+        //     //             })
+        //     //             .then((data) => {
+        //     //                 // Menampilkan pesan sukses dengan SweetAlert
+        //     //                 Swal.fire({
+        //     //                     icon: 'success',
+        //     //                     title: 'Berhasil',
+        //     //                     text: data.message || 'Pembayaran berhasil diterima!.',
+        //     //                     showConfirmButton: false,
+        //     //                     timer: 1500
+        //     //                 }).then(() => {
+        //     //                     window.location.reload(); // Reload halaman untuk memperbarui tabel
+        //     //                 });
+        //     //             })
+        //     //             .catch((error) => {
+        //     //                 console.error('Error:', error);
+        //     //                 // Menampilkan pesan error dengan SweetAlert
+        //     //                 Swal.fire({
+        //     //                     icon: 'error',
+        //     //                     title: 'Error',
+        //     //                     text: 'Terjadi kesalahan saat memproses pembayaran.',
+        //     //                 });
+        //     //             });
+        //     //     } else if (selectedAction === 'tolak') {
+        //     //         Swal.fire({
+        //     //             // Menampilkan pesan info dengan SweetAlert
+        //     //             icon: 'info',
+        //     //             title: 'Ditolak',
+        //     //             text: 'Pembayaran ditolak. Tidak ada perubahan data.',
+        //     //             showConfirmButton: false,
+        //     //             timer: 1500,
+        //     //         });
+        //     //     }
+        //     //     // Tutup modal konfirmasi
+        //     //     const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+        //     //     confirmModal.hide();
+        //     // });
+        // });
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const btnTerima = document.getElementById('btnTerima');
+            const btnTolak = document.getElementById('btnTolak');
+            const modalElement = document.getElementById('confirmModal');
+            const confirmModal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+            const confirmMessage = document.getElementById('confirmMessage');
+            const btnYakin = document.getElementById('btnYakin');
+            let actionToPerform = '';
+            let nip = '';
+
+            function processPayment(action, nip) {
+                fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({ action }),
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        confirmModal.hide(); // Tutup modal setelah sukses
+                        Swal.fire({
+                            title: 'Sukses',
+                            text: data.message,
+                            icon: 'success',
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Terjadi kesalahan saat memproses data.',
+                            icon: 'error',
+                        });
+                    });
+            }
+
+            btnTerima.addEventListener('click', function () {
+                nip = document.getElementById('modal-nip').textContent;
+                actionToPerform = 'terima';
+                confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran ini?';
+                confirmModal.show();
+            });
+
+            btnTolak.addEventListener('click', function () {
+                nip = document.getElementById('modal-nip').textContent;
+                actionToPerform = 'tolak';
+                confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran ini?';
+                confirmModal.show();
+            });
+
+            btnYakin.addEventListener('click', function () {
+                processPayment(actionToPerform, nip);
+            });
         });
 
     </script>

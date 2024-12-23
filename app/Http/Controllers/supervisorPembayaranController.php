@@ -76,9 +76,36 @@ class supervisorPembayaranController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, $nip)
+    {   
+        // Validasi input
+        $request->validate([
+            'action' => 'required|in:terima,tolak', // Action bisa 'accept' atau 'reject'
+        ]);
+    
+        // Ambil data kasbon berdasarkan ID
+        $kasbon = Kasbon::where('nip', $nip)->firstOrFail();
+
+        if ($request->action === 'terima') {
+            // Kurangi saldo akhir dengan nominal pembayaran
+            $kasbon->saldo_akhir -= $kasbon->nominal_dibayar;
+            
+            // Perbarui status berdasarkan saldo akhir
+            $kasbon->status_kasbon = $kasbon->saldo_akhir <= 0 ? 'Lunas' : 'Belum Lunas';
+            
+            // // Simpan tanggal pembayaran (opsional, jika diperlukan)
+            // $kasbon->tanggal_pembayaran = now();
+        }
+        // Jika tindakan "tolak", tidak ada perubahan pada saldo akhir atau status
+        
+        // Simpan perubahan
+        $kasbon->save();
+            
+        return response()->json([
+            'message' => 'Pembayaran berhasil diperbarui!',
+            'status_kasbon' => $kasbon->status_kasbon,
+            'saldo_akhir' => $kasbon->saldo_akhir,
+        ]);
     }
 
     /**

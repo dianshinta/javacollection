@@ -46,8 +46,6 @@ Route::get('/supervisor/beranda/', function () {
     ]);
 })->name('supervisor.beranda');
 
-// Route::get('/supervisor/beranda/', [supervisorPerizinanController::class, 'index'])->name('supervisor.beranda');
-
 Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'index'])->name('supervisor.perizinan');
 
 Route::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])->name('perizinan.update-status');
@@ -59,6 +57,8 @@ Route::post('/perizinan/update-status', [supervisorPerizinanController::class, '
 // })->name('supervisor.pembayaran');
 
 Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'index'])->name('supervisor.pembayaran');
+
+Route::post('/kasbon/{nip}/update', [supervisorPembayaranController::class, 'update'])->name('kasbon.update');
 
 Route::get('/supervisor/kasbon/', function () {
     return view('/supervisor/pengajuan', [

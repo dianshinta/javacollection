@@ -256,6 +256,7 @@
             const btnTolak = document.getElementById('btnTolak');
             const btnYakin = document.getElementById('btnYakin');
             const modalNip = document.getElementById('modal-nip');
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
             const confirmMessage = document.getElementById('confirmMessage'); // Elemen <p> di modal
             let selectedStatus = ''; // Menyimpan status yang dipilih (Disetujui/Ditolak)
 
@@ -263,7 +264,6 @@
             btnTerima.addEventListener('click', function () {
                 selectedStatus = 'Disetujui';
                 confirmMessage.textContent = 'Apakah Anda yakin ingin menerima perizinan ini?'; // Ubah pesan
-                const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
                 confirmModal.show(); // Tampilkan modal konfirmasi
             });
 
@@ -271,7 +271,6 @@
             btnTolak.addEventListener('click', function () {
                 selectedStatus = 'Ditolak';
                 confirmMessage.textContent = 'Apakah Anda yakin ingin menolak perizinan ini?'; // Ubah pesan
-                const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
                 confirmModal.show(); // Tampilkan modal konfirmasi
             });
 
