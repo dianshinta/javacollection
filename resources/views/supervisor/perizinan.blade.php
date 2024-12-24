@@ -280,6 +280,7 @@
                 updateStatus(nip, selectedStatus); // Kirim permintaan ke server
             });
 
+            // fungsi 
             function updateStatus(nip, status) {
                 fetch('/perizinan/update-status', {
                     method: 'POST',
@@ -291,12 +292,12 @@
                 })
                 .then(response => {
                 if (response.status === 403) {
+                    // Jika status adalah 403, baca pesan error dari server
                     return response.json().then(data => {
-                        // Menampilkan pesan error dengan SweetAlert
                         Swal.fire({
                             icon: 'error',
                             title: 'Gagal Memperbarui Status',
-                            text: data.message || 'Kesalahan saat memperbarui status.',
+                            text: data.message,
                             confirmButtonText: 'OK'
                         });
                     });

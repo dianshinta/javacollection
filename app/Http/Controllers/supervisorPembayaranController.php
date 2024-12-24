@@ -25,14 +25,14 @@ class supervisorPembayaranController extends Controller
                        -> orWhere('status_kasbon','like',"%{$search}%")
                        -> orWhere('status_bayar','like',"%{$search}%");
             })
-            ->orderBy('updated_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
-            ->orderBy('created_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
+            ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
+            ->orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
             ->get();
         } else {
             // Ambil data pembayaran dari database
             $pembayaran = Kasbon::orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
-                -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-                ->get();
+            -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
+            ->get();
         }
             
         // Kirim data ke view
@@ -91,9 +91,6 @@ class supervisorPembayaranController extends Controller
     
         // Cari kasbon berdasarkan NIP
         $kasbon = Kasbon::where('nip', $nip)->firstOrFail();
-        // if (!$kasbon){
-        //     return response()->json(['message' => 'A Data pembayaran tidak ditemukan'], 404);
-        // }
 
         // Cek jika status_bayar sudah bukan "Diproses"
         if ($kasbon->status_bayar !== 'Diproses') {
@@ -102,7 +99,6 @@ class supervisorPembayaranController extends Controller
             ], 403);
         }
         
-        
         // Update Database
         if ($request->action === 'terima') {
             // Kurangi saldo akhir dengan nominal pembayaran
@@ -110,7 +106,7 @@ class supervisorPembayaranController extends Controller
             // Perbarui status berdasarkan saldo akhir
             $kasbon->status_kasbon = $kasbon->saldo_akhir <= 0 ? 'Lunas' : 'Belum Lunas';
             // Perbarui status bayar menjadi "Diterima"
-            $kasbon->status_bayar = 'Diterima';
+            $kasbon->status_bayar = 'Disetujui';
         } elseif ($request->action === "tolak"){
             // Tidak ada perubahan pada saldo akhir atau status kasbon
             $kasbon->status_bayar = 'Ditolak';
@@ -119,7 +115,7 @@ class supervisorPembayaranController extends Controller
         $kasbon->save();
             
         return response()->json([
-            'message' => 'A Pembayaran berhasil diperbarui!',
+            'message' => 'Pembayaran berhasil diperbarui!',
             'status_bayar' => $kasbon->status_bayar,
             'status_kasbon' => $kasbon->status_kasbon,
             'saldo_akhir' => $kasbon->saldo_akhir,
