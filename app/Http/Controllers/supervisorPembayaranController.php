@@ -21,7 +21,7 @@ class supervisorPembayaranController extends Controller
                 $query -> where('nip', 'like',"%{$search}%")
                        -> orWhere('nama','like',"%{$search}%")
                        -> orWhere('tanggal_pembayaran','like',"%{$search}%")
-                       -> orWhere('saldo_akhir','like',"%{$search}%")
+                       -> orWhere('nominal_dibayar','like',"%{$search}%")
                        -> orWhere('status_kasbon','like',"%{$search}%")
                        -> orWhere('status_bayar','like',"%{$search}%");
             })
@@ -31,15 +31,20 @@ class supervisorPembayaranController extends Controller
         } else {
             // Ambil data pembayaran dari database
             $pembayaran = Kasbon::orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
-            -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-            ->get();
+                -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
+                ->get();
         }
             
         // Kirim data ke view
-        return view('supervisor.pembayaran', [
+        return response()->view('supervisor.pembayaran', [
             "title" => "Pembayaran",
             'pembayaran' => $pembayaran,
-        ]);
+        ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        
+        // return view('supervisor.pembayaran', [
+        //     "title" => "Pembayaran",
+        //     'pembayaran' => $pembayaran,
+        // ]);
     }
 
     /**

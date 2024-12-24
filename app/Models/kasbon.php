@@ -11,17 +11,20 @@ class kasbon extends Model
     protected $table = 'kasbon'; // Nama tabel
     public $timestamps = true; // Karena tabel memiliki kolom updated_at
     protected $primaryKey = 'id'; // Kolom nip sebagai primary key
+    
+    // Kolom yang dapat diisi untuk proses update
     protected $fillable = [
-        'status',
-        'tanggal_pengajuan',
-        'alasan',
-        'nominal_diajukan',
+        'status_kasbon',
+        'status_bayar',
+        'tanggal_pembayaran',
         'nominal_dibayar',
-        'nip',
+        'saldo_akhir',
     ];
+
+    // Casting atribut tertentu
     protected $casts = [
-        'tanggal_pengajuan' => 'date',
         'tanggal_pembayaran' => 'date',
-        'status' => 'string',
+        'status_kasbon' => 'string',
+        'status_bayar' => 'string',
     ];
 }

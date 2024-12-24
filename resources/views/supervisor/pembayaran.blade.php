@@ -81,6 +81,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {{-- @foreach($pembayaran as $data)
+                                                    <pre>{{ print_r($data) }}</pre>
+                                                @endforeach --}}
                                                 @foreach($pembayaran as $data)
                                                 <tr>
                                                     <td>{{ $data->nip }}</td>
@@ -89,7 +92,7 @@
                                                     <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
                                                     <td>
                                                         @if ($data->status_kasbon === 'Lunas')
-                                                            <span class="badge bg-succes">Lunas</span>
+                                                            <span class="badge bg-success">Lunas</span>
                                                         @else
                                                             <span class="badge bg-danger">Belum Lunas</span>
                                                         @endif
@@ -290,9 +293,16 @@
             const btnTolak = document.getElementById('btnTolak');
             const btnYakin = document.getElementById('btnYakin');
             const modalNip = document.getElementById('modal-nip');
-            const modalElement = document.getElementById('confirmModal');
-            const confirmModal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
             const confirmMessage = document.getElementById('confirmMessage');
+
+            // const modalElement = document.getElementById('confirmModal');
+            // const confirmModal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+
+            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+
+            const modalSaldo = document.getElementById('modal-saldo-akhir'); // Elemen untuk saldo kasbon
+            const modalStatusKasbon = document.querySelector('.status-kasbon'); // Status kasbon
+            
             let actionToPerform = ''; // Menyimpan status yang dipilih (Terima/Tolak)
             let nip = '';
 
@@ -431,6 +441,43 @@
             //         });
             // }
 
+            // Event untuk tombol "Terima Pembayaran"
+            btnTerima.addEventListener('click', function () {
+                nip = document.getElementById('modal-nip').textContent;
+                actionToPerform = 'terima';
+
+                // Validasi Saldo Kasbon
+                const saldo = parseInt(modalSaldo.textContent.replace(/[^0-9-]/g, ''));
+                const statusKasbon = modalStatusKasbon ? modalStatusKasbon.textContent.trim() : '';
+
+                if (saldo <= 0 || statusKasbon === 'Lunas') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Pembayaran Tidak Valid',
+                        text: 'Saldo sudah nol atau kasbon sudah lunas.',
+                        confirmButtonText: 'OK',
+                    });
+                    return; // Hentikan proses jika saldo nol atau status "Lunas"
+                }
+                
+                // Jika validasi lolos, tampilkan modal konfirmasi
+                confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran ini?';
+                confirmModal.show();
+            });
+
+            // Event untuk tombol "Tolak Pembayaran"
+            btnTolak.addEventListener('click', function () {
+                nip = document.getElementById('modal-nip').textContent;
+                actionToPerform = 'tolak';
+                confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran ini?';
+                confirmModal.show();
+            });
+
+            // Event untuk tombol "Yakin"
+            btnYakin.addEventListener('click', function () {
+                processPayment(actionToPerform, nip);
+            });
+
             //coba 4
             function processPayment(action, nip) {
                 fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
@@ -482,28 +529,6 @@
                         });
                     });
             }
-
-
-            // Event untuk tombol "Terima Pembayaran"
-            btnTerima.addEventListener('click', function () {
-                nip = document.getElementById('modal-nip').textContent;
-                actionToPerform = 'terima';
-                confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran ini?';
-                confirmModal.show();
-            });
-
-            // Event untuk tombol "Tolak Pembayaran"
-            btnTolak.addEventListener('click', function () {
-                nip = document.getElementById('modal-nip').textContent;
-                actionToPerform = 'tolak';
-                confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran ini?';
-                confirmModal.show();
-            });
-
-            // Event untuk tombol "Yakin"
-            btnYakin.addEventListener('click', function () {
-                processPayment(actionToPerform, nip);
-            });
         });
 
     </script>
