@@ -300,32 +300,27 @@ Coded by www.creative-tim.com
               _token: "{{ csrf_token() }}",
               status: "Hadir", // Status yang dipilih
               tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
-              waktu: new Date().toLocaleTimeString(), // Format HH:MM:SS
+              waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }), // Format HH:MM:SS
               toko: "Toko A", // Ganti dengan toko yang sesuai
               nip: "123456" // NIP yang sesuai
             },
             success: function (response) {
-              // Menampilkan SweetAlert
+              // Simpan status keberhasilan dan pesan ke sessionStorage
+              sessionStorage.setItem('presensiStatus', 'success');
+              sessionStorage.setItem('presensiMessage', response.message || 'Data presensi telah berhasil disimpan.');
+
+              // Tampilkan SweetAlert dan atur reload setelah timer
               Swal.fire({
                 icon: 'success',
                 title: 'Presensi Berhasil!',
-                text: response.message || 'Data presensi telah berhasil disimpan.',
+                text: sessionStorage.getItem('presensiMessage'),
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
+                willClose: () => {
+                  // Reload halaman setelah SweetAlert tertutup
+                  location.reload();
+                }
               });
-
-              // Menambahkan data presensi ke tabel dengan increment No
-              const rowCount = $('#riwayat-presensi tbody tr').length + 1;
-              $('#riwayat-presensi tbody').append(`
-                          <tr>
-                              <td>${rowCount}</td>
-                              <td>${response.tanggal || new Date().toISOString().split('T')[0]}</td>
-                              <td>${response.waktu || new Date().toLocaleTimeString()}</td>
-                          </tr>
-                      `);
-
-              // Nonaktifkan tombol setelah ditekan dan ubah teks tombol menjadi "Hadir"
-              $('#btn-presensi').prop('disabled', true).text('Hadir');
             },
             error: function (xhr, status, error) {
               // Menampilkan pesan kesalahan dengan informasi dari server (jika ada)
@@ -348,8 +343,8 @@ Coded by www.creative-tim.com
           });
         }
       });
-    });
 
+    });
   </script>
 </body>
 

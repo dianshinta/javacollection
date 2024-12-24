@@ -235,7 +235,7 @@ Coded by www.creative-tim.com
     });
   </script>
 
-  <script>
+<script>
     const targetCoords = { latitude: -6.235751726908368, longitude: 106.87610879412682 }; // Lokasi tujuan
     const radiusAllowed = 100; // Radius dalam meter
 
@@ -305,7 +305,7 @@ Coded by www.creative-tim.com
               _token: "{{ csrf_token() }}",
               status: "Hadir", // Status yang dipilih
               tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
-              waktu: new Date().toLocaleTimeString(), // Format HH:MM:SS
+              waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }), // Format HH:MM:SS
               toko: "Toko A", // Ganti dengan toko yang sesuai
               nip: "123456" // NIP yang sesuai
             },
@@ -325,7 +325,7 @@ Coded by www.creative-tim.com
                           <tr>
                               <td>${rowCount}</td>
                               <td>${response.tanggal || new Date().toISOString().split('T')[0]}</td>
-                              <td>${response.waktu || new Date().toLocaleTimeString()}</td>
+                              <td>${response.waktu || new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false })}</td>
                           </tr>
                       `);
 
