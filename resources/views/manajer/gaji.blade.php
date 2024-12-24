@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        Atur Gaji
+        JAVA COLLECTION | Gaji
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -20,6 +20,8 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../assets/demo/demo.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" >
+  <!-- Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -52,15 +54,20 @@
           </ul>
         </div>
     </div>
+
+    <!-- Content -->
     <div class="main-panel">
         <div class="content">
+            <div class="mb-4">
+                <small class="text-muted d-block">Gaji</small>
+                <h5 class="font-weight-bold">Daftar Gaji</h5>
+            </div>
             <div class="top-0 start-0">
-                <div class="container-fluid">
-                    <div>
-                        <!-- Main Content -->
-                        <div class="col">
+                <div>
+                    <!-- Main Content -->
+                    <div class="col">
                             <div class="p-4">
-                                <h5>Gaji</h5>
+                                <!-- Button Atur Bonus -->
                                 <button class="btn-bonus mb-3" id="btnBonus">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 20">
                                         <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
@@ -68,7 +75,18 @@
                                     </svg> 
                                     Atur Bonus
                                 </button>
-                                <input type="text" class="form-control search-bar" id="searchBar" placeholder="Search">
+                                <!-- Pencarian -->
+                                <form method="GET" action="" class="d-flex">
+                                    <div class="input-group search-bar">
+                                        <input type="text" class="form-control search-input" name="search" id="searchBar" placeholder="Cari Karyawan.." value="{{ $search ?? '' }}">
+                                        <button type="submit" class="search-btn">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+
+
+                                <!-- Tabel Gaji -->
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -93,7 +111,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -219,6 +236,7 @@
             </div>
         </div>
     </div>
+    <!-- End Content -->
 
     <!--   Core JS Files   -->
     <script src="../assets/js/core/jquery.min.js"></script>
