@@ -8,14 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class perizinan extends Model
 {
     use HasFactory;
+
     protected $table = 'perizinan'; // Nama tabel
-    public $timestamps = true; // Karena tabel memiliki kolom updated_at
-    protected $primaryKey = 'nip'; // Kolom nip sebagai primary key
-    protected $keyType = 'string'; // Primary key bertipe string
-    public $incrementing = false; // Karena primary key tidak auto-increment
+    public $timestamps = false; // Tabel tidak memiliki kolom created_at dan updated_at
+    protected $primaryKey = 'id'; // Primary key adalah kolom id
+    public $incrementing = true; // Primary key tidak auto-increment
+
+    // Field yang dapat diisi massal
+    protected $fillable = [
+        'nip', 'nama', 'tanggal', 'jenis', 'keterangan', 'status', 'lampiran',
+    ];
+
+    // Casting tipe data
     protected $casts = [
         'tanggal' => 'date',
         'jenis' => 'string',
+        'keterangan' => 'string',
         'status' => 'string',
     ];
 }

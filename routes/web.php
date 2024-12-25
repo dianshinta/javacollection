@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\supervisorPerizinanController;
 use App\Http\Controllers\supervisorPembayaranController;
+use App\Http\Controllers\PerizinanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,9 +23,8 @@ Route::get('/karyawan/beranda/', function () {
     return view('/karyawan/beranda');
 })->name('karyawan.beranda');
 
-Route::get('/karyawan/perizinan/', function () {
-    return view('/karyawan/perizinan');
-})->name('karyawan.perizinan');
+Route::post('/perizinan/store', [PerizinanController::class, 'store'])->name('perizinan.store');
+Route::get('/karyawan/perizinan', [PerizinanController::class, 'index'])->name('karyawan.perizinan');
 
 Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('karyawan.presensi');
 

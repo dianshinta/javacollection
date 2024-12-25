@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Paper Dashboard 2 - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,6 +11,8 @@ Coded by www.creative-tim.com
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport' />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -34,8 +22,6 @@ Coded by www.creative-tim.com
     <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
     <link href="../assets/css/perizinan-modal.css" rel="stylesheet" />
     <link href="../assets/css/supervisor-perizinan.css" rel="stylesheet" />
-
-
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
 </head>
@@ -125,6 +111,9 @@ Coded by www.creative-tim.com
                                                 Tanggal
                                             </th>
                                             <th>
+                                                Alasan
+                                            </th>
+                                            <th>
                                                 Keterangan
                                             </th>
                                             <th>
@@ -135,72 +124,35 @@ Coded by www.creative-tim.com
                                             </th>
                                         </thead>
                                         <tbody>
+                                            @foreach($perizinans as $index => $perizinan)
                                             <tr>
                                                 <td>
-                                                    1
+                                                    {{ $index + 1 }}
                                                 </td>
                                                 <td>
-                                                    12 Desember 2024
+                                                    {{ \Carbon\Carbon::parse($perizinan->tanggal)->format('d F Y') }}
                                                 </td>
                                                 <td>
-                                                    Sakit
+                                                    {{ ucfirst($perizinan->jenis) }}
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-warning">Diproses</span>
+                                                    {{ $perizinan->keterangan }}
+                                                </td>
+                                                <td>
+                                                    <span class="badge {{ $perizinan->status == 'Diproses' ? 'bg-warning' : ($perizinan->status == 'DLitolak' ? 'bg-danger' : 'bg-success') }}">
+                                                        {{ ucfirst($perizinan->status) }}
+                                                    </span>
                                                 </td>
                                                 <td class="text-right">
                                                     <div class="button-container">
                                                         <button type="button" class="custom-button" data-toggle="modal"
-                                                            data-target="#lampiranModal">
+                                                            data-target="#buktiModal">
                                                             Tambah
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    2
-                                                </td>
-                                                <td>
-                                                    11 Desember 2024
-                                                </td>
-                                                <td>
-                                                    Sakit
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-danger">Ditolak</span>
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="button-container">
-                                                        <button type="button" class="custom-button" data-toggle="modal"
-                                                            data-target="#lampiranModal">
-                                                            Tambah
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    3
-                                                </td>
-                                                <td>
-                                                    10 Desember 2024
-                                                </td>
-                                                <td>
-                                                    Sakit
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-success">Diterima</span>
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="button-container">
-                                                        <button type="button" class="custom-button" data-toggle="modal"
-                                                            data-target="#lampiranModal">
-                                                            Tambah
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -209,100 +161,97 @@ Coded by www.creative-tim.com
                     </div>
                 </div>
 
-                <!-- Modal Box for Tambah Lampiran -->
-                <div class="modal fade" id="lampiranModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                <!-- Perizinan Modal -->
+                <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
-                            <div class="modal-header" id="modalHeader">
+                            <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
+                            <h5 class="modal-title" id="perizinanModalLabel">Formulir Perizinan</h5>
                             <div class="modal-body">
-                                <h5 class="modal-title pb-3" id="bonusModalLabel">Tambah Lampiran</h5>
-                                <form class="lampiran-body" enctype="multipart/form-data">
-                                    <!-- Field untuk Upload File -->
-                                    <div class="form-group">
-                                        <label for="fileUpload" class="file-label">Pilih File</label>
-                                        <input type="file" class="form-control" id="fileUpload" name="fileUpload"
-                                            accept="image/*, .pdf, .doc, .docx" style="display: none;">
+                                <form id="formPerizinan" action="{{ route('perizinan.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nama" value="Putu Dian Shinta Prativi"> <!-- Isi sesuai kebutuhan -->
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Tanggal:</div>
+                                        <div class="col-7 bg-gray">
+                                            <input type="date" id="tanggal" name="tanggal" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Jenis:</div>
+                                        <div class="col-7">
+                                            <div class="container">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisSakit"
+                                                        value="sakit" required>
+                                                    <label class="form-check-label text-black" for="jenisSakit">Sakit</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisCuti"
+                                                        value="cuti" required>
+                                                    <label class="form-check-label text-black" for="jenisCuti">Cuti</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisLain"
+                                                        value="lainnya" required>
+                                                    <label class="form-check-label text-black" for="jenisLain">Lainnya</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Keterangan:</div>
+                                        <div class="col-7">
+                                            <textarea id="keterangan" name="keterangan" class="form-control p-2"
+                                                placeholder="Masukkan keterangan izin" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Bukti:</div>
+                                        <div class="col-7">
+                                            <div class="button-container">
+                                                <button type="button" class="custom-button" data-toggle="modal"
+                                                    data-target="#buktiModal">
+                                                    Tambah
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container mt-5 text-center">
+                                        <div class="btn-group-custom justify-content-center">
+                                            <button type="button" class="btn btn-save" id="savePerizinan">Simpan</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
-                            <div class="modal-footer mx-auto">
-                                <button type="button" class="btn btn-save" id="saveLampiran">
-                                    Simpan
-                                </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Konfirmasi -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Apakah Anda yakin ingin mengajukan izin ini?</p>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
-                <!-- Perizinan Modal -->
-                <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>    
-                        </div>
-                        <h5 class="modal-title" id="perizinanModalLabel">Formulir Perizinan</h5>
-                        <div class="modal-body">
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Tanggal:</div>
-                                <div class="col-7 bg-gray">
-                                    <input type="text" id="tanggalIzin" name="tanggalIzin" class="form-control" placeholder="Masukkan tanggal izin">
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Jenis:</div>
-                                <div class="col-7">
-                                    <div class="container">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="jenis" id="jenisSakit" value="sakit">
-                                        <label class="form-check-label text-black" for="jenisSakit">Sakit</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="jenis" id="jenisCuti" value="cuti">
-                                        <label class="form-check-label text-black" for="jenisCuti">Cuti</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="jenis" id="jenisLain" value="lain-lain">
-                                        <label class="form-check-label text-black" for="jenisLain">Lain lain</label>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Keterangan:</div>
-                                <div class="col-7">
-                                    <textarea id="keteranganIzin" name="keteranganIzin" class="form-control p-2" placeholder="Masukkan keterangan izin"></textarea>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Bukti:</div>
-                                <div class="col-7">
-                                    <div class="button-container">
-                                        <button type="button" class="custom-button" data-toggle="modal" data-target="#buktiModal">
-                                            Tambah
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container mt-5 text-center">
-                                <div class="btn-group-custom justify-content-center">
-                                    <button type="button" class="btn btn-save" data-toggle="modal" data-target="#confirmModal" id="savePerizinan">
-                                        Simpan
-                                    </button>
-                                </div>
-                            </div>                  
-                        </div>
-                    </div>
-                    </div>
-                </div>
 
                 <!-- Modal Box for Tambah Bukti -->
                 <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
@@ -320,7 +269,7 @@ Coded by www.creative-tim.com
                                     <!-- Field untuk Upload File -->
                                     <div class="form-group">
                                         <label for="fileUpload" class="file-label">Pilih File</label>
-                                        <input type="file" class="form-control" id="fileUpload" name="fileUpload"
+                                        <input type="file" class="form-control" id="fileUpload" name="lampiran"
                                             accept="image/*, .pdf, .doc, .docx" style="display: none;">
                                     </div>
                                 </form>
@@ -333,27 +282,6 @@ Coded by www.creative-tim.com
                         </div>
                     </div>
                 </div>
-
-
-                <!-- Modal Konfirmasi -->
-                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Apakah Anda yakin ingin mengajukan izin ini?</p>
-                            <div class="text-center">
-                                <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-
-                
 
                 <footer class="footer footer-black  footer-white ">
                     <div class="container-fluid">
@@ -393,14 +321,95 @@ Coded by www.creative-tim.com
         <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
         <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
         <script src="../assets/demo/demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $(document).ready(function () {
                 // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
                 demo.initChartsPages();
             });
         </script>
+        <script>
+            $(document).ready(function () {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
+                // Ketika tombol Simpan pada modal perizinan diklik
+                $('#savePerizinan').on('click', function () {
+                    // Validasi form: cek apakah semua field yang required sudah diisi
+                    var isValid = true;
+                    var requiredFields = $('#formPerizinan').find('[required]'); // Mencari semua input yang wajib diisi
+
+                    requiredFields.each(function () {
+                        if ($(this).val() === '') {
+                            isValid = false;
+                            $(this).addClass('is-invalid'); // Menambahkan class is-invalid untuk memberi tanda
+                            $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi sebelumnya
+                            $(this).after('<div class="invalid-feedback">Field ini harus diisi.</div>'); // Menambahkan pesan peringatan
+                        } else {
+                            $(this).removeClass('is-invalid'); // Menghapus class is-invalid jika field terisi
+                            $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi
+                        }
+                    });
+
+                    // Jika ada field yang kosong, tampilkan pesan dan hentikan proses
+                    if (!isValid) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Perhatian',
+                            text: 'Semua field yang wajib diisi harus terisi terlebih dahulu!',
+                        });
+                        return false; // Jangan lanjutkan ke proses selanjutnya
+                    }
+
+                    // Menampilkan modal konfirmasi
+                    $('#confirmModal').modal('show');
+                });
+
+                // Ketika tombol "Yakin" pada modal konfirmasi diklik
+                $('#btnYakin').on('click', function () {
+                    // Mengambil data dari form perizinan
+                    var formData = new FormData($('#formPerizinan')[0]);
+
+                    // Menutup modal konfirmasi
+                    $('#confirmModal').modal('hide');
+
+                    // Mengirimkan data ke server menggunakan AJAX
+                    $.ajax({
+                        url: $('#formPerizinan').attr('action'), // Mengambil URL dari atribut action form
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Izin Berhasil Diajukan!',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                willClose: () => {
+                                    // Reload halaman setelah SweetAlert tertutup
+                                    location.reload();
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            // Menangani error
+                            alert('Terjadi kesalahan: ' + xhr.responseText);
+                        }
+                    });
+                });
+
+                // Ketika tombol "Batal" pada modal konfirmasi diklik
+                $('#btnBatal').on('click', function () {
+                    // Menutup modal konfirmasi tanpa mengirim data
+                    $('#confirmModal').modal('hide');
+                });
+            });
+
+        </script>
 
 </body>
-
 </html>
