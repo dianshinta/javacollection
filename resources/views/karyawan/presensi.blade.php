@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Paper Dashboard 2 - v2.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-2
-* Copyright 2020 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -231,7 +217,7 @@ Coded by www.creative-tim.com
     });
   </script>
   <script>
-    const targetCoords = { latitude: -6.235751726908368, longitude: 106.87610879412682 }; // Lokasi tujuan
+    const targetCoords = { latitude: -6.227873621256837, longitude: 106.86683247073589 }; // Lokasi tujuan
     const radiusAllowed = 100; // Radius dalam meter
 
     // Fungsi untuk menghitung jarak dengan formula Haversine

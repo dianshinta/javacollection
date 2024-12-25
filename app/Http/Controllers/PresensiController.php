@@ -28,8 +28,6 @@ class PresensiController extends Controller
             'nip' => $request->nip
         ]);
     
-        // Ambil riwayat presensi berdasarkan NIP
-        // $riwayatPresensi = presensi::where('nip', $request->nip)->orderBy('tanggal', 'desc')->get();
         session()->flash('success', 'Presensi berhasil direkam!');
         $redirectTo = $request->input('redirect_to', 'karyawan.presensi');
         return redirect()->route($redirectTo)->with('success', 'Presensi berhasil direkam!');
