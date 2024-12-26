@@ -74,7 +74,7 @@ Coded by www.creative-tim.com
                         <div class="collapse" id="pengajuanDropdown">
                             <ul class="nav" style="margin-left: 62px;">
                                 <li>
-                                    <a href="{{route('karyawan.perizinan')}}" ">
+                                    <a href="{{route('karyawan.perizinan')}}">
                                         <p>Perizinan</p>
                                     </a>
                                 </li>
@@ -139,7 +139,7 @@ Coded by www.creative-tim.com
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="tanggal">Tanggal:</label>
-                            <input type="text" id="tanggal" class="form-control" value="02/07/2024" disabled>
+                            <input type="date" id="tanggal" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="nominal">Nominal:</label>
@@ -147,7 +147,7 @@ Coded by www.creative-tim.com
                                 <span class="input-group-prepend">
                                     <span class="input-group-text">Rp</span>
                                 </span>
-                                <input type="number" id="nominal" class="form-control" min="0" value="0">
+                                <input type="number" id="nominal" class="form-control" min="0" placeholder="0">
                             </div>
                         </div>
                         <div class="form-group">
@@ -155,7 +155,7 @@ Coded by www.creative-tim.com
                             <textarea id="alasan" class="form-control" rows="3"></textarea>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn">Ajukan 
+                            <button type="button" class="btn" id="ajukanBtn">Ajukan 
                                 <i class="bi bi-caret-right-fill"></i>
                             </button>
                         </div>
@@ -177,7 +177,7 @@ Coded by www.creative-tim.com
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="tanggal">Tanggal:</label>
-                            <input type="text" id="tanggal" class="form-control" value="02/07/2024" disabled>
+                            <input type="date" id="tanggal" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="nominal">Nominal:</label>
@@ -185,19 +185,19 @@ Coded by www.creative-tim.com
                                 <span class="input-group-prepend">
                                     <span class="input-group-text">Rp</span>
                                 </span>
-                                <input type="number" id="nominal" class="form-control" min="0" value="0">
+                                <input type="number" id="nominal" class="form-control" min="0" placeholder="0">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="alasan">Bukti:</label>
                             <div class="button-container">
-                                <button type="button" class="custom-button">
+                                <input type="file" id="bukti" class="custom-button form-control">
                                     Tambah
-                                </button>
+                                </input>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn">Kirim 
+                            <button type="button" class="btn" id="kirimPembayaranBtn">Kirim 
                                 <i class="bi bi-caret-right-fill"></i>
                             </button>
                         </div>
@@ -258,13 +258,10 @@ Coded by www.creative-tim.com
                                                 Tanggal
                                             </th>
                                             <th>
-                                                Keterangan
+                                                Alasan
                                             </th>
                                             <th>
                                                 Nominal
-                                            </th>
-                                            <th>
-                                                Alasan
                                             </th>
                                             <th>
                                                 Status
@@ -273,63 +270,24 @@ Coded by www.creative-tim.com
                                                 Lampiran
                                             </th>
                                         </thead>
-                                        <tbody>
-                                            <tr class="text-center">
-                                                <td>
-                                                    1
-                                                </td>
-                                                <td>
-                                                    12 Desember 2024
-                                                </td>
-                                                <td>
-                                                    <span class="badge" style="background-color: #FFBA6B;">Pengajuan</span>
-                                                </td>
-                                                <td>
-                                                    900000
-                                                </td>
-                                                <td class="text-center">
-                                                    Beli ATK
-                                                </td>
-                                                <td>
-                                                    -
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="button-container">
-                                                        <button type="button" class="custom-button" data-toggle="modal"
-                                                            data-target="#lampiranModal">
-                                                            Lihat
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <td>
-                                                    2
-                                                </td>
-                                                <td>
-                                                    13 Desember 2024
-                                                </td>
-                                                <td>
-                                                    <span class="badge" style="background-color: #FFD7A9; padding: 0.85em">Pembayaran</span>
-                                                </td>
-                                                <td>
-                                                    900000
-                                                </td>
-                                                <td class="text-center">
-                                                    Beli ATK
-                                                </td>
-                                                <td>
-                                                    <span class="badge bg-warning">Diproses</span>
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="button-container">
-                                                        <button type="button" class="custom-button" data-toggle="modal"
-                                                            data-target="#lampiranModal">
-                                                            Lihat
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <tbody id="kasbonTableBody" class="text-center">
+                                            @foreach ($riwayatPengajuanKasbon as $riwayat)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
+                                                    <td>{{ $riwayat->tanggal_pengajuan }}</td>
+                                                    <td>{{ $riwayat->alasan }}</td>
+                                                    <td>{{ $riwayat->nominal_diajukan }}</td>
+                                                    <td>{{ $riwayat->status }}</td>
+                                                    <td class="text-right">
+                                                        <div class="button-container">
+                                                            <button type="button" class="custom-button" data-toggle="modal"
+                                                                data-target="#lampiranModal">
+                                                                Lihat
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -380,6 +338,136 @@ Coded by www.creative-tim.com
             $(document).ready(function () {
                 // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
                 demo.initChartsPages();
+            });
+
+            $(document).ready(function () {
+                $('#ajukanBtn').on('click', function () {
+                    // Collect form data
+                    var tanggal = $('#tanggal').val();
+                    var nominal = $('#nominal').val();
+                    var alasan = $('#alasan').val();
+
+                    // Validate the data before sending
+                    if (!tanggal || !nominal || !alasan) {
+                        alert('Please fill all the fields.');
+                        return;
+                    }
+
+                    // Send data via AJAX to the backend
+                    $.ajax({
+                        url: '{{ route('kasbon.save') }}', // Route to submit data
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            tanggal_pengajuan: tanggal,
+                            nominal_diajukan: nominal,
+                            alasan: alasan,
+                        },
+                        success: function (response) {
+                            alert(response.success);
+                            $('#pengajuanModal').modal('hide');
+
+                            // Tambahkan data baru ke tabel riwayat
+                            const newRow = `<tr>
+                                <td>${tanggal}</td>
+                                <td>${nominal}</td>
+                                <td>${alasan}</td>
+                                <td>Belum Lunas</td>
+                                <td> - </td>
+                            </tr>`;
+                            $('#riwayatTable tbody').prepend(newRow);
+
+                            // Reset form fields
+                            $('#tanggal').val('');
+                            $('#nominal').val('');
+                            $('#alasan').val('');
+                        },
+                        error: function (response) {
+                            alert('Error: ' + response.responseJSON.message); // Handle error
+                        }
+                    });
+                });
+            });
+
+            $(document).ready(function () {
+                function updateSisaLimit() {
+                    $.ajax({
+                        url: '{{ route('kasbon.limit') }}', // Sesuaikan dengan route backend Anda
+                        method: 'GET',
+                        success: function (response) {
+                            const limitAwal = response.limit_awal; // Limit awal dari backend
+                            const kasbonAktif = response.kasbon_aktif; // Kasbon aktif dari backend
+                            const sisaLimit = response.sisa_limit; // Sisa limit dari backend
+
+                            // Hitung persentase progress
+                            const persentase = Math.min((kasbonAktif / limitAwal) * 100, 100).toFixed(2);
+
+                            // Update teks sisa limit
+                            $('#sisaLimit').text(sisaLimit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+
+                            // Update progress bar
+                            $('#progressBar').css('width', persentase + '%');
+                            $('#progressBar').attr('aria-valuenow', persentase);
+                            $('#progressBar').text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+
+                            // Ubah warna progress bar berdasarkan persentase
+                            if (persentase >= 75 && persentase < 100) {
+                                $('#progressBar').removeClass('bg-danger bg-success').addClass('bg-warning');
+                            } else if (persentase < 75) {
+                                $('#progressBar').removeClass('bg-danger bg-warning').addClass('bg-success');
+                            } else if (persentase >= 100) {
+                                $('#progressBar').removeClass('bg-warning bg-success').addClass('bg-danger');
+                            }
+                        },
+                        error: function () {
+                            alert('Gagal mengambil data sisa limit.');
+                        },
+                    });
+                }
+
+                // Panggil fungsi saat halaman dimuat
+                updateSisaLimit();
+
+                // Opsional: Refresh data secara berkala
+                setInterval(updateSisaLimit, 600000); // Update setiap 60 detik
+            });
+
+            $(document).ready(function () {
+                $('#kirimPembayaranBtn').on('click', function () {
+                    // Mengambil data dari form
+                    var tanggal = $('#tanggal').val();
+                    var nominal = $('#nominal').val();
+                    var bukti = $('#bukti')[0].files[0]; // Ambil file yang dipilih
+
+                    // Validasi input
+                    if (!tanggal || !nominal || nominal <= 0 || !bukti) {
+                        alert('Pastikan tanggal, nominal, dan bukti terisi dengan benar.');
+                        return;
+                    }
+
+                    // Membuat FormData untuk mengirim data beserta file
+                    var formData = new FormData();
+                    formData.append('tanggal_pembayaran', tanggal);
+                    formData.append('nominal_pembayaran', nominal);
+                    formData.append('bukti', bukti); // Menambahkan file bukti
+
+                    // Kirim data melalui AJAX
+                    $.ajax({
+                        url: '{{ route('kasbon.payment') }}',  // Sesuaikan dengan route backend
+                        method: 'POST',
+                        data: formData,
+                        contentType: false,  // Jangan mengatur contentType, biarkan browser yang mengatur
+                        processData: false,  // Jangan proses data, biarkan FormData yang mengurus
+                        success: function(response) {
+                            alert(response.success); // Menampilkan pesan sukses
+                            $('#pembayaranModal').modal('hide'); // Menutup modal setelah pengiriman berhasil
+                            location.reload(); // Reload halaman untuk memperbarui data
+                        },
+                        error: function(xhr, status, error) {
+                            alert("Terjadi kesalahan saat mengirim pembayaran. Silakan coba lagi.");
+                        }
+                    });
+                });
             });
         </script>
 </body>

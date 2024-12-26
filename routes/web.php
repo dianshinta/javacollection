@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\KaryawanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\supervisorPerizinanController;
 use App\Http\Controllers\supervisorPembayaranController;
 use App\Http\Controllers\PerizinanController;
+use App\Http\Controllers\KaryawanKasbonController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,9 +32,17 @@ Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('k
 
 Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
 
-Route::get('/karyawan/kasbon/', function () {
-    return view('/karyawan/kasbon');
-})->name('karyawan.kasbon');
+// Route::get('/karyawan/kasbon/', function () {
+//     return view('/karyawan/kasbon');
+// })->name('karyawan.kasbon');
+
+Route::get('/karyawan/kasbon/', [KaryawanKasbonController::class, 'index'])->name('karyawan.kasbon');
+
+Route::post('/karyawan/save/', [KaryawanKasbonController::class, 'save'])->name('kasbon.save');
+
+Route::get('/karyawan/limit/', [KaryawanKasbonController::class, 'getSisaLimit'])->name('kasbon.limit');
+
+Route::post('/karyawan/payment/', [KaryawanKasbonController::class, 'pay'])->name('kasbon.payment');
 
 Route::get('/karyawan/gaji/', function () {
     return view('/karyawan/gaji');
