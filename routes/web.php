@@ -36,13 +36,15 @@ Route::post('/presensi/store', [PresensiController::class, 'store'])->name('pres
 //     return view('/karyawan/kasbon');
 // })->name('karyawan.kasbon');
 
+// Halaman kasbon karyawan
+
 Route::get('/karyawan/kasbon/', [KaryawanKasbonController::class, 'index'])->name('karyawan.kasbon');
 
-Route::post('/karyawan/save/', [KaryawanKasbonController::class, 'save'])->name('kasbon.save');
+Route::post('/kasbon/store/', [KaryawanKasbonController::class, 'save'])->name('kasbon.save');
 
-Route::get('/karyawan/limit/', [KaryawanKasbonController::class, 'getSisaLimit'])->name('kasbon.limit');
+Route::get('/kasbon/limit/', [KaryawanKasbonController::class, 'getSisaLimit'])->name('kasbon.limit');
 
-Route::post('/karyawan/payment/', [KaryawanKasbonController::class, 'pay'])->name('kasbon.payment');
+Route::post('/kasbon/payment/', [KaryawanKasbonController::class, 'pay'])->name('kasbon.payment');
 
 Route::get('/karyawan/gaji/', function () {
     return view('/karyawan/gaji');

@@ -175,32 +175,36 @@ Coded by www.creative-tim.com
                     </div>
                     <h5 class="modal-title">Formulir Pembayaran Kasbon</h5>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="tanggal">Tanggal:</label>
-                            <input type="date" id="tanggal" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="nominal">Nominal:</label>
-                            <div class="input-group">
-                                <span class="input-group-prepend">
-                                    <span class="input-group-text">Rp</span>
-                                </span>
-                                <input type="number" id="nominal" class="form-control" min="0" placeholder="0">
+                        <form id="kasbonPaymentForm" enctype="multipart/form-data">
+                            @csrf
+
+                            <div class="form-group">
+                                <label for="tanggal">Tanggal:</label>
+                                <input type="date" id="tanggal" class="form-control">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="alasan">Bukti:</label>
-                            <div class="button-container">
-                                <input type="file" id="bukti" class="custom-button form-control">
-                                    Tambah
-                                </input>
+                            <div class="form-group">
+                                <label for="nominal">Nominal:</label>
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text">Rp</span>
+                                    </span>
+                                    <input type="number" id="nominal" class="form-control" min="0" placeholder="0">
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn" id="kirimPembayaranBtn">Kirim 
-                                <i class="bi bi-caret-right-fill"></i>
-                            </button>
-                        </div>
+                            <div class="form-group">
+                                <label for="bukti">Bukti:</label>
+                                <div class="button-container">
+                                    <input type="file" id="bukti" class="custom-button form-control">
+                                        Tambah
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn" id="kirimPembayaranBtn">Kirim 
+                                    <i class="bi bi-caret-right-fill"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -227,23 +231,29 @@ Coded by www.creative-tim.com
                     </div>
             
                     <!-- Kolom Card Sisa Limit -->
-                    <div class="d-flex justify-content-end col-lg-8 col-md-6 ">
+                    <div class="d-flex justify-content-end col-lg-8 col-md-6">
                         <div class="card shadow-sm w-100" style="border-radius: 12px;">
                             <div class="card-body">
+                                <!-- Sisa Limit -->
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="font-weight-bold">Sisa limit: </span>
-                                    <span class="font-weight-bold text-dark"> 2.100.000</span>
+                                    <span class="font-weight-bold">Sisa limit:</span>
+                                    <span id="sisaLimit" class="font-weight-bold text-dark">Rp0</span>
                                 </div>
                                 <!-- Progress Bar -->
                                 <div class="progress" style="height: 24px; border-radius: 12px;">
-                                    <div class="progress-bar bg-danger text-white font-weight-bold" role="progressbar"
-                                        style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                        900.000
+                                    <div id="progressBar"
+                                        class="progress-bar bg-danger text-white font-weight-bold text-center"
+                                        role="progressbar"
+                                        style="width: 0%;"
+                                        aria-valuenow="0"
+                                        aria-valuemin="0"
+                                        aria-valuemax="100">
+                                        0
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>                    
             
                     <div class="col-md-12">
                         <div class="card ">
@@ -342,20 +352,17 @@ Coded by www.creative-tim.com
 
             $(document).ready(function () {
                 $('#ajukanBtn').on('click', function () {
-                    // Collect form data
                     var tanggal = $('#tanggal').val();
                     var nominal = $('#nominal').val();
                     var alasan = $('#alasan').val();
 
-                    // Validate the data before sending
                     if (!tanggal || !nominal || !alasan) {
                         alert('Please fill all the fields.');
                         return;
                     }
 
-                    // Send data via AJAX to the backend
                     $.ajax({
-                        url: '{{ route('kasbon.save') }}', // Route to submit data
+                        url: '{{ route('kasbon.save') }}',
                         method: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -366,8 +373,7 @@ Coded by www.creative-tim.com
                         success: function (response) {
                             alert(response.success);
                             $('#pengajuanModal').modal('hide');
-
-                            // Tambahkan data baru ke tabel riwayat
+                            
                             const newRow = `<tr>
                                 <td>${tanggal}</td>
                                 <td>${nominal}</td>
@@ -376,14 +382,14 @@ Coded by www.creative-tim.com
                                 <td> - </td>
                             </tr>`;
                             $('#riwayatTable tbody').prepend(newRow);
-
-                            // Reset form fields
+                            
                             $('#tanggal').val('');
                             $('#nominal').val('');
                             $('#alasan').val('');
+                            updateSisaLimit(); // Update sisa limit setelah pengajuan
                         },
                         error: function (response) {
-                            alert('Error: ' + response.responseJSON.message); // Handle error
+                            alert('Error: ' + response.responseJSON.message);
                         }
                     });
                 });
@@ -409,15 +415,6 @@ Coded by www.creative-tim.com
                             $('#progressBar').css('width', persentase + '%');
                             $('#progressBar').attr('aria-valuenow', persentase);
                             $('#progressBar').text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
-
-                            // Ubah warna progress bar berdasarkan persentase
-                            if (persentase >= 75 && persentase < 100) {
-                                $('#progressBar').removeClass('bg-danger bg-success').addClass('bg-warning');
-                            } else if (persentase < 75) {
-                                $('#progressBar').removeClass('bg-danger bg-warning').addClass('bg-success');
-                            } else if (persentase >= 100) {
-                                $('#progressBar').removeClass('bg-warning bg-success').addClass('bg-danger');
-                            }
                         },
                         error: function () {
                             alert('Gagal mengambil data sisa limit.');
@@ -430,41 +427,55 @@ Coded by www.creative-tim.com
 
                 // Opsional: Refresh data secara berkala
                 setInterval(updateSisaLimit, 600000); // Update setiap 60 detik
+
+                function updateSisaLimit() {
+                    $.ajax({
+                        url: '{{ route('kasbon.limit') }}',
+                        method: 'GET',
+                        success: function (response) {
+                            const limitAwal = response.limit_awal;
+                            const kasbonAktif = response.kasbon_aktif;
+                            const sisaLimit = response.sisa_limit;
+
+                            const persentase = Math.min((kasbonAktif / limitAwal) * 100, 100).toFixed(2);
+                            $('#sisaLimit').text(sisaLimit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+                            $('#progressBar').css('width', persentase + '%')
+                                            .attr('aria-valuenow', persentase)
+                                            .text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+                        },
+                        error: function () {
+                            alert('Gagal mengambil data sisa limit.');
+                        }
+                    });
+                }
             });
 
             $(document).ready(function () {
                 $('#kirimPembayaranBtn').on('click', function () {
-                    // Mengambil data dari form
-                    var tanggal = $('#tanggal').val();
-                    var nominal = $('#nominal').val();
-                    var bukti = $('#bukti')[0].files[0]; // Ambil file yang dipilih
+                    // Ambil data dari form
+                    let formData = new FormData($('#kasbonPaymentForm')[0]);
 
-                    // Validasi input
-                    if (!tanggal || !nominal || nominal <= 0 || !bukti) {
-                        alert('Pastikan tanggal, nominal, dan bukti terisi dengan benar.');
+                    // Validasi manual (opsional jika backend sudah divalidasi)
+                    if (!formData.get('tanggal_pembayaran') || !formData.get('nominal_pembayaran') || !formData.get('bukti')) {
+                        alert('Semua kolom wajib diisi!');
                         return;
                     }
 
-                    // Membuat FormData untuk mengirim data beserta file
-                    var formData = new FormData();
-                    formData.append('tanggal_pembayaran', tanggal);
-                    formData.append('nominal_pembayaran', nominal);
-                    formData.append('bukti', bukti); // Menambahkan file bukti
-
-                    // Kirim data melalui AJAX
+                    // Kirim data via AJAX
                     $.ajax({
-                        url: '{{ route('kasbon.payment') }}',  // Sesuaikan dengan route backend
-                        method: 'POST',
+                        url: '{{ route('kasbon.payment') }}', // Route backend Laravel
+                        type: 'POST',
                         data: formData,
-                        contentType: false,  // Jangan mengatur contentType, biarkan browser yang mengatur
-                        processData: false,  // Jangan proses data, biarkan FormData yang mengurus
-                        success: function(response) {
-                            alert(response.success); // Menampilkan pesan sukses
-                            $('#pembayaranModal').modal('hide'); // Menutup modal setelah pengiriman berhasil
-                            location.reload(); // Reload halaman untuk memperbarui data
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            alert(response.success || 'Pembayaran berhasil!');
+                            $('#kasbonPaymentForm')[0].reset(); // Reset form setelah berhasil
+                            $('#pembayaranModal').modal('hide'); // Tutup modal
+                            location.reload(); // Reload halaman
                         },
-                        error: function(xhr, status, error) {
-                            alert("Terjadi kesalahan saat mengirim pembayaran. Silakan coba lagi.");
+                        error: function (xhr, status, error) {
+                            alert(xhr.responseJSON?.error || 'Terjadi kesalahan!');
                         }
                     });
                 });

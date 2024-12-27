@@ -30,21 +30,7 @@ class karyawanKasbonController extends Controller
         //     return response()->json(['error' => 'Pengguna tidak ditemukan atau belum login'], 400);
         // }
 
-        $nip = 1; 
-
-        // Hitung total kasbon aktif untuk memastikan limit tidak terlampaui
-        $limit_awal = 2000000; // Limit awal kasbon
-        $total_kasbon_aktif = kasbon::where('nip', $nip)
-            ->where('status', 'Belum Lunas')
-            ->sum('nominal_diajukan');
-
-        $sisa_limit = $limit_awal - $total_kasbon_aktif;
-
-        if ($validated['nominal_diajukan'] > $sisa_limit) {
-            return response()->json([
-                'error' => 'Pengajuan kasbon melebihi sisa limit. Sisa limit: ' . $sisa_limit,
-            ], 400);
-        }
+        $nip = 1;
 
         // Buat entri kasbon baru
         kasbon::create([
@@ -64,7 +50,7 @@ class karyawanKasbonController extends Controller
         $limit_awal = 2000000; // Limit awal kasbon
 
         // Hitung total kasbon aktif
-        $total_kasbon_aktif = Kasbon::where('nip', '1') // Misalkan nip nya 1
+        $total_kasbon_aktif = kasbon::where('nip', '1') // Misalkan nip nya 1
             ->where('status', 'Belum Lunas')
             ->sum('nominal_diajukan');
 
@@ -88,7 +74,7 @@ class karyawanKasbonController extends Controller
         ]);
 
         // Dapatkan kasbon yang sesuai dengan ID atau NIP tertentu
-        $kasbon = kasbon::where('nip', '123456')  // Sesuaikan dengan NIP yang tepat
+        $kasbon = kasbon::where('nip', '1')  // Sesuaikan dengan NIP yang tepat
             ->where('status', 'Belum Lunas')
             ->first();
 
@@ -97,7 +83,7 @@ class karyawanKasbonController extends Controller
         }
 
         // Mengurangi limit dari pengguna setelah pembayaran
-        $user = kasbon::where('nip', '123456')->first(); // Ambil data pengguna berdasarkan NIP
+        $user = kasbon::where('nip', '1')->first(); // Ambil data pengguna berdasarkan NIP
         if ($user) {
             // Mengurangi limit berdasarkan pembayaran
             $user->limit -= $validated['nominal_dibayar'];
@@ -106,10 +92,13 @@ class karyawanKasbonController extends Controller
             return response()->json(['error' => 'Pengguna tidak ditemukan'], 400);
         }
 
-        // Menyimpan bukti pembayaran dalam database
+        // Simpan bukti pembayaran
+        $buktiPath = $request->file('bukti')->store('bukti-pembayaran', 'public');
+
+        // Update kasbon
         $kasbon->nominal_dibayarkan = $validated['nominal_pembayaran'];
-        $kasbon->status = 'Lunas';  // Status menjadi Lunas setelah pembayaran
-        $kasbon->bukti_pembayaran = $validated['bukti'];  // Menyimpan data base64 bukti pembayaran
+        $kasbon->status = 'Lunas';
+        $kasbon->bukti_pembayaran = $buktiPath;
         $kasbon->save();
 
         return response()->json(['success' => 'Pembayaran kasbon berhasil, limit diperbarui!'], 200);
