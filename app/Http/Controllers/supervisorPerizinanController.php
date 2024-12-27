@@ -42,27 +42,47 @@ class supervisorPerizinanController extends Controller
 
     public function updateStatus(Request $request)
     {
+        //Tambahkan
+        // \Log::info($request->all()); // Tambahkan ini untuk memeriksa data yang diterima
+        
         // Validasi data yang diterima
         $request->validate([
             'nip' => 'required|string',
             'status' => 'required|in:Disetujui,Ditolak',
         ]);
 
+        // Cek apakah data valid //Tambahkan
+        // \Log::info("Validasi berhasil.");
+
         // Cari data perizinan berdasarkan NIP
         $perizinan = Perizinan::where('nip', $request->nip)->first();
         if (!$perizinan){
+            // \Log::error("Perizinan tidak ditemukan untuk NIP: " . $request->nip);
             return response()->json(['message' => 'Data perizinan tidak ditemukan'], 404);
         }
 
+        // \Log::info("Perizinan ditemukan: " . json_encode($perizinan)); // Log data perizinan sebelum update
+
         // Cek apakah status saat ini "Diproses"
         if ($perizinan->status !== 'Diproses') {
+            // \Log::warning("Perubahan status hanya bisa dilakukan jika status saat ini adalah 'Diproses'. Status saat ini: " . $perizinan->status); // Log jika status bukan "Diproses"
             return response()->json(['message' => 'Status sudah pernah disetujui/ditolak'], 403);
         }
 
         // Update status
         $perizinan->status = $request->status;
-        $perizinan->save();
-        return response()->json(['message' => 'Status berhasil diperbarui']);
+        // $perizinan->save();
+        // return response()->json(['message' => 'Status berhasil diperbarui']);
+
+        //Tambahkan
+        try {
+            $perizinan->save(); // Simpan data
+            // \Log::info("Status berhasil diperbarui."); // Log jika berhasil menyimpan
+            return response()->json(['message' => 'Status berhasil diperbarui']);
+        } catch (\Exception $e) {
+            // \Log::error("Gagal memperbarui status: " . $e->getMessage()); // Log error jika save gagal
+            return response()->json(['message' => 'Gagal memperbarui status'], 500);
+        }
     }
 
     /**
