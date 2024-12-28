@@ -1,4 +1,4 @@
-import { updateCharts } from './chartUpdater.js';
+import { updateCharts } from '../demo/demo-manajer.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const optionMenu = document.querySelector(".selected-menu");

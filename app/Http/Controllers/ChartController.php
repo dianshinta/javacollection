@@ -10,7 +10,7 @@ class ChartController extends Controller
 {
     public function getChartData(Request $request)
     {
-        $toko = $request->query('idtoko'); // Mendapatkan toko dari query parameter
+        $toko = $request->query('toko'); // Mendapatkan toko dari query parameter
         $now = Carbon::now();
 
         // Filter data mingguan untuk barChart

@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Chart extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['day', 'present', 'leave', 'late', 'absent'];
+    protected $table = 'chart'; // Nama tabel di database
+    protected $fillable = ['day', 'idtoko', 'hadir', 'izin', 'terlambat', 'tanpaketerangan'];
 }
