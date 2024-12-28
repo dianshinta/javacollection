@@ -102,7 +102,7 @@
                         <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="riwayatTable">
                                         <thead class=" text-primary">
                                             <th>
                                                 No
@@ -125,7 +125,13 @@
                                         </thead>
                                         <tbody>
                                             @foreach($perizinans as $index => $perizinan)
-                                            <tr>
+                                            <tr style="cursor: pointer;"
+                                                data-id="{{ $perizinan->id }}"
+                                                data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->format('Y-m-d') }}"
+                                                data-jenis="{{ $perizinan->jenis }}"
+                                                data-keterangan="{{ $perizinan->keterangan }}"
+                                                data-status="{{ $perizinan->status }}"
+                                            >
                                                 <td>
                                                     {{ $index + 1 }}
                                                 </td>
@@ -188,17 +194,17 @@
                                             <div class="container">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisSakit"
-                                                        value="sakit" required>
+                                                        value="Sakit" required>
                                                     <label class="form-check-label text-black" for="jenisSakit">Sakit</label>
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisCuti"
-                                                        value="cuti" required>
+                                                        value="Cuti">
                                                     <label class="form-check-label text-black" for="jenisCuti">Cuti</label>
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisLain"
-                                                        value="lainnya" required>
+                                                        value="Lainnya">
                                                     <label class="form-check-label text-black" for="jenisLain">Lainnya</label>
                                                 </div>
                                             </div>
@@ -222,7 +228,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="container mt-5 text-center">
+                                    <div class="modal-footer mt-5 text-center justify-content-center">
                                         <div class="btn-group-custom justify-content-center">
                                             <button type="button" class="btn btn-save" id="savePerizinan">Simpan</button>
                                         </div>
@@ -233,6 +239,78 @@
                     </div>
                 </div>
                 
+                <!-- Update Perizinan Modal -->
+                <div class="modal fade" id="updatePerizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <h5 class="modal-title" id="perizinanModalLabel">Ubah Izin</h5>
+                            <div class="modal-body">
+                                <form id="formUpdatePerizinan" action="{{ route('perizinan.update') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nama" value="Putu Dian Shinta Prativi"> <!-- Isi sesuai kebutuhan -->
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Tanggal:</div>
+                                        <div class="col-7 bg-gray">
+                                            <input type="date" id="tanggal" name="tanggal" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Jenis:</div>
+                                        <div class="col-7">
+                                            <div class="container">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisSakit"
+                                                        value="Sakit" required>
+                                                    <label class="form-check-label text-black" for="jenisSakit">Sakit</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisCuti"
+                                                        value="Cuti">
+                                                    <label class="form-check-label text-black" for="jenisCuti">Cuti</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisLain"
+                                                        value="Lainnya">
+                                                    <label class="form-check-label text-black" for="jenisLain">Lainnya</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Keterangan:</div>
+                                        <div class="col-7">
+                                            <textarea id="keterangan" name="keterangan" class="form-control p-2"
+                                                placeholder="Masukkan keterangan izin" required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-5 label-bold">Bukti:</div>
+                                        <div class="col-7">
+                                            <div class="button-container">
+                                                <button type="button" class="custom-button" data-toggle="modal"
+                                                    data-target="#buktiModal">
+                                                    Tambah
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer mt-5 text-center justify-content-center">
+                                        <div class="btn-group-custom justify-content-center">
+                                            <button type="button" class="btn btn-save" id="changePerizinan">Ubah</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Modal Konfirmasi -->
                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
                     aria-hidden="true">
@@ -252,6 +330,24 @@
                     </div>
                 </div>
 
+                <!-- Modal Konfirmasi Update -->
+                <div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog" aria-labelledby="confirmUpdateModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Apakah Anda yakin ingin mengubah izin ini?</p>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-success" id="btnYakinUpdate">Yakin</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Modal Box for Tambah Bukti -->
                 <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
@@ -354,6 +450,21 @@
                         }
                     });
 
+                // Validasi khusus untuk radio button "jenis"
+                var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
+                    if (!jenisSelected) {
+                        isValid = false;
+                        if ($('#jenisError').length === 0) {
+                            // Tambahkan pesan validasi jika belum ada
+                            $('input[name="jenis"]').closest('.container').append(
+                                '<div id="jenisError" class="mt-2" style="font-size: 12px; color: red">Harap pilih salah satu jenis izin.</div>'
+                            );
+                        }
+                    } else {
+                        // Hapus pesan validasi jika sudah dipilih
+                        $('#jenisError').remove();
+                    }
+
                     // Jika ada field yang kosong, tampilkan pesan dan hentikan proses
                     if (!isValid) {
                         Swal.fire({
@@ -407,9 +518,176 @@
                     // Menutup modal konfirmasi tanpa mengirim data
                     $('#confirmModal').modal('hide');
                 });
+
+            const rows = document.querySelectorAll("#riwayatTable tbody tr");
+                rows.forEach(row => {
+                    row.addEventListener("click", () => {
+                        // Ambil data dari atribut data-*
+                        const id = row.getAttribute("data-id");
+                        const tanggal = row.getAttribute("data-tanggal");
+                        const jenis = row.getAttribute("data-jenis");
+                        const keterangan = row.getAttribute("data-keterangan");
+                        const status = row.getAttribute("data-status");
+
+                        console.log("Jenis yang dipilih:", jenis);  // Pastikan ini menampilkan nilai yang sesuai
+                        console.log(document.querySelectorAll('input[name="jenis"][value="Sakit"]'));  // Cek elemen radio button
+
+                        // Isi data di dalam modal
+                        document.querySelector("#formUpdatePerizinan #tanggal").value = tanggal; // Set tanggal
+                        document.querySelectorAll(`input[name="jenis"][value="${jenis}"]`).forEach((radio) => {
+                            if (radio.value === jenis) {
+                                radio.checked = true
+                            }
+                        }); // Set jenis (radio)
+                        document.querySelector("#formUpdatePerizinan #keterangan").value = keterangan; // Set keterangan
+
+                        const modalFooter = document.querySelector("#updatePerizinanModal .modal-footer");
+
+                        if (!modalFooter.querySelector(".btn-cancel")) {
+                            const cancelButton = document.createElement("button");
+                            cancelButton.textContent = "Batalkan Izin";
+                            cancelButton.className = "btn btn-danger btn-cancel";
+                            cancelButton.addEventListener("click", () => {
+                                alert("Works");
+                            });
+
+                            modalFooter.appendChild(cancelButton);
+                        }
+
+                        const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
+                        modal.show();
+
+                        // Ketika tombol Ubah pada modal perizinan diklik
+                        $('#changePerizinan').on('click', function () {
+                            // Validasi form: cek apakah semua field yang required sudah diisi
+                            var isValid = true;
+                            var requiredFields = $('#formUpdatePerizinan').find('[required]'); // Mencari semua input yang wajib diisi
+
+                            requiredFields.each(function () {
+                                if ($(this).val() === '') {
+                                    isValid = false;
+                                    $(this).addClass('is-invalid'); // Menambahkan class is-invalid untuk memberi tanda
+                                    $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi sebelumnya
+                                    $(this).after('<div class="invalid-feedback">Field ini harus diisi.</div>'); // Menambahkan pesan peringatan
+                                } else {
+                                    $(this).removeClass('is-invalid'); // Menghapus class is-invalid jika field terisi
+                                    $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi
+                                }
+                            });
+
+                            // Validasi khusus untuk radio button "jenis"
+                            var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
+                            if (!jenisSelected) {
+                                isValid = false;
+                                if ($('#jenisError').length === 0) {
+                                    // Tambahkan pesan validasi jika belum ada
+                                    $('input[name="jenis"]').closest('.container').append(
+                                        '<div id="jenisError" class="mt-2" style="font-size: 12px; color: red">Harap pilih salah satu jenis izin.</div>'
+                                    );
+                                }
+                            } else {
+                                // Hapus pesan validasi jika sudah dipilih
+                                $('#jenisError').remove();
+                            }
+
+                            // Jika ada field yang kosong, tampilkan pesan dan hentikan proses
+                            if (!isValid) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Perhatian',
+                                    text: 'Semua field yang wajib diisi harus terisi terlebih dahulu!',
+                                });
+                                return false; // Jangan lanjutkan ke proses selanjutnya
+                            }
+
+                            // Menampilkan modal konfirmasi
+                            $('#confirmUpdateModal').modal('show');
+                        });
+
+                        // Ketika tombol "Yakin" pada modal konfirmasi diklik
+                        $('#btnYakinUpdate').on('click', function () {
+                            const dataTanggal = document.querySelector("#formUpdatePerizinan #tanggal").value;
+                            const dataJenis = document.querySelector("#formUpdatePerizinan input[name='jenis']:checked")?.value;
+                            const dataKeterangan = document.querySelector("#formUpdatePerizinan #keterangan").value;
+
+                            // const perizinanId = document.querySelector("#updatePerizinanModal").getAttribute("data-id");
+                            // Kirim data ke server menggunakan AJAX
+                            const formData = new FormData();
+                            formData.append("tanggal", dataTanggal);
+                            formData.append("jenis", dataJenis);
+                            formData.append("keterangan", dataKeterangan);
+                            formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
+                            formData.append("_token", "{{ csrf_token() }}");  // Token CSRF untuk keamanan
+
+                            // Gunakan fetch API untuk mengirim data ke server
+                            fetch("{{ route('perizinan.update') }}", {
+                                method: "POST",
+                                body: formData
+                            })
+                                .then(response => {
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Berhasil',
+                                            text: 'Perizinan berhasil diperbarui!',
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                            willClose: () => {
+                                            // Reload halaman setelah SweetAlert tertutup
+                                            location.reload();
+                                            }
+                                        });
+                                        $('#confirmUpdateModal').modal('hide');
+
+                                        // Update tampilan tabel di halaman
+                                        const row = document.querySelector(`#riwayatTable tbody tr[data-id='${id}']`);
+                                        row.querySelector("td:nth-child(2)").textContent = new Date(dataTanggal).toLocaleDateString(); // Update tanggal
+                                        row.querySelector("td:nth-child(3)").textContent = dataJenis.charAt(0).toUpperCase() + dataJenis.slice(1); // Update jenis
+                                        row.querySelector("td:nth-child(4)").textContent = dataKeterangan; // Update keterangan
+                                        row.querySelector("td:nth-child(5)").innerHTML = `<span class="badge bg-warning">Diproses</span>`; // Update status jika perlu
+
+                                        // Tutup modal
+                                        const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
+                                        modal.hide();
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal',
+                                            text: data.message || 'Gagal memperbarui perizinan. Coba lagi.',
+                                        });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                    alert("Terjadi kesalahan. Coba lagi.");
+                                });
+                        });
+                    });
+                
+                
             });
 
-        </script>
 
+            // Tambahkan event listener untuk memanage tombol setelah modal ditutup
+            $('#perizinanModal').on('hidden.bs.modal', function () {
+                const modalFooter = document.querySelector("#perizinanModal .modal-footer");
+                const cancelButton = modalFooter.querySelector(".btn-cancel");
+
+                if (cancelButton) {
+                    cancelButton.remove();  // Menghapus tombol "Batalkan Izin" setelah modal ditutup
+                }
+
+                document.querySelector("#formPerizinan #tanggal").value = ""; // Set tanggal
+                document.querySelectorAll(`input[name="jenis"]`).forEach((radio) => {
+                    radio.checked = false // Nonaktifkan semua radio button 
+                });
+                // Reset keterangan
+                document.getElementById("keterangan").value = "";
+            });
+        });
+        </script>
 </body>
 </html>
