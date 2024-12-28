@@ -7,6 +7,7 @@ use App\Http\Controllers\supervisorPerizinanController;
 use App\Http\Controllers\supervisorPembayaranController;
 use App\Http\Controllers\PerizinanController;
 use App\Http\Controllers\KaryawanKasbonController;
+use App\Http\Controllers\ChartController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -93,3 +94,6 @@ Route::get('/manajer/gaji', function() {
 Route::get('/login', function () {
     return view('auth.login'); // Pastikan ada file `auth/login.blade.php`
 })->name('login');
+
+// Mengambil data untuk ditampilkan ke grafik
+Route::get('/api/attendance-data', [ChartController::class, 'getChartData']);
