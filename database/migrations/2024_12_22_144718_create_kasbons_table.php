@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('nip', 20); // NIP dengan panjang maksimal 20 karakter
             $table->enum('status_kasbon', ['Lunas', 'Belum Lunas']); // Enum untuk status
             $table->enum('status_bayar', ['Diproses', 'Disetujui', 'Ditolak']); // Enum untuk status
-            $table->text('keterangan')->nullable(); // keterangan
+            $table->text('alasan')->nullable(); // Alasan pengajuan kasbon
+            $table->text('keterangan', ['Pengajuan', 'Pembayaran']); // Keterangan
             $table->date('tanggal_pengajuan')->nullable(); // Tanggal pengajuan
             $table->date('tanggal_pembayaran')->nullable(); // Tanggal pembayaran
             $table->integer('nominal_diajukan')->nullable(); // Nominal diajukan

@@ -16,9 +16,14 @@ class kasbon extends Model
     protected $fillable = [
         'status_kasbon',
         'status_bayar',
+        'tanggal_pengajuan',
         'tanggal_pembayaran',
+        'nominal_diajukan',
         'nominal_dibayar',
         'saldo_akhir',
+        'alasan',
+        'lampiran',
+        'nip',
     ];
 
     // Casting atribut tertentu

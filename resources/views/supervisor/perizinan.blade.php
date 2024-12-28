@@ -290,33 +290,43 @@
                     },
                     body: JSON.stringify({ nip: nip, status: status })
                 })
+                // .then(response => {
+                //     console.log(response); // Tambahkan ini untuk memeriksa status response
+                //     return response.json();
+                // })
+                // .then(data => {
+                //     console.log(data); // Tambahkan ini untuk melihat data yang diterima
+                // })
+                // .catch(error => {
+                //     console.error('Error:', error); // Tangkap error yang terjadi
+                // });
                 .then(response => {
-                if (response.status === 403) {
-                    // Jika status adalah 403, baca pesan error dari server
-                    return response.json().then(data => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal Memperbarui Status',
-                            text: data.message,
-                            confirmButtonText: 'OK'
+                    if (response.status === 403) {
+                        // Jika status adalah 403, baca pesan error dari server
+                        return response.json().then(data => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal Memperbarui Status',
+                                text: data.message,
+                                confirmButtonText: 'OK'
+                            });
                         });
-                    });
-                } else if (response.ok) {
-                    return response.json().then(data => {
-                        // Menampilkan pesan sukses dengan SweetAlert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: data.message || 'Status berhasil diperbarui.',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            location.reload(); // Reload halaman untuk memperbarui tabel
+                    } else if (response.ok) {
+                        return response.json().then(data => {
+                            // Menampilkan pesan sukses dengan SweetAlert
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: data.message || 'Status berhasil diperbarui.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                location.reload(); // Reload halaman untuk memperbarui tabel
+                            });
                         });
-                    });
-                } else {
-                    throw new Error('Terjadi kesalahan saat memperbarui status');
-                }
+                    } else {
+                        throw new Error('Terjadi kesalahan saat memperbarui status');
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);

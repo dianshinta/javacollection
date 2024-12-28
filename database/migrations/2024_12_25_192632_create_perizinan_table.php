@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('jenis', ['Sakit', 'Cuti', 'Lainnya']);
             $table->text('keterangan');
             $table->enum('status', ['Diproses', 'Disetujui', 'Ditolak']);
-            // $table->timestamps(); // Menambahkan kolom created_at dan updated_at
+            $table->timestamps(); // Menambahkan kolom created_at dan updated_at
         });
     }
 
