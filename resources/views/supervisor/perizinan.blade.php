@@ -97,6 +97,7 @@
                                                             class="btn btn-info btn-round" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#perizinanModal"
+                                                            data-id="{{ $data->id }}"
                                                             data-nip="{{ $data->nip }}"
                                                             data-nama="{{ $data->nama }}"
                                                             data-tanggal="{{ $data->tanggal->format('d/m/Y') }}"
@@ -128,33 +129,49 @@
                         </div>
                         <h5 class="modal-title" id="perizinanModalLabel">Formulir Perizinan</h5>
                         <div class="modal-body">
+                            <!-- Hidden Input for ID -->
+                            <input type="hidden" id="modal-id">
+
+                            <!-- Detail NIP -->
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">NIP:</div>
                                 <div class="col-7 bg-gray" id="modal-nip"></div>
                             </div>
+
+                            <!-- Detail Nama -->
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Nama:</div>
                                 <div class="col-7 bg-gray" id="modal-nama"></div>
                             </div>
+
+                            <!-- Detail Tanggal -->
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Tanggal:</div>
                                 <div class="col-7 bg-gray" id="modal-tanggal"></div>
                             </div>
+
+                            <!-- Detail Jenis -->
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Jenis:</div>
                                 <div class="col-7 bg-gray" id="modal-jenis"></div>
                             </div>
+
+                            <!-- Keterangan -->
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Keterangan:</div>
                                 <div class="col-7">
                                     <textarea class="form-control" rows="4" id="modal-keterangan" disabled>Izin sakit flu dan demam</textarea>
                                 </div>
                             </div>
+
+                            <!-- Lampiran -->
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Lampiran:</div>
                                 <a href="#" target="_blank" class="btn btn-sm btn-secondary ml-3" id="modal-lampiran">
                                     Preview </a>
                             </div>
+
+                            <!-- Tombol Aksi -->
                             <div class="container mt-5 text-center">
                                 <div class="btn-group-custom justify-content-center">
                                 <!-- Tombol Terima -->
@@ -225,6 +242,7 @@
                 const button = event.relatedTarget;
 
                 // Ambil data dari tombol
+                const id = button.getAttribute('data-id');
                 const nip = button.getAttribute('data-nip');
                 const nama = button.getAttribute('data-nama');
                 const tanggal = button.getAttribute('data-tanggal');
@@ -233,6 +251,7 @@
                 const lampiran = button.getAttribute('data-lampiran');
 
                 // Isi elemen modal dengan data
+                document.getElementById('modal-id').value = id;
                 document.getElementById('modal-nip').textContent = nip;
                 document.getElementById('modal-nama').textContent = nama;
                 document.getElementById('modal-tanggal').textContent = tanggal;
@@ -276,19 +295,19 @@
 
             // Event untuk tombol "Yakin" di modal konfirmasi
             btnYakin.addEventListener('click', function () {
-                const nip = modalNip.textContent; // Ambil NIP dari modal
-                updateStatus(nip, selectedStatus); // Kirim permintaan ke server
+                const id = document.getElementById('modal-id').value; // Ambil ID dari modal
+                updateStatus(id, selectedStatus); // Kirim ID ke server
             });
 
             // fungsi 
-            function updateStatus(nip, status) {
+            function updateStatus(id, status) {
                 fetch('/perizinan/update-status', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     },
-                    body: JSON.stringify({ nip: nip, status: status })
+                    body: JSON.stringify({ id: id, status: status }) // Kirim ID dan status
                 })
                 // .then(response => {
                 //     console.log(response); // Tambahkan ini untuk memeriksa status response

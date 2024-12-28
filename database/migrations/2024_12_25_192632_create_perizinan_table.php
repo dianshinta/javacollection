@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perizinan', function (Blueprint $table) {
-            $table->string('id', 50)->primary();
+            $table->id(); 
             $table->string('nip', 20);
             $table->string('nama', 50);
             $table->string('lampiran')->nullable();
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('jenis', ['Sakit', 'Cuti', 'Lainnya']);
             $table->text('keterangan');
             $table->enum('status', ['Diproses', 'Disetujui', 'Ditolak']);
-            // $table->timestamps(); // Menambahkan kolom created_at dan updated_at
+            $table->timestamps(); // Menambahkan kolom created_at dan updated_at
         });
     }
 
