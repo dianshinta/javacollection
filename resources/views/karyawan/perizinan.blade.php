@@ -558,7 +558,7 @@
                         modal.show();
 
                         // Ketika tombol Ubah pada modal perizinan diklik
-                        $('#changePerizinan').on('click', function () {
+                        $(document).off('click', '#changePerizinan').on('click', '#changePerizinan', function () {
                             // Validasi form: cek apakah semua field yang required sudah diisi
                             var isValid = true;
                             var requiredFields = $('#formUpdatePerizinan').find('[required]'); // Mencari semua input yang wajib diisi
@@ -665,9 +665,7 @@
                                     alert("Terjadi kesalahan. Coba lagi.");
                                 });
                         });
-                    });
-                
-                
+                    }); 
             });
 
 

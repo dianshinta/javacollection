@@ -15,8 +15,7 @@ class perizinan extends Model
     public $timestamps = false; // Tabel tidak memiliki kolom created_at dan updated_at
     
     // Primary key
-    protected $id = 'id'; // Primary key adalah kolom id
-    
+    protected $primaryKey = 'id'; // Primary key adalah kolom id
     // Non-incrementing primary key
     public $incrementing = true; // Primary key tidak auto-increment
 
@@ -25,7 +24,6 @@ class perizinan extends Model
 
     // Field yang dapat diisi massal
     protected $fillable = [
-        'id',
         'nip', 
         'nama', 
         'tanggal', 
