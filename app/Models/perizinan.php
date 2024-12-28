@@ -12,7 +12,6 @@ class perizinan extends Model
     // Nama tabel
     protected $table = 'perizinan'; // Nama tabel
     
-    // Jika timestamps digunakan
     public $timestamps = false; // Tabel tidak memiliki kolom created_at dan updated_at
     
     // Primary key
