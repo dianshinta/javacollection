@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('chart', function (Blueprint $table) {
             $table->id();
-            $table->string('day');
-            $table->integer('present')->default(0);
-            $table->integer('leave')->default(0);
-            $table->integer('late')->default(0);
-            $table->integer('absent')->default(0);
+            $table->date('day');
+            $table->string('idtoko');
+            $table->integer('hadir')->default(0);
+            $table->integer('izin')->default(0);
+            $table->integer('terlambat')->default(0);
+            $table->integer('tanpaketerangan')->default(0);
             $table->timestamps();
         });
     }
