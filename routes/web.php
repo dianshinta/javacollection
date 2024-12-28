@@ -27,6 +27,7 @@ Route::get('/karyawan/beranda/', function () {
 })->name('karyawan.beranda');
 
 Route::post('/perizinan/store', [PerizinanController::class, 'store'])->name('perizinan.store');
+Route::post('/perizinan/update', [PerizinanController::class, 'update'])->name('perizinan.update');
 Route::get('/karyawan/perizinan', [PerizinanController::class, 'index'])->name('karyawan.perizinan');
 
 Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('karyawan.presensi');
