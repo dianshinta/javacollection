@@ -104,23 +104,20 @@
                                 <div class="table-responsive">
                                     <table class="table" id="riwayatTable">
                                         <thead class=" text-primary">
-                                            <th>
+                                            <th class="text-center">
                                                 No
                                             </th>
-                                            <th>
+                                            <th class="text-center">
                                                 Tanggal
                                             </th>
-                                            <th>
+                                            <th class="text-center">
                                                 Alasan
                                             </th>
-                                            <th>
+                                            <th class="text-center">
                                                 Keterangan
                                             </th>
-                                            <th>
+                                            <th class="text-center">
                                                 Status
-                                            </th>
-                                            <th class="text-right">
-                                                Lampiran
                                             </th>
                                         </thead>
                                         <tbody>
@@ -132,30 +129,23 @@
                                                 data-keterangan="{{ $perizinan->keterangan }}"
                                                 data-status="{{ $perizinan->status }}"
                                             >
-                                                <td>
+                                                <td class="text-center">
                                                     {{ $index + 1 }}
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     {{ \Carbon\Carbon::parse($perizinan->tanggal)->format('d F Y') }}
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     {{ ucfirst($perizinan->jenis) }}
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     {{ $perizinan->keterangan }}
                                                 </td>
-                                                <td>
+                                                <td class="text-center
+                                                ">
                                                     <span class="badge {{ $perizinan->status == 'Diproses' ? 'bg-warning' : ($perizinan->status == 'Ditolak' ? 'bg-danger' : 'bg-success') }}">
                                                         {{ ucfirst($perizinan->status) }}
                                                     </span>
-                                                </td>
-                                                <td class="text-right">
-                                                    <div class="button-container">
-                                                        <button type="button" class="custom-button" data-toggle="modal"
-                                                            data-target="#buktiModal">
-                                                            Tambah
-                                                        </button>
-                                                    </div>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -303,6 +293,7 @@
                                     <div class="modal-footer mt-5 text-center justify-content-center">
                                         <div class="btn-group-custom justify-content-center">
                                             <button type="button" class="btn btn-save" id="changePerizinan">Ubah</button>
+                                            <button type="button" class="btn btn-danger" id="deletePerizinan">Batalkan Izin</button>
                                         </div>
                                     </div>
                                 </form>
@@ -342,6 +333,22 @@
                                 <p>Apakah Anda yakin ingin mengubah izin ini?</p>
                                 <div class="text-center">
                                     <button type="button" class="btn btn-success" id="btnYakinUpdate">Yakin</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Konfirmasi Delete-->
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <p>Apakah Anda yakin ingin menghapus izin ini?</p>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-success" id="btnYakinDelete">Ya, hapus</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
                                 </div>
                             </div>
@@ -541,19 +548,6 @@
                         }); // Set jenis (radio)
                         document.querySelector("#formUpdatePerizinan #keterangan").value = keterangan; // Set keterangan
 
-                        const modalFooter = document.querySelector("#updatePerizinanModal .modal-footer");
-
-                        if (!modalFooter.querySelector(".btn-cancel")) {
-                            const cancelButton = document.createElement("button");
-                            cancelButton.textContent = "Batalkan Izin";
-                            cancelButton.className = "btn btn-danger btn-cancel";
-                            cancelButton.addEventListener("click", () => {
-                                alert("Works");
-                            });
-
-                            modalFooter.appendChild(cancelButton);
-                        }
-
                         const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
                         modal.show();
 
@@ -665,6 +659,57 @@
                                     alert("Terjadi kesalahan. Coba lagi.");
                                 });
                         });
+
+                        $('#deletePerizinan').on('click', function () {
+                            $('#confirmDeleteModal').modal('show');
+                        });
+                        
+                        $('#btnYakinDelete').on('click', function () {
+                            const formData = new FormData();
+                            formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
+                            formData.append("_token", "{{ csrf_token() }}");  // Token CSRF untuk keamanan
+
+                            // Gunakan fetch API untuk mengirim data ke server
+                            fetch("{{ route('perizinan.delete') }}", {
+                                method: "POST",
+                                body: formData
+                            })
+                                .then(response => {
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Berhasil',
+                                            text: 'Perizinan berhasil dihapus!',
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                            willClose: () => {
+                                                row.remove();
+                                                // Reload halaman setelah SweetAlert tertutup
+                                                location.reload();
+                                            }
+                                        });
+                                        $('#confirmDeleteModal').modal('hide');
+
+                                        // Tutup modal
+                                        const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
+                                        modal.hide();
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal',
+                                            text: data.message || 'Gagal menghapus perizinan. Coba lagi.',
+                                        });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error("Error:", error);
+                                    alert("Terjadi kesalahan. Coba lagi.");
+                                });
+                        });
+
                     }); 
             });
 
