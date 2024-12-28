@@ -13,19 +13,20 @@ class perizinan extends Model
     protected $table = 'perizinan'; // Nama tabel
     
     // Jika timestamps digunakan
-    public $timestamps = true; // Tabel tidak memiliki kolom created_at dan updated_at
+    public $timestamps = false; // Tabel tidak memiliki kolom created_at dan updated_at
     
     // Primary key
-    protected $primaryKey = 'nip'; // Primary key adalah kolom id
+    protected $id = 'id'; // Primary key adalah kolom id
     
     // Non-incrementing primary key
-    public $incrementing = false; // Primary key tidak auto-increment
+    public $incrementing = true; // Primary key tidak auto-increment
 
     // Tipe data primary key
     protected $keyType = 'string';
 
     // Field yang dapat diisi massal
     protected $fillable = [
+        'id',
         'nip', 
         'nama', 
         'tanggal', 
