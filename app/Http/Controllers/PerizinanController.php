@@ -37,6 +37,22 @@ class PerizinanController extends Controller
         $perizinan->save();
     }
 
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|exists:perizinan,id',
+            'tanggal' => 'required|date',
+            'jenis' => 'required|string',
+            'keterangan' => 'required|string',
+        ]);
+
+        $perizinan = perizinan::find($validated['id']);
+        $perizinan->update($validated);
+
+        return response()->json(['success' => true]);
+    }
+
+
     public function index()
     {
         // Mengambil data perizinan dari database (opsional, tambahkan jika diperlukan)
@@ -45,6 +61,4 @@ class PerizinanController extends Controller
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
         return view('karyawan.perizinan', compact('perizinans'));
     }
-
-
 }
