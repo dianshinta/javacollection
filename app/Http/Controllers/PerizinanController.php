@@ -61,4 +61,15 @@ class PerizinanController extends Controller
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
         return view('karyawan.perizinan', compact('perizinans'));
     }
+
+    public function destroy(Request $request)
+    {
+        $id = $request->input('id');
+
+        $perizinan = perizinan::find($id);
+        $perizinan->delete();
+
+        return response()->json(['success' => true]);
+    }
+
 }

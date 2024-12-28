@@ -9,7 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perizinan', function (Blueprint $table) {
-            $table->string('nip', 20)->primary();
+            $table->id(); 
+            $table->string('nip', 20);
             $table->string('nama', 50);
             $table->string('lampiran')->nullable();
             $table->date('tanggal');
