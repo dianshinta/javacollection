@@ -40,6 +40,7 @@ Coded by www.creative-tim.com
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 
 <body class="">
@@ -192,9 +193,9 @@ Coded by www.creative-tim.com
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="bukti">Bukti:</label>
+                                <label for="lampiran">Bukti:</label>
                                 <div class="button-container">
-                                    <input type="file" id="bukti" class="custom-button form-control">
+                                    <input type="file" id="lampiran" class="custom-button form-control">
                                         Tambah
                                     </input>
                                 </div>
@@ -274,7 +275,7 @@ Coded by www.creative-tim.com
                                                 Nominal
                                             </th>
                                             <th>
-                                                Status
+                                                Keterangan
                                             </th>
                                             <th class="text-right">
                                                 Lampiran
@@ -282,12 +283,12 @@ Coded by www.creative-tim.com
                                         </thead>
                                         <tbody id="kasbonTableBody" class="text-center">
                                             @foreach ($riwayatPengajuanKasbon as $riwayat)
-                                                <tr>
+                                                <tr class="text-capitalize">
                                                     <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
                                                     <td>{{ $riwayat->tanggal_pengajuan }}</td>
                                                     <td>{{ $riwayat->alasan }}</td>
                                                     <td>{{ $riwayat->nominal_diajukan }}</td>
-                                                    <td>{{ $riwayat->status }}</td>
+                                                    <td>{{ $riwayat->keterangan }}</td>
                                                     <td class="text-right">
                                                         <div class="button-container">
                                                             <button type="button" class="custom-button" data-toggle="modal"
@@ -344,6 +345,7 @@ Coded by www.creative-tim.com
         <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
         <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
         <script src="../assets/demo/demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             $(document).ready(function () {
                 // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
@@ -352,17 +354,25 @@ Coded by www.creative-tim.com
 
             $(document).ready(function () {
                 $('#ajukanBtn').on('click', function () {
+                    // Collect form data
                     var tanggal = $('#tanggal').val();
                     var nominal = $('#nominal').val();
                     var alasan = $('#alasan').val();
 
+                    // Validate the data before sending
                     if (!tanggal || !nominal || !alasan) {
-                        alert('Please fill all the fields.');
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: 'Pastikan semua kolom terisi',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                        });
                         return;
                     }
 
+                    // Send data via AJAX to the backend
                     $.ajax({
-                        url: '{{ route('kasbon.save') }}',
+                        url: '{{ route('kasbon.save') }}', // Route to submit data
                         method: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -371,25 +381,47 @@ Coded by www.creative-tim.com
                             alasan: alasan,
                         },
                         success: function (response) {
-                            alert(response.success);
-                            $('#pengajuanModal').modal('hide');
-                            
-                            const newRow = `<tr>
-                                <td>${tanggal}</td>
-                                <td>${nominal}</td>
-                                <td>${alasan}</td>
-                                <td>Belum Lunas</td>
-                                <td> - </td>
-                            </tr>`;
-                            $('#riwayatTable tbody').prepend(newRow);
-                            
-                            $('#tanggal').val('');
-                            $('#nominal').val('');
-                            $('#alasan').val('');
-                            updateSisaLimit(); // Update sisa limit setelah pengajuan
+                            $('#pengajuanModal').modal('hide'); // Close the modal
+                            Swal.fire({
+                                title: 'Pengajuan kasbon berhasil!',
+                                text: response.success,
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                            }).then(() => {
+                                // Update nilai sisa limit di frontend
+                                $('#sisaLimit').text(response.sisa_limit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+                                // Update progress bar
+                                $('#progressBar').css('width', persentase + '%');
+                                $('#progressBar').attr('aria-valuenow', persentase);
+                                $('#progressBar').text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+                                // Update tabel
+                                var newRow = `
+                                    <tr>
+                                        <td>${response.no}</td>
+                                        <td>${response.tanggal_pengajuan}</td>
+                                        <td>${response.alasan}</td>
+                                        <td>${response.nominal_diajukan}</td>
+                                        <td>${response.keterangan}</td>
+                                        <td class="text-right">
+                                            <div class="button-container">
+                                                <button type="button" class="custom-button" data-toggle="modal" data-target="#lampiranModal">
+                                                    Lihat
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                                $('#kasbonTableBody').prepend(newRow);
+                            });
                         },
                         error: function (response) {
-                            alert('Error: ' + response.responseJSON.message);
+                            $('#pengajuanModal').modal('hide');
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: response.responseJSON ? response.responseJSON.message : 'Pengajuan kasbon gagal.',
+                                icon: 'error',
+                                confirmButtonText: 'Coba Lagi',
+                            });
                         }
                     });
                 });
@@ -424,63 +456,64 @@ Coded by www.creative-tim.com
 
                 // Panggil fungsi saat halaman dimuat
                 updateSisaLimit();
-
-                // Opsional: Refresh data secara berkala
-                setInterval(updateSisaLimit, 600000); // Update setiap 60 detik
-
-                function updateSisaLimit() {
-                    $.ajax({
-                        url: '{{ route('kasbon.limit') }}',
-                        method: 'GET',
-                        success: function (response) {
-                            const limitAwal = response.limit_awal;
-                            const kasbonAktif = response.kasbon_aktif;
-                            const sisaLimit = response.sisa_limit;
-
-                            const persentase = Math.min((kasbonAktif / limitAwal) * 100, 100).toFixed(2);
-                            $('#sisaLimit').text(sisaLimit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
-                            $('#progressBar').css('width', persentase + '%')
-                                            .attr('aria-valuenow', persentase)
-                                            .text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
-                        },
-                        error: function () {
-                            alert('Gagal mengambil data sisa limit.');
-                        }
-                    });
-                }
             });
 
             $(document).ready(function () {
                 $('#kirimPembayaranBtn').on('click', function () {
-                    // Ambil data dari form
-                    let formData = new FormData($('#kasbonPaymentForm')[0]);
+                    // Ambil data dari form menggunakan FormData
+                    var formData = new FormData($('#kasbonPaymentForm')[0]);
 
-                    // Validasi manual (opsional jika backend sudah divalidasi)
-                    if (!formData.get('tanggal_pembayaran') || !formData.get('nominal_pembayaran') || !formData.get('bukti')) {
-                        alert('Semua kolom wajib diisi!');
+                    // Pastikan tanggal, nominal, dan lampiran diambil dengan benar
+                    var tanggal = $('#tanggal').val();
+                    var nominal = $('#nominal').val();
+                    var lampiran = $('#lampiran')[0].files[0]; // Ambil file pertama dari input file
+
+                    // Validasi data
+                    if (!tanggal || !nominal || !lampiran) {
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: response.responseJSON ? response.responseJSON.message : 'Pastikan semua kolom terisi dan lampiran diupload.',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                        });
                         return;
                     }
 
-                    // Kirim data via AJAX
+                    // Tambahkan data ke FormData
+                    formData.append('tanggal_pembayaran', tanggal);
+                    formData.append('nominal_pembayaran', nominal);
+
+                    // Kirim data menggunakan AJAX
                     $.ajax({
-                        url: '{{ route('kasbon.payment') }}', // Route backend Laravel
-                        type: 'POST',
+                        url: '{{ route('kasbon.payment') }}', // Ganti dengan route yang sesuai
+                        method: 'POST',
                         data: formData,
-                        processData: false,
-                        contentType: false,
+                        processData: false,  // Jangan memproses data form menjadi query string
+                        contentType: false,  // Jangan set content-type karena FormData yang akan melakukannya
                         success: function (response) {
-                            alert(response.success || 'Pembayaran berhasil!');
-                            $('#kasbonPaymentForm')[0].reset(); // Reset form setelah berhasil
-                            $('#pembayaranModal').modal('hide'); // Tutup modal
-                            location.reload(); // Reload halaman
+                            Swal.fire({
+                                title: 'Pembayaran Berhasil!',
+                                text: response.success,
+                                icon: 'success',
+                                confirmButtonText: 'OK',
+                            }).then(function () {
+                                // Lakukan pembaruan tampilan atau reset form jika perlu
+                                $('#kasbonPaymentForm')[0].reset(); // Reset form setelah sukses
+                            });
                         },
-                        error: function (xhr, status, error) {
-                            alert(xhr.responseJSON?.error || 'Terjadi kesalahan!');
+                        error: function (response) {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: response.responseJSON ? response.responseJSON.message : 'Terjadi kesalahan.',
+                                icon: 'error',
+                                confirmButtonText: 'Coba Lagi',
+                            });
                         }
                     });
                 });
             });
         </script>
+    </div>
 </body>
 
 </html>

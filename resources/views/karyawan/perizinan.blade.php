@@ -139,7 +139,7 @@
                                                     {{ $perizinan->keterangan }}
                                                 </td>
                                                 <td>
-                                                    <span class="badge {{ $perizinan->status == 'Diproses' ? 'bg-warning' : ($perizinan->status == 'DLitolak' ? 'bg-danger' : 'bg-success') }}">
+                                                    <span class="badge {{ $perizinan->status == 'Diproses' ? 'bg-warning' : ($perizinan->status == 'Ditolak' ? 'bg-danger' : 'bg-success') }}">
                                                         {{ ucfirst($perizinan->status) }}
                                                     </span>
                                                 </td>
