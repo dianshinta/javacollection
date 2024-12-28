@@ -96,4 +96,4 @@ Route::get('/login', function () {
 })->name('login');
 
 // Mengambil data untuk ditampilkan ke grafik
-Route::get('/api/attendance-data', [ChartController::class, 'getChartData']);
+Route::get('/api/chart-data', [ChartController::class, 'getChartData']);

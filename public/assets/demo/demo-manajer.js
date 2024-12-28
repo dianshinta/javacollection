@@ -17,7 +17,7 @@ demo = {
       chartColor = "#FFFFFF";
   
       // Fetch data from API
-      const response = await fetch('/api/attendance-data');
+      const response = await fetch('/api/chart-data');
       const attendanceData = await response.json();
   
       const days = attendanceData.map(item => item.day);
