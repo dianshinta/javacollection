@@ -123,6 +123,8 @@
                                         <tbody>
                                             @foreach($perizinans as $index => $perizinan)
                                             <tr style="cursor: pointer;"
+                                                onmouseover="this.style.backgroundColor='#E8E8E8';"
+                                                onmouseout="this.style.backgroundColor='white';"
                                                 data-id="{{ $perizinan->id }}"
                                                 data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->format('Y-m-d') }}"
                                                 data-jenis="{{ $perizinan->jenis }}"
@@ -551,6 +553,14 @@
                         const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
                         modal.show();
 
+                        if (status != 'Diproses') {
+                            document.querySelector("#formUpdatePerizinan #tanggal").disabled = true;
+                            document.querySelectorAll(`input[name="jenis"]`).forEach((radio) => {
+                                radio.disabled = true;
+                            });
+                            document.querySelector("#formUpdatePerizinan #keterangan").disabled = true; // Set keterangan
+                            document.getElementById('deletePerizinan').disabled = true;
+                        }
                         // Ketika tombol Ubah pada modal perizinan diklik
                         $(document).off('click', '#changePerizinan').on('click', '#changePerizinan', function () {
                             // Validasi form: cek apakah semua field yang required sudah diisi
