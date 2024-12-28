@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chart', function (Blueprint $table) {
             $table->id();
             $table->date('day');
-            $table->string('idtoko');
+            $table->string('toko')->after('id');
             $table->integer('hadir')->default(0);
             $table->integer('izin')->default(0);
             $table->integer('terlambat')->default(0);
