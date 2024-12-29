@@ -138,7 +138,7 @@
                             Kehadiran<br>
                             Karyawan
                           </h5>
-                          <p class="card-category">Desember</p>
+                          <p class="card-category" id="currentMonth"></p>
                         </div>
                         <div class="card-body ">
                           <canvas id="doughnutChart"></canvas>
@@ -228,13 +228,11 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
     <!-- Chart JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-    <script src="../assets/demo/demo-supervisor.js"></script>
     <!--  Notifications Plugin    -->
     <script src="../assets/js/plugins/bootstrap-notify.js"></script>
     <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-    <script src="../assets/demo/demo.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+    <script type="module" src="../assets/js/dashboard-supervisor.js"></script>
     <script>
         $(document).ready(function() {
         // Javascript method's body can be found in assets/assets-for-demo/js/demo.js

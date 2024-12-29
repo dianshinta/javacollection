@@ -1,145 +1,100 @@
-demo = {
-  initPickColor: function() {
-    $('.pick-class-label').click(function() {
-      var new_class = $(this).attr('new-class');
-      var old_class = $('#display-buttons').attr('data-class');
-      var display_div = $('#display-buttons');
-      if (display_div.length) {
-        var display_buttons = display_div.find('.btn');
-        display_buttons.removeClass(old_class);
-        display_buttons.addClass(new_class);
-        display_div.attr('data-class', new_class);
-      }
-    });
+const demo = {
+  initPickColor: function () {
+      $('.pick-class-label').click(function () {
+          const new_class = $(this).attr('new-class');
+          const old_class = $('#display-buttons').attr('data-class');
+          const display_div = $('#display-buttons');
+          if (display_div.length) {
+              const display_buttons = display_div.find('.btn');
+              display_buttons.removeClass(old_class);
+              display_buttons.addClass(new_class);
+              display_div.attr('data-class', new_class);
+          }
+      });
   },
-
-  initChartsPages: function() {
-    chartColor = "#FFFFFF";
-
-    const bar = document.getElementById('barChart').getContext('2d');
-    const data = {
-      labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-      datasets: [
-        {
-          label: 'Hadir',
-          data: [6, 7, 8, 7, 6, 8, 9],
-          backgroundColor: 'rgba(0, 183, 255, 0.8)',
-          stack: 'Stack 0',
-        },
-        {
-          label: 'Izin',
-          data: [1, 1, 0, 1, 1, 0, 0],
-          backgroundColor: 'rgba(139, 69, 19, 0.8)',
-          stack: 'Stack 0',
-        },
-        {
-          label: 'Terlambat',
-          data: [2, 1, 2, 1, 2, 0, 1],
-          backgroundColor: 'rgba(255, 255, 0, 0.8)',
-          stack: 'Stack 0',
-        },
-        {
-          label: 'Tanpa Keterangan',
-          data: [1, 1, 0, 1, 1, 2, 0],
-          backgroundColor: 'rgba(255, 0, 0, 0.8)',
-          stack: 'Stack 0',
-        },
-      ],
-    };
-
-    const options = {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false, // Menghapus legend
-        },
-      },
-      scales: {
-        x: {
-            ticks: {
-                beginAtZero: true
-            },
-            barPercentage: 0.5,        // Mengecilkan lebar setiap bar (0 - 1.0)
-            categoryPercentage: 0.8    // Mengatur ruang dalam satu kategori
-        },
-        y: {
-            beginAtZero: true
-        }
-      }
-    };    
-    
-    new Chart(bar, {
-      type: 'bar',
-      data,
-      options,
-    });
-    
-    ctx = document.getElementById('doughnutChart').getContext("2d");
-
-    myChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Hadir', 'Izin', 'Terlambat', 'Tanpa Keterangan'],
-        datasets: [{
-          label: "Karyawan",
-          pointRadius: 0,
-          pointHoverRadius: 0,
-          backgroundColor: [
-            'rgba(0, 183, 255, 0.8)',
-            'rgba(139, 69, 19, 0.8)',
-            'rgba(255, 255, 0, 0.8)',
-            'rgba(255, 0, 0, 0.8)'
-          ],
-          borderWidth: 0,
-          data: [342, 480, 530, 120]
-        }]
-      },
-
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false, // Menghapus legend
-          },
-        },
-
-        pieceLabel: {
-          render: 'percentage',
-          fontColor: ['white'],
-          precision: 2
-        },
-
-        tooltips: {
-          enabled: false
-        },
-
-/*        scales: {
-          yAxes: [{
-
-            ticks: {
-              display: false
-            },
-            gridLines: {
-              drawBorder: false,
-              zeroLineColor: "transparent",
-              color: 'rgba(255,255,255,0.05)'
-            }
-
-          }],
-
-          xAxes: [{
-            barPercentage: 1.6,
-            gridLines: {
-              drawBorder: false,
-              color: 'rgba(255,255,255,0.1)',
-              zeroLineColor: "transparent"
-            },
-            ticks: {
-              display: false,
-            }
-          }]
-        },*/
-      }
-    });
-  }
 };
+
+let barChartInstance = null;
+let doughnutChartInstance = null;
+
+export async function updateCharts(selectedCabang) {
+    try {
+        const response = await fetch(`/api/chart-data?toko=${encodeURIComponent(selectedCabang)}`);
+        const { weeklyData, monthlyData } = await response.json();
+
+        // Update Bar Chart
+        const barChartCtx = document.getElementById("barChart").getContext("2d");
+
+        // Hancurkan instance grafik jika sudah ada
+        if (barChartInstance) {
+            barChartInstance.destroy();
+        }
+
+        const days = weeklyData.map(item => {
+            const date = new Date(item.day);
+            const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            return dayNames[date.getDay()];
+        });
+        
+        const hadir = weeklyData.map(item => item.hadir);
+        const izin = weeklyData.map(item => item.izin);
+        const terlambat = weeklyData.map(item => item.terlambat);
+        const tanpaketerangan = weeklyData.map(item => item.tanpaketerangan);
+        
+        barChartInstance = new Chart(barChartCtx, {
+            type: "bar",
+            data: {
+                labels: days, // Nama hari digunakan di sini
+                datasets: [
+                    { label: "Hadir", data: hadir, backgroundColor: "rgba(0, 183, 255, 0.8)" },
+                    { label: "Izin", data: izin, backgroundColor: "rgba(139, 69, 19, 0.8)" },
+                    { label: "Terlambat", data: terlambat, backgroundColor: "rgba(255, 255, 0, 0.8)" },
+                    { label: "Tanpa Keterangan", data: tanpaketerangan, backgroundColor: "rgba(255, 0, 0, 0.8)" },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { stacked: true, barPercentage: 0.5, categoryPercentage: 0.8 },
+                    y: { stacked: true, beginAtZero: true },
+                },
+            },
+        });   
+
+        // Update Doughnut Chart
+        const doughnutChartCtx = document.getElementById("doughnutChart").getContext("2d");
+
+        // Hancurkan instance grafik jika sudah ada
+        if (doughnutChartInstance) {
+            doughnutChartInstance.destroy();
+        }
+
+        const totalKehadiran = monthlyData.reduce((sum, item) => sum + item.hadir, 0);
+        const totalIzin = monthlyData.reduce((sum, item) => sum + item.izin, 0);
+        const totalKeterlambatan = monthlyData.reduce((sum, item) => sum + item.terlambat, 0);
+        const totalAbsen = monthlyData.reduce((sum, item) => sum + item.tanpaketerangan, 0);
+
+        doughnutChartInstance = new Chart(doughnutChartCtx, {
+            type: "doughnut",
+            data: {
+                labels: ["Hadir", "Izin", "Terlambat", "Tanpa Keterangan"],
+                datasets: [{
+                    data: [totalKehadiran, totalIzin, totalKeterlambatan, totalAbsen],
+                    backgroundColor: [
+                        "rgba(0, 183, 255, 0.8)",
+                        "rgba(139, 69, 19, 0.8)",
+                        "rgba(255, 255, 0, 0.8)",
+                        "rgba(255, 0, 0, 0.8)",
+                    ],
+                }],
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+            },
+        });
+    } catch (error) {
+        console.error("Gagal memperbarui grafik:", error);
+    }
+}
