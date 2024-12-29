@@ -2988,7 +2988,10 @@ License - nucleoapp.com/license/
 
 .table-responsive {
   overflow: scroll;
-  padding-bottom: 10px; }
+  padding-bottom: 10px; 
+  max-height: 300px;
+  overflow-y: auto;
+}
 
 #tables .table-responsive {
   margin-bottom: 30px; }
