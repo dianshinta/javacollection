@@ -359,35 +359,39 @@
                 </div>
 
                 <!-- Modal Box for Tambah Bukti -->
-                <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content">
-                            <div class="modal-header" id="modalHeader">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
                             <div class="modal-body">
-                                <h5 class="modal-title pb-3" id="bonusModalLabel">Tambah Lampiran Bukti</h5>
                                 <form class="lampiran-body" enctype="multipart/form-data">
                                     <!-- Field untuk Upload File -->
                                     <div class="form-group">
-                                        <label for="fileUpload" class="file-label">Pilih File</label>
-                                        <input type="file" class="form-control" id="fileUpload" name="lampiran"
-                                            accept="image/*, .pdf, .doc, .docx" style="display: none;">
+                                        <label for="fileUpload" class="form-label font-weight-bold">Unggah File Bukti Izin</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="fileUpload" name="lampiran"
+                                                    accept="image/*, .pdf, .doc, .docx">
+                                                <label class="custom-file-label" for="fileUpload">Pilih file...</label>
+                                            </div>
+                                        </div>
+                                        <small class="form-text text-muted mt-1">
+                                            Dapat mengunggah file dengan format: JPG, PNG, PDF, DOC, DOCX.
+                                        </small>
+                                    </div>
+                                    <!-- Display Nama File -->
+                                    <div class="form-group">
+                                        <p id="fileNameDisplay" class="text-secondary"></p>
                                     </div>
                                 </form>
                             </div>
-                            <div class="modal-footer mx-auto">
-                                <button type="button" class="btn btn-save" id="saveLampiran">
-                                    Simpan
-                                </button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-success" id="saveLampiran">Simpan</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
+                
                 <footer class="footer footer-black  footer-white ">
                     <div class="container-fluid">
                         <div class="row">
@@ -434,6 +438,19 @@
             });
         </script>
         <script>
+            const fileInput = document.getElementById('fileUpload');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+            // Menampilkan nama file setelah dipilih
+            fileInput.addEventListener('change', () => {
+                const fileName = fileInput.files[0]?.name || 'Tidak ada file yang dipilih';
+
+                // Update label input file dengan nama file
+                const fileLabel = fileInput.nextElementSibling;
+                fileLabel.textContent = fileName;
+            });
+            
+
             $(document).ready(function () {
                 $.ajaxSetup({
                     headers: {
