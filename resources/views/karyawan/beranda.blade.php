@@ -147,10 +147,6 @@ Coded by www.creative-tim.com
               </div>
               <div class="card-footer ">
                 <hr>
-                <div class="stats">
-                  <i class="fa fa-clock-o"></i>
-                  In the last hour
-                </div>
               </div>
             </div>
           </div>

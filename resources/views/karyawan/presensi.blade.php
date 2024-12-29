@@ -125,10 +125,6 @@
                   </div>
                   <div class="card-footer ">
                     <hr>
-                    <div class="stats">
-                      <i class="fa fa-clock-o"></i>
-                      In the last hour
-                    </div>
                   </div>
                 </div>
             </div>
@@ -141,7 +137,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                       <table class="table" id="riwayat-presensi">
-                        <thead class=" text-primary">
+                        <thead class=" text-primary text-center">
                           <th>
                             No
                           </th>
@@ -157,9 +153,9 @@
                         </thead>
                         <tbody>
                           @foreach ($riwayatPresensi as $riwayat)
-                          <tr>
+                          <tr class="text-center">
                             <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
-                            <td>{{ $riwayat->tanggal }}</td>
+                            <td>{{ \Carbon\Carbon::parse($riwayat->tanggal)->translatedFormat('j F Y') }}</td>
                             <td>{{ $riwayat->waktu }}</td>
                             <td>{{ $riwayat->status }}</td>
                           </tr>
@@ -217,7 +213,7 @@
     });
   </script>
   <script>
-    const targetCoords = { latitude: -6.227873621256837, longitude: 106.86683247073589 }; // Lokasi tujuan
+    const targetCoords = { latitude: -6.2254568, longitude: 106.876853 }; // Lokasi tujuan
     const radiusAllowed = 100; // Radius dalam meter
 
     // Fungsi untuk menghitung jarak dengan formula Haversine
