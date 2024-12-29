@@ -88,8 +88,8 @@
                 <div class="d-flex align-items-center mr-5 mb-4">
                     <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
                     <div>
-                      <span>Sabtu</span>
-                      <small class="text-muted d-block">26 Oktober 2024</small>
+                      <span id="current-day"></span>
+                      <small id="current-date" class="text-muted d-block"></small>
                     </div>
                   </div>
                   
@@ -325,8 +325,32 @@
           });
         }
       });
-
     });
+
+
+    function updateDateTime() {
+      var now = new Date();
+      var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      var months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      
+      var dayOfWeek = days[now.getDay()];
+      var dayOfMonth = now.getDate();
+      var month = months[now.getMonth()];
+      var year = now.getFullYear();
+
+      // Format waktu dengan 2 digit untuk menit dan detik
+      var formattedDate = `${dayOfMonth} ${month} ${year}`;
+      
+      // Update elemen dengan ID
+      document.getElementById('current-day').textContent = dayOfWeek;
+      document.getElementById('current-date').textContent = formattedDate;
+    }
+
+    // Update waktu dan tanggal setiap detik
+    setInterval(updateDateTime, 1000);
+
+    // Panggil fungsi pertama kali saat halaman dimuat
+    updateDateTime();
   </script>
 </body>
 
