@@ -28,6 +28,16 @@ class ChartSeeder extends Seeder
             ],
             [
                 'day' => Carbon::now()->subDay()->format('Y-m-d'),
+                'idtoko' => 'Cabang A',
+                'hadir' => 7,
+                'izin' => 2,
+                'terlambat' => 1,
+                'tanpaketerangan' => 3,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'day' => Carbon::now()->subDay()->format('Y-m-d'),
                 'idtoko' => 'Cabang B',
                 'hadir' => 8,
                 'izin' => 1,

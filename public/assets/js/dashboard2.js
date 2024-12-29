@@ -50,3 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Memuat grafik awal
     updateCharts(selectedCabang);
 });
+
+// Array nama bulan dalam Bahasa Indonesia
+const monthNames = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+];
+
+// Ambil nama bulan saat ini
+const currentMonth = monthNames[new Date().getMonth()];
+
+// Update teks elemen dengan ID 'currentMonth'
+document.getElementById("currentMonth").textContent = currentMonth;
+

@@ -159,7 +159,7 @@
                   Kehadiran<br>
                   Karyawan
                 </h5>
-                <p class="card-category">Desember</p>
+                <p class="card-category" id="currentMonth"></p>
               </div>
               <div class="card-body ">
                 <canvas id="doughnutChart"></canvas>

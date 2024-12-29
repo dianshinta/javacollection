@@ -30,16 +30,21 @@ export async function updateCharts(selectedCabang) {
             barChartInstance.destroy();
         }
 
-        const days = weeklyData.map(item => item.day);
+        const days = weeklyData.map(item => {
+            const date = new Date(item.day);
+            const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            return dayNames[date.getDay()];
+        });
+        
         const hadir = weeklyData.map(item => item.hadir);
         const izin = weeklyData.map(item => item.izin);
         const terlambat = weeklyData.map(item => item.terlambat);
         const tanpaketerangan = weeklyData.map(item => item.tanpaketerangan);
-
+        
         barChartInstance = new Chart(barChartCtx, {
             type: "bar",
             data: {
-                labels: days,
+                labels: days, // Nama hari digunakan di sini
                 datasets: [
                     { label: "Hadir", data: hadir, backgroundColor: "rgba(0, 183, 255, 0.8)" },
                     { label: "Izin", data: izin, backgroundColor: "rgba(139, 69, 19, 0.8)" },
@@ -51,11 +56,11 @@ export async function updateCharts(selectedCabang) {
                 responsive: true,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { barPercentage: 0.5, categoryPercentage: 0.8 },
-                    y: { beginAtZero: true },
+                    x: { stacked: true, barPercentage: 0.5, categoryPercentage: 0.8 },
+                    y: { stacked: true, beginAtZero: true },
                 },
             },
-        });
+        });   
 
         // Update Doughnut Chart
         const doughnutChartCtx = document.getElementById("doughnutChart").getContext("2d");
