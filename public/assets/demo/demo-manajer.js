@@ -1,126 +1,100 @@
-demo = {
-    initPickColor: function() {
-      $('.pick-class-label').click(function() {
-        var new_class = $(this).attr('new-class');
-        var old_class = $('#display-buttons').attr('data-class');
-        var display_div = $('#display-buttons');
-        if (display_div.length) {
-          var display_buttons = display_div.find('.btn');
-          display_buttons.removeClass(old_class);
-          display_buttons.addClass(new_class);
-          display_div.attr('data-class', new_class);
-        }
+const demo = {
+  initPickColor: function () {
+      $('.pick-class-label').click(function () {
+          const new_class = $(this).attr('new-class');
+          const old_class = $('#display-buttons').attr('data-class');
+          const display_div = $('#display-buttons');
+          if (display_div.length) {
+              const display_buttons = display_div.find('.btn');
+              display_buttons.removeClass(old_class);
+              display_buttons.addClass(new_class);
+              display_div.attr('data-class', new_class);
+          }
       });
-    },
-  
-    initChartsPages: async function () {
-      chartColor = "#FFFFFF";
-  
-      // Fetch data from API
-      const response = await fetch('/api/chart-data');
-      const attendanceData = await response.json();
-  
-      const days = attendanceData.map(item => item.day);
-      const present = attendanceData.map(item => item.present);
-      const leave = attendanceData.map(item => item.leave);
-      const late = attendanceData.map(item => item.late);
-      const absent = attendanceData.map(item => item.absent);
-  
-      // Total untuk setiap kategori untuk doughnut chart
-      const totalPresent = present.reduce((a, b) => a + b, 0);
-      const totalLeave = leave.reduce((a, b) => a + b, 0);
-      const totalLate = late.reduce((a, b) => a + b, 0);
-      const totalAbsent = absent.reduce((a, b) => a + b, 0);
-  
-      // 1. Grafik Bar
-      const bar = document.getElementById('barChart').getContext('2d');
-      const barData = {
-          labels: days,
-          datasets: [
-              {
-                  label: 'Hadir',
-                  data: present,
-                  backgroundColor: 'rgba(0, 183, 255, 0.8)',
-                  stack: 'Stack 0',
-              },
-              {
-                  label: 'Izin',
-                  data: leave,
-                  backgroundColor: 'rgba(139, 69, 19, 0.8)',
-                  stack: 'Stack 0',
-              },
-              {
-                  label: 'Terlambat',
-                  data: late,
-                  backgroundColor: 'rgba(255, 255, 0, 0.8)',
-                  stack: 'Stack 0',
-              },
-              {
-                  label: 'Tanpa Keterangan',
-                  data: absent,
-                  backgroundColor: 'rgba(255, 0, 0, 0.8)',
-                  stack: 'Stack 0',
-              },
-          ],
-      };
-  
-      const barOptions = {
-          responsive: true,
-          plugins: {
-              legend: {
-                  display: false, // Menghapus legend
-              },
-          },
-          scales: {
-              x: {
-                  ticks: {
-                      beginAtZero: true,
-                  },
-                  barPercentage: 0.5,
-                  categoryPercentage: 0.8,
-              },
-              y: {
-                  beginAtZero: true,
-              },
-          },
-      };
-  
-      new Chart(bar, {
-          type: 'bar',
-          data: barData,
-          options: barOptions,
-      });
-  
-      // 2. Grafik Doughnut
-      const doughnut = document.getElementById('doughnutChart').getContext("2d");
-      const doughnutData = {
-          labels: ['Hadir', 'Izin', 'Terlambat', 'Tanpa Keterangan'],
-          datasets: [{
-              label: "Karyawan",
-              backgroundColor: [
-                  'rgba(0, 183, 255, 0.8)',
-                  'rgba(139, 69, 19, 0.8)',
-                  'rgba(255, 255, 0, 0.8)',
-                  'rgba(255, 0, 0, 0.8)'
-              ],
-              borderWidth: 0,
-              data: [totalPresent, totalLeave, totalLate, totalAbsent],
-          }],
-      };
-  
-      const doughnutOptions = {
-          responsive: true,
-          plugins: {
-              legend: {
-                  display: false, // Menghapus legend
-              },
-          },
-      };
-  
-      new Chart(doughnut, {
-          type: 'doughnut',
-          data: doughnutData,
-          options: doughnutOptions,
-      });
-    }
+  },
 };
+
+let barChartInstance = null;
+let doughnutChartInstance = null;
+
+export async function updateCharts(selectedCabang) {
+    try {
+        const response = await fetch(`/api/chart-data?toko=${encodeURIComponent(selectedCabang)}`);
+        const { weeklyData, monthlyData } = await response.json();
+
+        // Update Bar Chart
+        const barChartCtx = document.getElementById("barChart").getContext("2d");
+
+        // Hancurkan instance grafik jika sudah ada
+        if (barChartInstance) {
+            barChartInstance.destroy();
+        }
+
+        const days = weeklyData.map(item => {
+            const date = new Date(item.day);
+            const dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            return dayNames[date.getDay()];
+        });
+        
+        const hadir = weeklyData.map(item => item.hadir);
+        const izin = weeklyData.map(item => item.izin);
+        const terlambat = weeklyData.map(item => item.terlambat);
+        const tanpaketerangan = weeklyData.map(item => item.tanpaketerangan);
+        
+        barChartInstance = new Chart(barChartCtx, {
+            type: "bar",
+            data: {
+                labels: days, // Nama hari digunakan di sini
+                datasets: [
+                    { label: "Hadir", data: hadir, backgroundColor: "rgba(0, 183, 255, 0.8)" },
+                    { label: "Izin", data: izin, backgroundColor: "rgba(139, 69, 19, 0.8)" },
+                    { label: "Terlambat", data: terlambat, backgroundColor: "rgba(255, 255, 0, 0.8)" },
+                    { label: "Tanpa Keterangan", data: tanpaketerangan, backgroundColor: "rgba(255, 0, 0, 0.8)" },
+                ],
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { stacked: true, barPercentage: 0.5, categoryPercentage: 0.8 },
+                    y: { stacked: true, beginAtZero: true },
+                },
+            },
+        });   
+
+        // Update Doughnut Chart
+        const doughnutChartCtx = document.getElementById("doughnutChart").getContext("2d");
+
+        // Hancurkan instance grafik jika sudah ada
+        if (doughnutChartInstance) {
+            doughnutChartInstance.destroy();
+        }
+
+        const totalKehadiran = monthlyData.reduce((sum, item) => sum + item.hadir, 0);
+        const totalIzin = monthlyData.reduce((sum, item) => sum + item.izin, 0);
+        const totalKeterlambatan = monthlyData.reduce((sum, item) => sum + item.terlambat, 0);
+        const totalAbsen = monthlyData.reduce((sum, item) => sum + item.tanpaketerangan, 0);
+
+        doughnutChartInstance = new Chart(doughnutChartCtx, {
+            type: "doughnut",
+            data: {
+                labels: ["Hadir", "Izin", "Terlambat", "Tanpa Keterangan"],
+                datasets: [{
+                    data: [totalKehadiran, totalIzin, totalKeterlambatan, totalAbsen],
+                    backgroundColor: [
+                        "rgba(0, 183, 255, 0.8)",
+                        "rgba(139, 69, 19, 0.8)",
+                        "rgba(255, 255, 0, 0.8)",
+                        "rgba(255, 0, 0, 0.8)",
+                    ],
+                }],
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+            },
+        });
+    } catch (error) {
+        console.error("Gagal memperbarui grafik:", error);
+    }
+}

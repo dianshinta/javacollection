@@ -99,3 +99,4 @@ Route::get('/login', function () {
 
 // Mengambil data untuk ditampilkan ke grafik
 Route::get('/api/chart-data', [ChartController::class, 'getChartData']);
+
