@@ -17,6 +17,8 @@
   <!-- CSS Files -->
   <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+  <link href="../assets/css/supervisor-perizinan.css" rel="stylesheet" />
+
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
 
@@ -109,7 +111,7 @@
                           <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
                             @csrf <!-- Token keamanan Laravel -->
 
-                            <input type="hidden" name="status" value="Hadir">
+                            <input type="hidden" name="status" value="">
                             <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
                             <input type="hidden" name="waktu" value="{{ date('H:i:s') }}">
                             <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
@@ -157,7 +159,7 @@
                             <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
                             <td>{{ \Carbon\Carbon::parse($riwayat->tanggal)->translatedFormat('j F Y') }}</td>
                             <td>{{ $riwayat->waktu }}</td>
-                            <td>{{ $riwayat->status }}</td>
+                            <td><span class="status">{{ $riwayat->status }}</span></td>
                           </tr>
                           @endforeach
                         </tbody>
@@ -214,7 +216,7 @@
   </script>
   <script>
     const targetCoords = { latitude: -6.2254568, longitude: 106.876853 }; // Lokasi tujuan
-    const radiusAllowed = 100; // Radius dalam meter
+    const radiusAllowed = 2000; // Radius dalam meter
 
     // Fungsi untuk menghitung jarak dengan formula Haversine
     function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -267,6 +269,31 @@
       }
     }
 
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnPresensi = document.getElementById('btn-presensi');
+      const currentDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+      const lastPresensiDate = localStorage.getItem('lastPresensiDate');
+
+      // Periksa apakah tombol harus dinonaktifkan
+      if (lastPresensiDate === currentDate) {
+        btnPresensi.disabled = true;
+        
+        // Kecilkan font ketika tombol dinonaktifkan
+        btnPresensi.style.fontSize = "13px";
+        btnPresensi.textContent = 'Anda Sudah Presensi'; // Ubah teks tombol
+      }
+
+      // Tambahkan event listener untuk tombol presensi
+      btnPresensi.addEventListener('click', function () {
+        // Simpan tanggal saat ini ke localStorage
+        localStorage.setItem('lastPresensiDate', currentDate);
+
+        // Nonaktifkan tombol
+        btnPresensi.disabled = true;
+        btnPresensi.textContent = 'Anda Sudah Presensi';
+      });
+    });
+    
     // Tambahkan event listener ke form presensi
     document.getElementById('form-presensi').addEventListener('submit', function (event) {
       event.preventDefault(); // Mencegah pengiriman form default
@@ -280,7 +307,7 @@
             method: "POST",
             data: {
               _token: "{{ csrf_token() }}",
-              status: "Hadir", // Status yang dipilih
+              status: statusPresensi, // Status yang dipilih
               tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
               waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }), // Format HH:MM:SS
               toko: "Toko A", // Ganti dengan toko yang sesuai
@@ -325,8 +352,21 @@
           });
         }
       });
-    });
+      
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
 
+      // Batas waktu yaitu jam 9:00
+      const batasJam = 9;
+      const batasMenit = 0;
+
+      if (hours > batasJam || (hours === batasJam && minutes > batasMenit)) {
+        statusPresensi = 'Terlambat';
+      } else {
+        statusPresensi = 'Hadir';
+      }
+    });
 
     function updateDateTime() {
       var now = new Date();
