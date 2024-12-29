@@ -79,3 +79,9 @@
     color: black;
 }
 
+td.text-center {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 150px; 
+}

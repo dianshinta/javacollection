@@ -126,7 +126,7 @@
                                                 onmouseover="this.style.backgroundColor='#E8E8E8';"
                                                 onmouseout="this.style.backgroundColor='white';"
                                                 data-id="{{ $perizinan->id }}"
-                                                data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->format('Y-m-d') }}"
+                                                data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->translatedFormat('j F Y') }}"
                                                 data-jenis="{{ $perizinan->jenis }}"
                                                 data-keterangan="{{ $perizinan->keterangan }}"
                                                 data-status="{{ $perizinan->status }}"
@@ -135,7 +135,7 @@
                                                     {{ $index + 1 }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ \Carbon\Carbon::parse($perizinan->tanggal)->format('d F Y') }}
+                                                    {{ \Carbon\Carbon::parse($perizinan->tanggal)->translatedFormat('j F Y') }}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ ucfirst($perizinan->jenis) }}
@@ -459,8 +459,8 @@
                         }
                     });
 
-                // Validasi khusus untuk radio button "jenis"
-                var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
+                    // Validasi khusus untuk radio button "jenis"
+                    var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
                     if (!jenisSelected) {
                         isValid = false;
                         if ($('#jenisError').length === 0) {
@@ -474,13 +474,27 @@
                         $('#jenisError').remove();
                     }
 
+                    // Validasi tanggal tidak boleh sebelum hari ini
+                    var today = new Date();
+                    var yyyy = today.getFullYear();
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var minDate = `${yyyy}-${mm}-${dd}`;
+
+                    $('#formPerizinan').find('input[type="date"]').each(function () {
+                        if ($(this).val() < minDate) {
+                            isValid = false;
+                            $(this).addClass('is-invalid');
+                            $(this).siblings('.invalid-feedback').remove();
+                            $(this).after('<div class="invalid-feedback">Tanggal tidak boleh sebelum hari ini.</div>');
+                        } else {
+                            $(this).removeClass('is-invalid');
+                            $(this).siblings('.invalid-feedback').remove();
+                        }
+                    });
+
                     // Jika ada field yang kosong, tampilkan pesan dan hentikan proses
                     if (!isValid) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Perhatian',
-                            text: 'Semua field yang wajib diisi harus terisi terlebih dahulu!',
-                        });
                         return false; // Jangan lanjutkan ke proses selanjutnya
                     }
 
@@ -529,216 +543,204 @@
                 });
 
             const rows = document.querySelectorAll("#riwayatTable tbody tr");
-                rows.forEach(row => {
-                    row.addEventListener("click", () => {
-                        // Ambil data dari atribut data-*
-                        const id = row.getAttribute("data-id");
-                        const tanggal = row.getAttribute("data-tanggal");
-                        const jenis = row.getAttribute("data-jenis");
-                        const keterangan = row.getAttribute("data-keterangan");
-                        const status = row.getAttribute("data-status");
+            rows.forEach(row => {
+                row.addEventListener("click", () => {
+                    // Ambil data dari atribut data-*
+                    const id = row.getAttribute("data-id");
+                    const tanggal = row.getAttribute("data-tanggal");
+                    const jenis = row.getAttribute("data-jenis");
+                    const keterangan = row.getAttribute("data-keterangan");
+                    const status = row.getAttribute("data-status");
 
-                        console.log("Jenis yang dipilih:", jenis);  // Pastikan ini menampilkan nilai yang sesuai
-                        console.log(document.querySelectorAll('input[name="jenis"][value="Sakit"]'));  // Cek elemen radio button
+                    console.log("Jenis yang dipilih:", jenis);  // Pastikan ini menampilkan nilai yang sesuai
+                    console.log(document.querySelectorAll('input[name="jenis"][value="Sakit"]'));  // Cek elemen radio button
 
-                        // Isi data di dalam modal
-                        document.querySelector("#formUpdatePerizinan #tanggal").value = tanggal; // Set tanggal
-                        document.querySelectorAll(`input[name="jenis"][value="${jenis}"]`).forEach((radio) => {
-                            if (radio.value === jenis) {
-                                radio.checked = true
-                            }
-                        }); // Set jenis (radio)
-                        document.querySelector("#formUpdatePerizinan #keterangan").value = keterangan; // Set keterangan
-
-                        const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
-                        modal.show();
-
-                        if (status != 'Diproses') {
-                            document.querySelector("#formUpdatePerizinan #tanggal").disabled = true;
-                            document.querySelectorAll(`input[name="jenis"]`).forEach((radio) => {
-                                radio.disabled = true;
-                            });
-                            document.querySelector("#formUpdatePerizinan #keterangan").disabled = true; // Set keterangan
-                            document.getElementById('deletePerizinan').disabled = true;
+                    // Isi data di dalam modal
+                    document.querySelector("#formUpdatePerizinan #tanggal").value = tanggal; // Set tanggal
+                    document.querySelectorAll(`#formUpdatePerizinan input[name="jenis"][value="${jenis}"]`).forEach((radio) => {
+                        if (radio.value === jenis) {
+                            radio.checked = true
                         }
-                        // Ketika tombol Ubah pada modal perizinan diklik
-                        $(document).off('click', '#changePerizinan').on('click', '#changePerizinan', function () {
-                            // Validasi form: cek apakah semua field yang required sudah diisi
-                            var isValid = true;
-                            var requiredFields = $('#formUpdatePerizinan').find('[required]'); // Mencari semua input yang wajib diisi
+                    }); // Set jenis (radio)
+                    document.querySelector("#formUpdatePerizinan #keterangan").value = keterangan; // Set keterangan
 
-                            requiredFields.each(function () {
-                                if ($(this).val() === '') {
-                                    isValid = false;
-                                    $(this).addClass('is-invalid'); // Menambahkan class is-invalid untuk memberi tanda
-                                    $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi sebelumnya
-                                    $(this).after('<div class="invalid-feedback">Field ini harus diisi.</div>'); // Menambahkan pesan peringatan
-                                } else {
-                                    $(this).removeClass('is-invalid'); // Menghapus class is-invalid jika field terisi
-                                    $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi
-                                }
-                            });
+                    const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
+                    modal.show();
 
-                            // Validasi khusus untuk radio button "jenis"
-                            var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
-                            if (!jenisSelected) {
+                    if (status != 'Diproses') {
+                        document.querySelector("#formUpdatePerizinan #tanggal").disabled = true;
+                        document.querySelectorAll(`input[name="jenis"]`).forEach((radio) => {
+                            radio.disabled = true;
+                        });
+                        document.querySelector("#formUpdatePerizinan #keterangan").disabled = true; // Set keterangan
+                        document.getElementById('deletePerizinan').disabled = true;
+                    }
+                    // Ketika tombol Ubah pada modal perizinan diklik
+                    $(document).off('click', '#changePerizinan').on('click', '#changePerizinan', function () {
+                        // Validasi form: cek apakah semua field yang required sudah diisi
+                        var isValid = true;
+                        var requiredFields = $('#formUpdatePerizinan').find('[required]'); // Mencari semua input yang wajib diisi
+
+                        requiredFields.each(function () {
+                            if ($(this).val() === '') {
                                 isValid = false;
-                                if ($('#jenisError').length === 0) {
-                                    // Tambahkan pesan validasi jika belum ada
-                                    $('input[name="jenis"]').closest('.container').append(
-                                        '<div id="jenisError" class="mt-2" style="font-size: 12px; color: red">Harap pilih salah satu jenis izin.</div>'
-                                    );
-                                }
+                                $(this).addClass('is-invalid'); // Menambahkan class is-invalid untuk memberi tanda
+                                $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi sebelumnya
+                                $(this).after('<div class="invalid-feedback">Field ini harus diisi.</div>'); // Menambahkan pesan peringatan
                             } else {
-                                // Hapus pesan validasi jika sudah dipilih
-                                $('#jenisError').remove();
+                                $(this).removeClass('is-invalid'); // Menghapus class is-invalid jika field terisi
+                                $(this).siblings('.invalid-feedback').remove(); // Menghapus pesan validasi
                             }
-
-                            // Jika ada field yang kosong, tampilkan pesan dan hentikan proses
-                            if (!isValid) {
-                                Swal.fire({
-                                    icon: 'warning',
-                                    title: 'Perhatian',
-                                    text: 'Semua field yang wajib diisi harus terisi terlebih dahulu!',
-                                });
-                                return false; // Jangan lanjutkan ke proses selanjutnya
-                            }
-
-                            // Menampilkan modal konfirmasi
-                            $('#confirmUpdateModal').modal('show');
                         });
 
-                        // Ketika tombol "Yakin" pada modal konfirmasi diklik
-                        $('#btnYakinUpdate').on('click', function () {
-                            const dataTanggal = document.querySelector("#formUpdatePerizinan #tanggal").value;
-                            const dataJenis = document.querySelector("#formUpdatePerizinan input[name='jenis']:checked")?.value;
-                            const dataKeterangan = document.querySelector("#formUpdatePerizinan #keterangan").value;
+                        // Validasi khusus untuk radio button "jenis"
+                        var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
+                        if (!jenisSelected) {
+                            isValid = false;
+                            if ($('#jenisError').length === 0) {
+                                // Tambahkan pesan validasi jika belum ada
+                                $('input[name="jenis"]').closest('.container').append(
+                                    '<div id="jenisError" class="mt-2" style="font-size: 12px; color: red">Harap pilih salah satu jenis izin.</div>'
+                                );
+                            }
+                        } else {
+                            // Hapus pesan validasi jika sudah dipilih
+                            $('#jenisError').remove();
+                        }
 
-                            // const perizinanId = document.querySelector("#updatePerizinanModal").getAttribute("data-id");
-                            // Kirim data ke server menggunakan AJAX
-                            const formData = new FormData();
-                            formData.append("tanggal", dataTanggal);
-                            formData.append("jenis", dataJenis);
-                            formData.append("keterangan", dataKeterangan);
-                            formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
-                            formData.append("_token", "{{ csrf_token() }}");  // Token CSRF untuk keamanan
+                        // Jika ada field yang kosong, tampilkan pesan dan hentikan proses
+                        if (!isValid) {
+                            return false; // Jangan lanjutkan ke proses selanjutnya
+                        }
 
-                            // Gunakan fetch API untuk mengirim data ke server
-                            fetch("{{ route('perizinan.update') }}", {
-                                method: "POST",
-                                body: formData
+                        // Menampilkan modal konfirmasi
+                        $('#confirmUpdateModal').modal('show');
+                    });
+
+                    // Ketika tombol "Yakin" pada modal konfirmasi diklik
+                    $('#btnYakinUpdate').on('click', function () {
+                        const dataTanggal = document.querySelector("#formUpdatePerizinan #tanggal").value;
+                        const dataJenis = document.querySelector("#formUpdatePerizinan input[name='jenis']:checked")?.value;
+                        const dataKeterangan = document.querySelector("#formUpdatePerizinan #keterangan").value;
+
+                        // const perizinanId = document.querySelector("#updatePerizinanModal").getAttribute("data-id");
+                        // Kirim data ke server menggunakan AJAX
+                        const formData = new FormData();
+                        formData.append("tanggal", dataTanggal);
+                        formData.append("jenis", dataJenis);
+                        formData.append("keterangan", dataKeterangan);
+                        formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
+                        formData.append("_token", "{{ csrf_token() }}");  // Token CSRF untuk keamanan
+
+                        // Gunakan fetch API untuk mengirim data ke server
+                        fetch("{{ route('perizinan.update') }}", {
+                            method: "POST",
+                            body: formData
+                        })
+                            .then(response => {
+                                return response.json();
                             })
-                                .then(response => {
-                                    return response.json();
-                                })
-                                .then(data => {
-                                    if (data.success) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Berhasil',
-                                            text: 'Perizinan berhasil diperbarui!',
-                                            showConfirmButton: false,
-                                            timer: 1500,
-                                            willClose: () => {
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: 'Perizinan berhasil diperbarui!',
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        willClose: () => {
+                                        // Reload halaman setelah SweetAlert tertutup
+                                        location.reload();
+                                        }
+                                    });
+                                    $('#confirmUpdateModal').modal('hide');
+
+                                    // Update tampilan tabel di halaman
+                                    const row = document.querySelector(`#riwayatTable tbody tr[data-id='${id}']`);
+                                    row.querySelector("td:nth-child(2)").textContent = new Date(dataTanggal).toLocaleDateString(); // Update tanggal
+                                    row.querySelector("td:nth-child(3)").textContent = dataJenis.charAt(0).toUpperCase() + dataJenis.slice(1); // Update jenis
+                                    row.querySelector("td:nth-child(4)").textContent = dataKeterangan; // Update keterangan
+                                    row.querySelector("td:nth-child(5)").innerHTML = `<span class="badge bg-warning">Diproses</span>`; // Update status jika perlu
+
+                                    // Tutup modal
+                                    const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
+                                    modal.hide();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: data.message || 'Gagal memperbarui perizinan. Coba lagi.',
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                                alert("Terjadi kesalahan. Coba lagi.");
+                            });
+                    });
+
+                    $('#deletePerizinan').on('click', function () {
+                        $('#confirmDeleteModal').modal('show');
+                    });
+                    
+                    $('#btnYakinDelete').on('click', function () {
+                        const formData = new FormData();
+                        formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
+                        formData.append("_token", "{{ csrf_token() }}");  // Token CSRF untuk keamanan
+
+                        // Gunakan fetch API untuk mengirim data ke server
+                        fetch("{{ route('perizinan.delete') }}", {
+                            method: "POST",
+                            body: formData
+                        })
+                            .then(response => {
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: 'Perizinan berhasil dihapus!',
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        willClose: () => {
+                                            row.remove();
                                             // Reload halaman setelah SweetAlert tertutup
                                             location.reload();
-                                            }
-                                        });
-                                        $('#confirmUpdateModal').modal('hide');
+                                        }
+                                    });
+                                    $('#confirmDeleteModal').modal('hide');
 
-                                        // Update tampilan tabel di halaman
-                                        const row = document.querySelector(`#riwayatTable tbody tr[data-id='${id}']`);
-                                        row.querySelector("td:nth-child(2)").textContent = new Date(dataTanggal).toLocaleDateString(); // Update tanggal
-                                        row.querySelector("td:nth-child(3)").textContent = dataJenis.charAt(0).toUpperCase() + dataJenis.slice(1); // Update jenis
-                                        row.querySelector("td:nth-child(4)").textContent = dataKeterangan; // Update keterangan
-                                        row.querySelector("td:nth-child(5)").innerHTML = `<span class="badge bg-warning">Diproses</span>`; // Update status jika perlu
-
-                                        // Tutup modal
-                                        const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
-                                        modal.hide();
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Gagal',
-                                            text: data.message || 'Gagal memperbarui perizinan. Coba lagi.',
-                                        });
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error("Error:", error);
-                                    alert("Terjadi kesalahan. Coba lagi.");
-                                });
-                        });
-
-                        $('#deletePerizinan').on('click', function () {
-                            $('#confirmDeleteModal').modal('show');
-                        });
-                        
-                        $('#btnYakinDelete').on('click', function () {
-                            const formData = new FormData();
-                            formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
-                            formData.append("_token", "{{ csrf_token() }}");  // Token CSRF untuk keamanan
-
-                            // Gunakan fetch API untuk mengirim data ke server
-                            fetch("{{ route('perizinan.delete') }}", {
-                                method: "POST",
-                                body: formData
+                                    // Tutup modal
+                                    const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
+                                    modal.hide();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: data.message || 'Gagal menghapus perizinan. Coba lagi.',
+                                    });
+                                }
                             })
-                                .then(response => {
-                                    return response.json();
-                                })
-                                .then(data => {
-                                    if (data.success) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Berhasil',
-                                            text: 'Perizinan berhasil dihapus!',
-                                            showConfirmButton: false,
-                                            timer: 1500,
-                                            willClose: () => {
-                                                row.remove();
-                                                // Reload halaman setelah SweetAlert tertutup
-                                                location.reload();
-                                            }
-                                        });
-                                        $('#confirmDeleteModal').modal('hide');
-
-                                        // Tutup modal
-                                        const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
-                                        modal.hide();
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Gagal',
-                                            text: data.message || 'Gagal menghapus perizinan. Coba lagi.',
-                                        });
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error("Error:", error);
-                                    alert("Terjadi kesalahan. Coba lagi.");
-                                });
+                            .catch(error => {
+                                console.error("Error:", error);
+                                alert("Terjadi kesalahan. Coba lagi.");
+                            });
                         });
-
                     }); 
             });
 
 
             // Tambahkan event listener untuk memanage tombol setelah modal ditutup
             $('#perizinanModal').on('hidden.bs.modal', function () {
-                const modalFooter = document.querySelector("#perizinanModal .modal-footer");
-                const cancelButton = modalFooter.querySelector(".btn-cancel");
+                // Hapus semua pesan validasi
+            $('#formPerizinan').find('.is-invalid').removeClass('is-invalid');
+            $('#formPerizinan').find('.invalid-feedback').remove();
+            $('#jenisError').remove(); // Hapus pesan validasi khusus radio button
 
-                if (cancelButton) {
-                    cancelButton.remove();  // Menghapus tombol "Batalkan Izin" setelah modal ditutup
-                }
-
-                document.querySelector("#formPerizinan #tanggal").value = ""; // Set tanggal
-                document.querySelectorAll(`input[name="jenis"]`).forEach((radio) => {
-                    radio.checked = false // Nonaktifkan semua radio button 
-                });
-                // Reset keterangan
-                document.getElementById("keterangan").value = "";
+            // Reset input form
+            $('#formPerizinan')[0].reset();
             });
         });
         </script>
