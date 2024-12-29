@@ -20,6 +20,7 @@ Coded by www.creative-tim.com
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
         Kasbon | JAVA COLLECTION
     </title>
@@ -176,36 +177,32 @@ Coded by www.creative-tim.com
                     </div>
                     <h5 class="modal-title">Formulir Pembayaran Kasbon</h5>
                     <div class="modal-body">
-                        <form id="kasbonPaymentForm" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="form-group">
-                                <label for="tanggal">Tanggal:</label>
-                                <input type="date" id="tanggal" class="form-control">
+                        <div class="form-group">
+                            <label for="tanggal">Tanggal:</label>
+                            <input type="date" id="tanggal_pembayaran" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="nominal">Nominal:</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </span>
+                                <input type="number" id="nominal_pembayaran" class="form-control" min="0" placeholder="0">
                             </div>
-                            <div class="form-group">
-                                <label for="nominal">Nominal:</label>
-                                <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-text">Rp</span>
-                                    </span>
-                                    <input type="number" id="nominal" class="form-control" min="0" placeholder="0">
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lampiran">Bukti:</label>
+                            <div class="button-container">
+                                <input type="file" id="lampiran" class="custom-button form-control">
+                                    Tambah
+                                </input>
                             </div>
-                            <div class="form-group">
-                                <label for="lampiran">Bukti:</label>
-                                <div class="button-container">
-                                    <input type="file" id="lampiran" class="custom-button form-control">
-                                        Tambah
-                                    </input>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn" id="kirimPembayaranBtn">Kirim 
-                                    <i class="bi bi-caret-right-fill"></i>
-                                </button>
-                            </div>
-                        </form>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn" id="kirimPembayaranBtn">Kirim 
+                                <i class="bi bi-caret-right-fill"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -282,12 +279,28 @@ Coded by www.creative-tim.com
                                             </th>
                                         </thead>
                                         <tbody id="kasbonTableBody" class="text-center">
-                                            @foreach ($riwayatPengajuanKasbon as $riwayat)
+                                            @foreach ($riwayatKasbon as $riwayat)
                                                 <tr class="text-capitalize">
                                                     <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
-                                                    <td>{{ $riwayat->tanggal_pengajuan }}</td>
+                                                    <td>
+                                                        @if ($riwayat->keterangan === 'Pengajuan')
+                                                            {{ \Carbon\Carbon::parse($riwayat->tanggal_pengajuan)->format('Y-m-d') }}
+                                                        @elseif ($riwayat->keterangan === 'Pembayaran')
+                                                            {{ \Carbon\Carbon::parse($riwayat->tanggal_pembayaran)->format('Y-m-d') }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $riwayat->alasan }}</td>
-                                                    <td>{{ $riwayat->nominal_diajukan }}</td>
+                                                    <td>
+                                                        @if ($riwayat->keterangan === 'Pengajuan')
+                                                            Rp {{ number_format($riwayat->nominal_diajukan, 0, ',', '.') }}
+                                                        @elseif ($riwayat->keterangan === 'Pembayaran')
+                                                            {{ $riwayat->nominal_dibayar ? 'Rp ' . number_format($riwayat->nominal_dibayar, 0, ',', '.') : 'Belum Dibayar' }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $riwayat->keterangan }}</td>
                                                     <td class="text-right">
                                                         <div class="button-container">
@@ -363,7 +376,7 @@ Coded by www.creative-tim.com
                     if (!tanggal || !nominal || !alasan) {
                         Swal.fire({
                             title: 'Gagal!',
-                            text: 'Pastikan semua kolom terisi',
+                            text: 'Pastikan semua data terisi',
                             icon: 'error',
                             confirmButtonText: 'OK',
                         });
@@ -434,8 +447,8 @@ Coded by www.creative-tim.com
                         method: 'GET',
                         success: function (response) {
                             const limitAwal = response.limit_awal; // Limit awal dari backend
-                            const kasbonAktif = response.kasbon_aktif; // Kasbon aktif dari backend
                             const sisaLimit = response.sisa_limit; // Sisa limit dari backend
+                            const kasbonAktif = limitAwal - sisaLimit;
 
                             // Hitung persentase progress
                             const persentase = Math.min((kasbonAktif / limitAwal) * 100, 100).toFixed(2);
@@ -460,56 +473,58 @@ Coded by www.creative-tim.com
 
             $(document).ready(function () {
                 $('#kirimPembayaranBtn').on('click', function () {
-                    // Ambil data dari form menggunakan FormData
-                    var formData = new FormData($('#kasbonPaymentForm')[0]);
-
                     // Pastikan tanggal, nominal, dan lampiran diambil dengan benar
-                    var tanggal = $('#tanggal').val();
-                    var nominal = $('#nominal').val();
+                    var tanggal = $('#tanggal_pembayaran').val();
+                    var nominal = $('#nominal_pembayaran').val();
                     var lampiran = $('#lampiran')[0].files[0]; // Ambil file pertama dari input file
 
-                    // Validasi data
+                    // Validate the data before sending
                     if (!tanggal || !nominal || !lampiran) {
                         Swal.fire({
                             title: 'Gagal!',
-                            text: response.responseJSON ? response.responseJSON.message : 'Pastikan semua kolom terisi dan lampiran diupload.',
+                            text: 'Pastikan semua data terisi',
                             icon: 'error',
                             confirmButtonText: 'OK',
                         });
                         return;
                     }
 
-                    // Tambahkan data ke FormData
-                    formData.append('tanggal_pembayaran', tanggal);
-                    formData.append('nominal_pembayaran', nominal);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var lampiranBase64 = e.target.result.split(',')[1];
 
-                    // Kirim data menggunakan AJAX
-                    $.ajax({
-                        url: '{{ route('kasbon.payment') }}', // Ganti dengan route yang sesuai
-                        method: 'POST',
-                        data: formData,
-                        processData: false,  // Jangan memproses data form menjadi query string
-                        contentType: false,  // Jangan set content-type karena FormData yang akan melakukannya
-                        success: function (response) {
-                            Swal.fire({
-                                title: 'Pembayaran Berhasil!',
-                                text: response.success,
-                                icon: 'success',
-                                confirmButtonText: 'OK',
-                            }).then(function () {
-                                // Lakukan pembaruan tampilan atau reset form jika perlu
-                                $('#kasbonPaymentForm')[0].reset(); // Reset form setelah sukses
-                            });
-                        },
-                        error: function (response) {
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: response.responseJSON ? response.responseJSON.message : 'Terjadi kesalahan.',
-                                icon: 'error',
-                                confirmButtonText: 'Coba Lagi',
-                            });
-                        }
-                    });
+                        // Kirim data menggunakan AJAX
+                        $.ajax({
+                            url: '{{ route('kasbon.payment') }}', // Ganti dengan route yang sesuai
+                            method: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}', // Tambahkan CSRF token jika diperlukan
+                                tanggal_pembayaran: tanggal,
+                                nominal_pembayaran: nominal,
+                                lampiran: lampiranBase64,
+                                lampiran_nama: lampiran.name,
+                            },
+                            success: function (response) {
+                                $('#pembayaranModal').modal('hide');
+                                Swal.fire({
+                                    title: 'Pembayaran Berhasil!',
+                                    text: response.success,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK',
+                                });
+                            },
+                            error: function (response) {
+                                $('#pembayaranModal').modal('hide');
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    text: response.responseJSON ? response.responseJSON.message : 'Terjadi kesalahan. Silakan coba lagi.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                });
+                            }
+                        });
+                    };
+                    reader.readAsDataURL(lampiran);
                 });
             });
         </script>
