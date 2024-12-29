@@ -126,7 +126,7 @@
                                                 onmouseover="this.style.backgroundColor='#E8E8E8';"
                                                 onmouseout="this.style.backgroundColor='white';"
                                                 data-id="{{ $perizinan->id }}"
-                                                data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->translatedFormat('j F Y') }}"
+                                                data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->format('Y-m-d') }}"
                                                 data-jenis="{{ $perizinan->jenis }}"
                                                 data-keterangan="{{ $perizinan->keterangan }}"
                                                 data-status="{{ $perizinan->status }}"
@@ -310,7 +310,6 @@
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p>Apakah Anda yakin ingin mengajukan izin ini?</p>
@@ -329,7 +328,6 @@
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p>Apakah Anda yakin ingin mengubah izin ini?</p>
@@ -347,6 +345,8 @@
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
+                            <div class="modal-header">
+                            </div>
                             <div class="modal-body">
                                 <p>Apakah Anda yakin ingin menghapus izin ini?</p>
                                 <div class="text-center">

@@ -58,6 +58,8 @@ class PerizinanController extends Controller
         // Mengambil data perizinan dari database (opsional, tambahkan jika diperlukan)
         $perizinans = perizinan::all(); // Ambil semua data perizinan
 
+        $perizinans = perizinan::orderBy('updated_at', 'desc')
+                                ->get();
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
         return view('karyawan.perizinan', compact('perizinans'));
     }
