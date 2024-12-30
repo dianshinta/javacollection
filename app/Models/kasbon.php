@@ -14,22 +14,22 @@ class kasbon extends Model
     
     // Kolom yang dapat diisi untuk proses update
     protected $fillable = [
+        'nama',
+        'nip',
         'status_kasbon',
         'status_bayar',
+        'alasan',
         'tanggal_pengajuan',
         'tanggal_pembayaran',
         'nominal_diajukan',
         'nominal_dibayar',
         'saldo_akhir',
-        'alasan',
         'lampiran',
-        'nama',
-        'nip',
     ];
 
     // Casting atribut tertentu
     protected $casts = [
-        'tanggal_pembayaran' => 'date',
+        // 'tanggal_pembayaran' => 'date',
         'status_kasbon' => 'string',
         'status_bayar' => 'string',
     ];

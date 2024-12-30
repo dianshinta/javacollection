@@ -83,14 +83,14 @@
                                             <tbody>
                                                 @if ($pembayaran->isEmpty())
                                                 <tr>
-                                                    <td colspan="6">Tidak ada pembayaran</td>
+                                                    <td colspan="7" class="text-center">Tidak ada pembayaran</td>
                                                 </tr>
                                                 @else
                                                     @foreach($pembayaran as $data)
                                                     <tr>
                                                         <td>{{ $data->nip }}</td>
                                                         <td>{{ $data->nama }}</td>
-                                                        <td>{{ $data->tanggal_pembayaran->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->format('d/m/Y') }}</td>
                                                         <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
                                                         <td>
                                                             @if ($data->status_kasbon === 'Lunas')
@@ -113,15 +113,15 @@
                                                             class="btn btn-info btn-round" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#pembayaranModal"
+                                                            data-id="{{ $data->id }}"
                                                             data-nip="{{ $data->nip }}"
                                                             data-nama="{{ $data->nama }}"
                                                             data-tanggal-bayar="{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->format('d/m/Y') }}"
-                                                            {{-- data-tanggal-bayar="{{ $data->tanggal_pembayaran->format('d/m/Y') }}" --}}
-                                                            data-saldo-akhir="{{ $data->saldo_akhir }}"
                                                             data-nominal-dibayar="{{ $data->nominal_dibayar }}"
+                                                            data-saldo-akhir="{{ $data->saldo_akhir }}"
                                                             data-status-bayar="{{ $data->status_bayar }}"
                                                             data-status-kasbon="{{ $data->status_kasbon }}"
-                                                            data-lampiran="{{ $data->lampiran }}">
+                                                            data-lampiran="{{ asset($data->lampiran) }}">
                                                                 <i class="bi bi-eye"></i> Lihat
                                                             </a>
                                                         </td>
@@ -165,7 +165,7 @@
                                 <div class="col-7 bg-gray" id="modal-nominal-dibayar"></div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">Saldo Kasbon:</div>
+                                <div class="col-5 label-bold">Limit Kasbon:</div>
                                 <div class="col-7" id="modal-saldo-akhir"></div>
                             </div>
                             <div class="row mb-2">
@@ -252,6 +252,7 @@
                 const button = event.relatedTarget;
 
                 // Ambil data dari tombol
+                const id = button.getAttribute('data-id');
                 const nip = button.getAttribute('data-nip');
                 const nama = button.getAttribute('data-nama');
                 const tanggalBayar = button.getAttribute('data-tanggal-bayar');
@@ -275,11 +276,12 @@
                 // Simpan status bayar dan status kasbon di modal sebagai atribut data
                 pembayaranModal.setAttribute('data-status-bayar', statusBayar);
                 pembayaranModal.setAttribute('data-status-kasbon', statusKasbon);
+                 pembayaranModal.setAttribute('data-id', id);
 
                 // Update link di modal
                 const modalLampiran = document.getElementById('modal-lampiran');
                 if (lampiran) {
-                    modalLampiran.href = `/storage/${lampiran}`; // Path file untuk unduhan
+                    modalLampiran.href = lampiran; // Path file untuk unduhan
                     modalLampiran.style.display = 'inline'; // Tampilkan tombol
                 } else {
                     modalLampiran.style.display = 'none'; // Sembunyikan tombol jika lampiran kosong
@@ -425,15 +427,18 @@
             const btnTolak = document.getElementById('btnTolak');
             const btnYakin = document.getElementById('btnYakin');
             const modalNip = document.getElementById('modal-nip');
+            const pembayaranModal = document.getElementById('pembayaranModal');
             const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
             const confirmMessage = document.getElementById('confirmMessage');
 
             let actionToPerform = ''; // Menyimpan status yang dipilih (Terima/Tolak)
-            let nip = '';
+            // let nip = '';
+            let id = '';
 
             // Event untuk tombol "Terima Pembayaran"
             btnTerima.addEventListener('click', function () {
-                nip = modalNip.textContent.trim();
+                // nip = modalNip.textContent.trim();
+                id = pembayaranModal.getAttribute('data-id');
                 actionToPerform = 'terima';
                 confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran ini?';
                 confirmModal.show();
@@ -441,7 +446,8 @@
 
             // Event untuk tombol "Tolak Pembayaran"
             btnTolak.addEventListener('click', function () {
-                nip = modalNip.textContent.trim();
+                // nip = modalNip.textContent.trim();
+                id = pembayaranModal.getAttribute('data-id');
                 actionToPerform = 'tolak';
                 confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran ini?';
                 confirmModal.show();
@@ -471,23 +477,23 @@
                         return; // Hentikan proses
                     }
 
-                    // 2. Validasi: Status kasbon lunas dan saldo <= 0
-                    if (saldo <= 0 || statusKasbon === 'lunas') {
+                    // Validasi 2: Limit kasbon sudah melebihi 2 juta
+                    if (saldo >= 2000000 || statusKasbon === 'lunas') {
                         Swal.fire({
                             icon: 'error',
                             title: 'Pembayaran Tidak Valid',
-                            text: 'Saldo sudah Rp 0 dan status kasbon sudah lunas.',
+                            text: 'Limit kasbon sudah mencapai maksimum dan Kasbon Telah Lunas.',
                             confirmButtonText: 'OK',
                         });
                         return; // Hentikan proses
                     }
 
-                    // 3. Validasi: Nominal pembayaran melebihi saldo kasbon
-                    if (nominalPembayaran > saldo) {
+                    // Validasi 3: Nominal pembayaran melebihi saldo kasbon
+                    if (saldo + nominalPembayaran > 2000000) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Pembayaran Tidak Valid',
-                            text: 'Nominal pembayaran tidak boleh melebihi saldo akhir.',
+                            text: 'Pembayaran yang dilakukan melebihi limit kasbon.',
                             confirmButtonText: 'OK',
                         });
                         return; // Hentikan proses
@@ -495,12 +501,12 @@
                 }
 
                 // Jika validasi lolos, proses pembayaran
-                processPayment(actionToPerform, nip);
+                processPayment(actionToPerform, id);
             });
 
             // Fungsi untuk memproses pembayaran
-            function processPayment(action, nip) {
-                fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
+            function processPayment(action, id) {
+                fetch(`/kasbon/${encodeURIComponent(id)}/update`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -539,7 +545,7 @@
                     .catch((error) => {
                         console.error('Error:', error.message);
                         Swal.fire({
-                            title: 'Pembayaran Tidak Valid',
+                            title: 'Error',
                             text: error.message || 'Terjadi kesalahan saat memproses data.',
                             icon: 'error',
                         });

@@ -74,7 +74,7 @@ Route::post('/perizinan/update-status', [supervisorPerizinanController::class, '
 
 Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'index'])->name('supervisor.pembayaran');
 
-Route::post('/kasbon/{nip}/update', [supervisorPembayaranController::class, 'update'])->name('kasbon.update');
+Route::post('/kasbon/{id}/update', [supervisorPembayaranController::class, 'update'])->name('kasbon.update');
 
 // Route::get('/supervisor/kasbon/', function () {
 //     return view('/supervisor/pengajuan', [
@@ -102,4 +102,3 @@ Route::get('/login', function () {
 
 // Mengambil data untuk ditampilkan ke grafik
 Route::get('/api/chart-data', [ChartController::class, 'getChartData']);
-

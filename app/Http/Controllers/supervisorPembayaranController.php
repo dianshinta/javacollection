@@ -15,27 +15,27 @@ class supervisorPembayaranController extends Controller
         // Ambil parameter pencarian 
         $search = $request->input('search');
         
-        // Query data pembayaran dengan filter pencarian
+        // Query data pembayaran 
         if (strlen($search)){
-            $pembayaran = Kasbon::where('keterangan', 'Pembayaran') // Filter hanya data dengan keterangan "Pengajuan"
-                ->when($search, function ($query, $search){
-                    $query -> where('nip', 'like',"%{$search}%")
-                    -> orWhere('nama','like',"%{$search}%")
-                    -> orWhere('tanggal_pembayaran','like',"%{$search}%")
-                    -> orWhere('nominal_dibayar','like',"%{$search}%")
-                    -> orWhere('status_kasbon','like',"%{$search}%")
-                    -> orWhere('status_bayar','like',"%{$search}%");
-                })
-            // $pembayaran = Kasbon::when($search, function ($query, $search){
-            // })
-            ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
-            ->orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-            ->get();
+            $pembayaran = Kasbon::where('keterangan', 'Pembayaran')
+                                ->when($search, function ($query, $search) {
+                                    $query->where('nip', 'like', "%{$search}%")
+                                        ->orWhere('nama', 'like', "%{$search}%")
+                                        ->orWhere('tanggal_pembayaran', 'like', "%{$search}%")
+                                        ->orWhere('nominal_dibayar','like',"%{$search}%")
+                                        ->orWhere('status_kasbon', 'like', "%{$search}%")
+                                        ->orWhere('status_bayar', 'like', "%{$search}%")
+                                        ->orWhere('saldo_akhir', 'like', "%{$search}%");
+                                })
+                                ->orderBy('updated_at', 'desc')
+                                ->orderBy('updated_at', 'desc')
+                                ->get();
         } else {
-            // Ambil data pembayaran dari database
-            $pembayaran = Kasbon::orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
-            -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-            ->get();
+            // Ambil data pembayaran dari database dengan filter keterangan
+            $pembayaran = Kasbon::where('keterangan', 'Pembayaran') // Filter keterangan "Pembayaran"
+                                ->orderBy('updated_at', 'desc') // Urutkan berdasarkan pembaruan terbaru
+                                ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembuatan jika sama
+                                ->get();
         }
             
         // Kirim data ke view
@@ -85,15 +85,22 @@ class supervisorPembayaranController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $nip)
+    public function update(Request $request, $id)
     {   
         // Validasi input
         $request->validate([
-            'action' => 'required|in:terima,tolak', // Action bisa 'accept' atau 'reject'
+            'action' => 'required|in:terima,tolak', 
+        ]);
+
+        \Log::info('Proses Pembayaran Kasbon:', [
+            'id' => $id,
+            'action' => $request->action,
         ]);
     
-        // Cari kasbon berdasarkan NIP
-        $kasbon = Kasbon::where('nip', $nip)->firstOrFail();
+        // Cari kasbon berdasarkan ID dengan keterangan "Pembayaran"
+        $kasbon = Kasbon::where('id', $id)
+                        ->where('keterangan', 'Pembayaran')
+                        ->firstOrFail();
 
         // Cek jika status_bayar sudah bukan "Diproses"
         if ($kasbon->status_bayar !== 'Diproses') {
@@ -101,17 +108,32 @@ class supervisorPembayaranController extends Controller
                 'message' => 'Status sudah pernah disetujui/ditolak',
             ], 403);
         }
+
+        // Ambil saldo kasbon berdasarkan NIP
+        $kasbonSaldo = Kasbon::where('nip', $kasbon->nip)
+                             ->latest('updated_at')
+                             ->first();
+
+        // if (!$kasbonByNIP) {
+        //     return response()->json([
+        //         'message' => 'Data kasbon tidak ditemukan untuk NIP terkait',
+        //     ], 404);
+        // }
         
         // Update Database
         if ($request->action === 'terima') {
-            // Kurangi saldo akhir dengan nominal pembayaran
-            $kasbon->saldo_akhir -= $kasbon->nominal_dibayar;
+            // Tambahkan nominal pembayaran ke saldo_akhir
+            $kasbonSaldo->saldo_akhir += $kasbon->nominal_dibayar;
+            // Perbarui saldo_akhir pada kasbon terbaru
+            $kasbon->saldo_akhir = $kasbonSaldo->saldo_akhir;
             // Perbarui status berdasarkan saldo akhir
-            $kasbon->status_kasbon = $kasbon->saldo_akhir <= 0 ? 'Lunas' : 'Belum Lunas';
-            // Perbarui status bayar menjadi "Diterima"
+            $kasbonSaldo->status_kasbon = $kasbonSaldo->saldo_akhir < 2000000 ? 'Belum Lunas' : 'Lunas';
+            // Perbarui status bayar menjadi "Disetujui"
             $kasbon->status_bayar = 'Disetujui';
+            // Simpan perubahan saldo pada kasbon terkait NIP
+            $kasbonSaldo->save();
         } elseif ($request->action === "tolak"){
-            // Tidak ada perubahan pada saldo akhir atau status kasbon
+            // Perbarui status bayar menjadi "Ditolak" tanpa mengubah saldo
             $kasbon->status_bayar = 'Ditolak';
         }
         // Simpan perubahan
@@ -120,8 +142,8 @@ class supervisorPembayaranController extends Controller
         return response()->json([
             'message' => 'Pembayaran berhasil diperbarui!',
             'status_bayar' => $kasbon->status_bayar,
-            'status_kasbon' => $kasbon->status_kasbon,
-            'saldo_akhir' => $kasbon->saldo_akhir,
+            'status_kasbon' => $kasbonSaldo->status_kasbon,
+            'saldo_akhir' => $kasbonSaldo->saldo_akhir,
         ]);
     }
 
