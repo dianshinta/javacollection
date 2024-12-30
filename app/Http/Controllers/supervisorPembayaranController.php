@@ -30,13 +30,13 @@ class supervisorPembayaranController extends Controller
                                 })
                                 ->orderBy('updated_at', 'desc')
                                 ->orderBy('updated_at', 'desc')
-                                ->get();
+                                ->paginate(2); 
         } else {
             // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
             $pembayaran = Kasbon::where('keterangan', 'Pembayaran') 
                                 ->orderBy('updated_at', 'desc') 
                                 ->orderBy('created_at', 'desc')
-                                ->get();
+                                ->paginate(2);
         }
             
         // Kirim data ke view dengan header untuk mencegah caching

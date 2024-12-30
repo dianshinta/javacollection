@@ -136,6 +136,13 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <!-- Tambahkan pagination -->
+                                    <div class="d-flex justify-content-center">
+                                        <nav>
+                                            {{ $pembayaran->links('pagination::bootstrap-4') }}
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
                         </div>

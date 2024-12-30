@@ -112,6 +112,13 @@
                                             </tbody> 
                                         </table>
                                     </div>
+
+                                    <!-- Tambahkan pagination -->
+                                    <div class="d-flex justify-content-center">
+                                        <nav>
+                                            {{ $perizinan->links('pagination::bootstrap-4') }}
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
                         </div>
