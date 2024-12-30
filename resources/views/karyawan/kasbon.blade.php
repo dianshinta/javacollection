@@ -399,7 +399,12 @@ Coded by www.creative-tim.com
                                 title: 'Pengajuan kasbon berhasil!',
                                 text: response.success,
                                 icon: 'success',
-                                confirmButtonText: 'OK',
+                                showConfirmButton: false,
+                                timer: 1500,
+                                willClose: () => {
+                                    // Reload halaman setelah SweetAlert tertutup
+                                    location.reload();
+                                }
                             }).then(() => {
                                 // Update nilai sisa limit di frontend
                                 $('#sisaLimit').text(response.sisa_limit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
@@ -407,24 +412,6 @@ Coded by www.creative-tim.com
                                 $('#progressBar').css('width', persentase + '%');
                                 $('#progressBar').attr('aria-valuenow', persentase);
                                 $('#progressBar').text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
-                                // Update tabel
-                                var newRow = `
-                                    <tr>
-                                        <td>${response.no}</td>
-                                        <td>${response.tanggal_pengajuan}</td>
-                                        <td>${response.alasan}</td>
-                                        <td>${response.nominal_diajukan}</td>
-                                        <td>${response.keterangan}</td>
-                                        <td class="text-right">
-                                            <div class="button-container">
-                                                <button type="button" class="custom-button" data-toggle="modal" data-target="#lampiranModal">
-                                                    Lihat
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `;
-                                $('#kasbonTableBody').prepend(newRow);
                             });
                         },
                         error: function (response) {
@@ -462,7 +449,12 @@ Coded by www.creative-tim.com
                             $('#progressBar').text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
                         },
                         error: function () {
-                            alert('Gagal mengambil data sisa limit.');
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: response.responseJSON ? response.responseJSON.message : 'Gagal mengambil limit.',
+                                icon: 'error',
+                                confirmButtonText: 'Coba Lagi',
+                            });
                         },
                     });
                 }
@@ -510,7 +502,12 @@ Coded by www.creative-tim.com
                                     title: 'Pembayaran Berhasil!',
                                     text: response.success,
                                     icon: 'success',
-                                    confirmButtonText: 'OK',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    willClose: () => {
+                                        // Reload halaman setelah SweetAlert tertutup
+                                        location.reload();
+                                    }
                                 });
                             },
                             error: function (response) {

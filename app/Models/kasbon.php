@@ -23,6 +23,7 @@ class kasbon extends Model
         'saldo_akhir',
         'alasan',
         'lampiran',
+        'nama',
         'nip',
     ];
 

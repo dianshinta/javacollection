@@ -18,7 +18,7 @@ return new class extends Migration
             $table->enum('status_kasbon', ['Lunas', 'Belum Lunas']); // Enum untuk status
             $table->enum('status_bayar', ['Diproses', 'Disetujui', 'Ditolak']); // Enum untuk status
             $table->text('alasan')->nullable(); // Alasan pengajuan kasbon
-            $table->text('keterangan', ['Pengajuan', 'Pembayaran']); // Keterangan
+            $table->enum('keterangan', ['Pengajuan', 'Pembayaran']); // Keterangan
             $table->date('tanggal_pengajuan')->nullable(); // Tanggal pengajuan
             $table->date('tanggal_pembayaran')->nullable(); // Tanggal pembayaran
             $table->integer('nominal_diajukan')->nullable(); // Nominal diajukan
