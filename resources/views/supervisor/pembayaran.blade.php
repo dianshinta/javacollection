@@ -81,46 +81,53 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($pembayaran as $data)
+                                                @if ($pembayaran->isEmpty())
                                                 <tr>
-                                                    <td>{{ $data->nip }}</td>
-                                                    <td>{{ $data->nama }}</td>
-                                                    <td>{{ $data->tanggal_pembayaran->format('d/m/Y') }}</td>
-                                                    <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
-                                                    <td>
-                                                        @if ($data->status_kasbon === 'Lunas')
-                                                            <span class="badge bg-success">Lunas</span>
-                                                        @else
-                                                            <span class="badge bg-danger">Belum Lunas</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($data->status_bayar === 'Diproses')
-                                                            <span class="badge bg-warning">Diproses</span>
-                                                        @elseif ($data->status_bayar === 'Disetujui')
-                                                            <span class="badge bg-success">Disetujui</span>
-                                                        @else
-                                                            <span class="badge bg-danger">Ditolak</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <a href="#" 
-                                                        class="btn btn-info btn-round" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#pembayaranModal"
-                                                        data-nip="{{ $data->nip }}"
-                                                        data-nama="{{ $data->nama }}"
-                                                        data-tanggal-bayar="{{ $data->tanggal_pembayaran->format('d/m/Y') }}"
-                                                        data-saldo-akhir="{{ $data->saldo_akhir }}"
-                                                        data-nominal-dibayar="{{ $data->nominal_dibayar }}"
-                                                        data-status-bayar="{{ $data->status_bayar }}"
-                                                        data-status-kasbon="{{ $data->status_kasbon }}"
-                                                        data-lampiran="{{ $data->lampiran }}">
-                                                            <i class="bi bi-eye"></i> Lihat
-                                                        </a>
-                                                    </td>
+                                                    <td colspan="6">Tidak ada pembayaran</td>
                                                 </tr>
-                                                @endforeach
+                                                @else
+                                                    @foreach($pembayaran as $data)
+                                                    <tr>
+                                                        <td>{{ $data->nip }}</td>
+                                                        <td>{{ $data->nama }}</td>
+                                                        <td>{{ $data->tanggal_pembayaran->format('d/m/Y') }}</td>
+                                                        <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
+                                                        <td>
+                                                            @if ($data->status_kasbon === 'Lunas')
+                                                                <span class="badge bg-success">Lunas</span>
+                                                            @else
+                                                                <span class="badge bg-danger">Belum Lunas</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($data->status_bayar === 'Diproses')
+                                                                <span class="badge bg-warning">Diproses</span>
+                                                            @elseif ($data->status_bayar === 'Disetujui')
+                                                                <span class="badge bg-success">Disetujui</span>
+                                                            @else
+                                                                <span class="badge bg-danger">Ditolak</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <a href="#" 
+                                                            class="btn btn-info btn-round" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#pembayaranModal"
+                                                            data-nip="{{ $data->nip }}"
+                                                            data-nama="{{ $data->nama }}"
+                                                            data-tanggal-bayar="{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->format('d/m/Y') }}"
+                                                            {{-- data-tanggal-bayar="{{ $data->tanggal_pembayaran->format('d/m/Y') }}" --}}
+                                                            data-saldo-akhir="{{ $data->saldo_akhir }}"
+                                                            data-nominal-dibayar="{{ $data->nominal_dibayar }}"
+                                                            data-status-bayar="{{ $data->status_bayar }}"
+                                                            data-status-kasbon="{{ $data->status_kasbon }}"
+                                                            data-lampiran="{{ $data->lampiran }}">
+                                                                <i class="bi bi-eye"></i> Lihat
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>

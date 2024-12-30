@@ -17,14 +17,17 @@ class supervisorPembayaranController extends Controller
         
         // Query data pembayaran dengan filter pencarian
         if (strlen($search)){
-            $pembayaran = Kasbon::when($search, function ($query, $search){
-                $query -> where('nip', 'like',"%{$search}%")
-                       -> orWhere('nama','like',"%{$search}%")
-                       -> orWhere('tanggal_pembayaran','like',"%{$search}%")
-                       -> orWhere('nominal_dibayar','like',"%{$search}%")
-                       -> orWhere('status_kasbon','like',"%{$search}%")
-                       -> orWhere('status_bayar','like',"%{$search}%");
-            })
+            $pembayaran = Kasbon::where('keterangan', 'Pembayaran') // Filter hanya data dengan keterangan "Pengajuan"
+                ->when($search, function ($query, $search){
+                    $query -> where('nip', 'like',"%{$search}%")
+                    -> orWhere('nama','like',"%{$search}%")
+                    -> orWhere('tanggal_pembayaran','like',"%{$search}%")
+                    -> orWhere('nominal_dibayar','like',"%{$search}%")
+                    -> orWhere('status_kasbon','like',"%{$search}%")
+                    -> orWhere('status_bayar','like',"%{$search}%");
+                })
+            // $pembayaran = Kasbon::when($search, function ($query, $search){
+            // })
             ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
             ->orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
             ->get();
