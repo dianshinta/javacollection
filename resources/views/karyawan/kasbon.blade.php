@@ -279,40 +279,45 @@ Coded by www.creative-tim.com
                                             </th>
                                         </thead>
                                         <tbody id="kasbonTableBody" class="text-center">
-                                            @foreach ($riwayatKasbon as $riwayat)
-                                                <tr class="text-capitalize">
-                                                    <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
-                                                    <td>
-                                                        @if ($riwayat->keterangan === 'Pengajuan')
-                                                            {{ \Carbon\Carbon::parse($riwayat->tanggal_pengajuan)->format('Y-m-d') }}
-                                                        @elseif ($riwayat->keterangan === 'Pembayaran')
-                                                            {{ \Carbon\Carbon::parse($riwayat->tanggal_pembayaran)->format('Y-m-d') }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $riwayat->alasan }}</td>
-                                                    <td>
-                                                        @if ($riwayat->keterangan === 'Pengajuan')
-                                                            Rp {{ number_format($riwayat->nominal_diajukan, 0, ',', '.') }}
-                                                        @elseif ($riwayat->keterangan === 'Pembayaran')
-                                                            {{ $riwayat->nominal_dibayar ? 'Rp ' . number_format($riwayat->nominal_dibayar, 0, ',', '.') : 'Belum Dibayar' }}
-                                                        @else
-                                                            -
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $riwayat->keterangan }}</td>
-                                                    <td class="text-right">
-                                                        <div class="button-container">
-                                                            <button type="button" class="custom-button" data-toggle="modal"
-                                                                data-target="#lampiranModal">
-                                                                Lihat
-                                                            </button>
-                                                        </div>
-                                                    </td>
+                                            @if ($riwayatKasbon->isEmpty())
+                                                <tr>
+                                                    <td colspan="6">Tidak ada pengajuan</td>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
+                                            @else
+                                                @foreach ($riwayatKasbon as $riwayat)
+                                                    <tr class="text-capitalize">
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>
+                                                            @if ($riwayat->keterangan === 'Pengajuan')
+                                                                {{ \Carbon\Carbon::parse($riwayat->tanggal_pengajuan)->format('Y-m-d') }}
+                                                            @elseif ($riwayat->keterangan === 'Pembayaran')
+                                                                {{ \Carbon\Carbon::parse($riwayat->tanggal_pembayaran)->format('Y-m-d') }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $riwayat->alasan }}</td>
+                                                        <td>
+                                                            @if ($riwayat->keterangan === 'Pengajuan')
+                                                                Rp {{ number_format($riwayat->nominal_diajukan, 0, ',', '.') }}
+                                                            @elseif ($riwayat->keterangan === 'Pembayaran')
+                                                                {{ $riwayat->nominal_dibayar ? 'Rp ' . number_format($riwayat->nominal_dibayar, 0, ',', '.') : 'Belum Dibayar' }}
+                                                            @else
+                                                                -
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $riwayat->keterangan }}</td>
+                                                        <td class="text-right">
+                                                            <div class="button-container">
+                                                                <button type="button" class="custom-button" data-toggle="modal" data-target="#lampiranModal">
+                                                                    Lihat
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+                                        </tbody>                                        
                                     </table>
                                 </div>
                             </div>

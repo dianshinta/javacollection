@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\kasbon;
+use App\Models\Kasbon;
 
 class supervisorPembayaranController extends Controller
 {

@@ -158,7 +158,7 @@ class karyawanKasbonController extends Controller
             return response()->json(['error' => 'Nominal pembayaran melebihi sisa kasbon.'], 400);
         }
 
-        $saldo_akhir_baru = $saldo_akhir_sekarang - $validated['nominal_pembayaran'];
+        $saldo_akhir_baru = $saldo_akhir_sekarang + $validated['nominal_pembayaran'];
 
         // Tentukan apakah kasbon sudah lunas atau belum
         $status_kasbon = $saldo_akhir_baru === $limit_awal ? 'Lunas' : 'Belum Lunas';

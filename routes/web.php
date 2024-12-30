@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\supervisorPerizinanController;
 use App\Http\Controllers\supervisorPembayaranController;
+use App\Http\Controllers\SupervisorPengajuanController;
 use App\Http\Controllers\PerizinanController;
 use App\Http\Controllers\KaryawanKasbonController;
 use App\Http\Controllers\ChartController;
@@ -75,11 +76,13 @@ Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'i
 
 Route::post('/kasbon/{nip}/update', [supervisorPembayaranController::class, 'update'])->name('kasbon.update');
 
-Route::get('/supervisor/kasbon/', function () {
-    return view('/supervisor/pengajuan', [
-        "title" => "Pengajuan"
-    ]);
-})->name('supervisor.pengajuan');
+// Route::get('/supervisor/kasbon/', function () {
+//     return view('/supervisor/pengajuan', [
+//         "title" => "Pengajuan"
+//     ]);
+// })->name('supervisor.pengajuan');
+
+Route::get('/supervisor/kasbon/', [SupervisorPengajuanController::class, 'index'])->name('supervisor.pengajuan');
 
 // Menampilkan halaman manager
 Route::get('/manajer/beranda/', function () {

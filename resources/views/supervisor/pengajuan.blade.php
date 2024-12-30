@@ -41,69 +41,58 @@
                     <h5 class="font-weight-bold">Daftar Pengajuan</h5>
                 </div>
 
-                <div class="top-0 start-0">
-                    <div>
-                        <div>
-                            <!-- Main Content -->
-                            <div class="col">
-                                <div class="input-group search-bar">
-                                    <input type="text" class="form-control search-bar" id="searchBar" placeholder="Cari Karyawan..">
-                                    <span class="input-group-text ">
-                                      <i class="bi bi-search"></i>
-                                    </span>
-                                </div>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>NIP</th>
-                                                        <th>Nama</th>
-                                                        <th>Tanggal Pengajuan</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Keterangan</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="gaji-row" id="tableBody">
-                                                    <tr>
-                                                        <td>NIP</td>
-                                                        <td>Nama</td>
-                                                        <td>Tanggal Pengajuan</td>
-                                                        <td>Jumlah</td>
-                                                        <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
-                                                                <i class="bi bi-eye"></i> Lihat
+                <div class="row align-items-start">
+                    <!-- Main Content -->
+                    <div class="col-md-12">
+                        <div class="input-group search-bar">
+                            <input type="text" class="form-control search-bar" id="searchBar" placeholder="Cari Karyawan..">
+                            <span class="input-group-text ">
+                              <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>NIP</th>
+                                                <th>Nama</th>
+                                                <th>Tanggal Pengajuan</th>
+                                                <th>Jumlah</th>
+                                                <th>Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="gaji-row" id="tableBody">
+                                            @if ($pengajuan->isEmpty())
+                                                <tr>
+                                                    <td colspan="6">Tidak ada pengajuan</td>
+                                                </tr>
+                                            @else
+                                                @foreach ($pengajuan as $riwayat)
+                                                    <tr class="text-capitalize">
+                                                        <td>{{ $riwayat->nip }}</td>
+                                                        <td>{{ $riwayat->nama }}</td>
+                                                        <td>{{ $riwayat->tanggal_pengajuan }}</td>
+                                                        <td>{{ 'Rp ' . number_format($riwayat->nominal_diajukan, 0, ',', '.') }}</td>
+                                                        <td>
+                                                            <a href="#" class="btn btn-info btn-round" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#kasbonModal"
+                                                            data-nip="{{ $riwayat->nip }}" 
+                                                            data-nama="{{ $riwayat->nama }}" 
+                                                            data-tanggal="{{ \Carbon\Carbon::parse($riwayat->tanggal_pengajuan)->format('d/m/Y') }}"
+                                                            data-alasan="{{ $riwayat->alasan }}" 
+                                                            data-pengajuan="Rp {{ number_format($riwayat->nominal_diajukan, 0, ',', '.') }}" 
+                                                            data-limit="Rp {{ number_format($riwayat->saldo_akhir, 0, ',', '.') }}">
+                                                            <i class="bi bi-eye"></i> Lihat
                                                             </a>
-                                                        </td>
+                                                        </td>                                                    
                                                     </tr>
-                                                </tbody>
-                                                <tbody class="gaji-row" id="tableBody">
-                                                    <tr>
-                                                        <td>NIP</td>
-                                                        <td>Nama</td>
-                                                        <td>Tanggal Pengajuan</td>
-                                                        <td>Jumlah</td>
-                                                        <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
-                                                            <i class="bi bi-eye"></i> Lihat
-                                                        </a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                                <tbody class="gaji-row" id="tableBody">
-                                                    <tr>
-                                                        <td>NIP</td>
-                                                        <td>Nama</td>
-                                                        <td>Tanggal Pengajuan</td>
-                                                        <td>Jumlah</td>
-                                                        <td><a href="#" class="btn btn-info btn-round" data-bs-toggle="modal" data-bs-target="#kasbonModal">
-                                                            <i class="bi bi-eye"></i> Lihat
-                                                        </a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +103,7 @@
             <!-- Modal -->
             <div class="modal fade" id="kasbonModal" tabindex="-1" aria-labelledby="kasbonModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
+                    <div class="modal-content text-capitalize">
                         <div class="modal-header">
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -124,35 +113,35 @@
                         <div class="modal-body">
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">NIP:</div>
-                                <div class="col-7 bg-gray">212</div>
+                                <div class="col-7 bg-gray" id="modalNip"></div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Nama:</div>
-                                <div class="col-7 bg-gray">Nama</div>
+                                <div class="col-7 bg-gray" id="modalNama"></div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Tanggal:</div>
-                                <div class="col-7 bg-gray">02/07/2024</div>
+                                <div class="col-7 bg-gray" id="modalTanggal"></div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Alasan:</div>
-                                <div class="col-7">Beli Obat</div>
+                                <div class="col-7" id="modalAlasan"></div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Nominal Pengajuan:</div>
-                                <div class="col-7">Rp. 1.500.000</div>
+                                <div class="col-7" id="modalPengajuan"></div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">Saldo Kasbon:</div>
-                                <div class="col-7 bg-gray">Rp. 1.500.000</div>
+                                <div class="col-7 bg-gray" id="modalLimit"></div>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             </div>
 
             <!-- Footer -->
-            {{-- <footer class="footer footer-black  footer-white ">
+            <footer class="footer footer-black  footer-white ">
                 <div class="container-fluid">
                 <div class="row">
                     <nav class="footer-nav">
@@ -164,7 +153,7 @@
                     </nav>
                 </div>
                 </div>
-            </footer> --}}
+            </footer>
         </div>
     </div>
 
@@ -187,13 +176,22 @@
     <script>
         const kasbonModal = document.getElementById('kasbonModal');
         kasbonModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            document.getElementById('modalNip').textContent = button.getAttribute('data-nip');
-            document.getElementById('modalNama').textContent = button.getAttribute('data-nama');
-            document.getElementById('modalTanggal').textContent = button.getAttribute('data-tanggal');
-            document.getElementById('modalAlasan').textContent = button.getAttribute('data-alasan');
-            document.getElementById('modalLimit').textContent = button.getAttribute('data-limit');
-            document.getElementById('modalPengajuan').textContent = button.getAttribute('data-pengajuan');
+            const button = event.relatedTarget; // Tombol yang memicu modal
+            // Ambil data dari atribut tombol
+            const nip = button.getAttribute('data-nip');
+            const nama = button.getAttribute('data-nama');
+            const tanggal = button.getAttribute('data-tanggal');
+            const alasan = button.getAttribute('data-alasan');
+            const pengajuan = button.getAttribute('data-pengajuan');
+            const limit = button.getAttribute('data-limit');
+            
+            // Masukkan data ke dalam modal
+            document.getElementById('modalNip').textContent = nip;
+            document.getElementById('modalNama').textContent = nama;
+            document.getElementById('modalTanggal').textContent = tanggal;
+            document.getElementById('modalAlasan').textContent = alasan;
+            document.getElementById('modalPengajuan').textContent = pengajuan;
+            document.getElementById('modalLimit').textContent = limit;
         });
     </script>
 </body>
