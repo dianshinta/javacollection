@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Java Collection | {{ $title }}
+    {{ $title }} | JAVA COLLECTION
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!-- Fonts and icons     -->
@@ -81,11 +81,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <!-- Jika data kosong -->
                                                 @if ($pembayaran->isEmpty())
                                                 <tr>
                                                     <td colspan="7" class="text-center">Tidak ada pembayaran</td>
                                                 </tr>
                                                 @else
+                                                    <!-- Looping data pembayaran -->
                                                     @foreach($pembayaran as $data)
                                                     <tr>
                                                         <td>{{ $data->nip }}</td>
@@ -93,6 +95,7 @@
                                                         <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->format('d/m/Y') }}</td>
                                                         <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
                                                         <td>
+                                                            <!-- Status Kasbon -->
                                                             @if ($data->status_kasbon === 'Lunas')
                                                                 <span class="badge bg-success">Lunas</span>
                                                             @else
@@ -100,6 +103,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
+                                                             <!-- Status Pembayaran -->
                                                             @if ($data->status_bayar === 'Diproses')
                                                                 <span class="badge bg-warning">Diproses</span>
                                                             @elseif ($data->status_bayar === 'Disetujui')
@@ -109,6 +113,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
+                                                             <!-- Tombol Lihat Lampiran -->
                                                             <a href="#" 
                                                             class="btn btn-info btn-round" 
                                                             data-bs-toggle="modal" 
@@ -148,6 +153,7 @@
                         </div>
                         <h5 class="modal-title" id="pembayaranModalLabel">Pembayaran Kasbon</h5>
                         <div class="modal-body">
+                            <!-- Detail Data Pembayaran -->
                             <div class="row mb-2">
                                 <div class="col-5 label-bold">NIP:</div>
                                 <div class="col-7 bg-gray" id="modal-nip"></div>
@@ -175,12 +181,12 @@
                             </div>
                             <div class="container mt-5 text-center">
                                 <div class="btn-group-custom justify-content-center">
-                                <!-- Tombol Terima -->
-                                <button class="btn btn-rounded btn-accept" id="btnTerima">
-                                    Terima Pembayaran </button>
-                                <!-- Tombol Tolak -->
-                                <button class="btn btn-rounded btn-reject" id="btnTolak">
-                                    Tolak Pembayaran </button>
+                                    <!-- Tombol Terima -->
+                                    <button class="btn btn-rounded btn-accept" id="btnTerima">
+                                        Terima Pembayaran </button>
+                                    <!-- Tombol Tolak -->
+                                    <button class="btn btn-rounded btn-reject" id="btnTolak">
+                                        Tolak Pembayaran </button>
                                 </div>
                             </div>                  
                         </div>
@@ -225,12 +231,6 @@
     <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
     <script src="../assets/demo/demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).ready(function() {
-        // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-        demo.initChartsPages();
-        });
-    </script>
 
     <!-- JavaScript -->
     <script>
@@ -289,139 +289,6 @@
             });
         });
 
-        // Event untuk update status-bayar dan status-kasbon
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     const btnTerima = document.getElementById('btnTerima');
-        //     const btnTolak = document.getElementById('btnTolak');
-        //     const btnYakin = document.getElementById('btnYakin');
-        //     const modalNip = document.getElementById('modal-nip');
-        //     const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-        //     const confirmMessage = document.getElementById('confirmMessage');
-
-        //     const modalSaldo = document.getElementById('modal-saldo-akhir'); // Elemen untuk saldo kasbon
-        //     const modalStatusKasbon = document.querySelector('.status-kasbon'); // Status kasbon
-        //     const modalNominal = document.getElementById('modal-nominal-dibayar'); // Elemen nominal pembayaran
-        //     const modalStatusBayar = document.querySelector('.status-bayar'); // Status bayar
-            
-        //     let actionToPerform = ''; // Menyimpan status yang dipilih (Disetujui/Ditolak)
-        //     let nip = '';
-
-        //     // Event untuk tombol "Terima Pembayaran"
-        //     btnTerima.addEventListener('click', function () {
-        //         nip = document.getElementById('modal-nip').textContent;
-        //         actionToPerform = 'terima';
-        //         confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran ini?';
-        //         confirmModal.show();
-        //     });
-
-        //     // Event untuk tombol "Tolak Pembayaran"
-        //     btnTolak.addEventListener('click', function () {
-        //         nip = document.getElementById('modal-nip').textContent;
-        //         actionToPerform = 'tolak';
-        //         confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran ini?';
-        //         confirmModal.show();
-        //     });
-
-        //     // Event untuk tombol "Yakin"
-        //     btnYakin.addEventListener('click', function () {
-        //         // Prioritas Validasi untuk tombol "Terima Pembayaran"
-        //         if (actionToPerform === 'terima') {
-        //             const saldo = parseInt(modalSaldo.textContent.replace(/[^0-9-]/g, '')); // Ambil saldo kasbon
-        //             const nominalPembayaran = parseInt(modalNominal.textContent.replace(/[^0-9]/g, '')); // Ambil nominal pembayaran
-        //             const statusKasbon = modalStatusKasbon ? modalStatusKasbon.textContent.trim() : '';
-        //             const statusBayar = modalStatusBayar ? modalStatusBayar.textContent.trim() : '';
-
-        //             // 1. Validasi: Status sudah disetujui atau ditolak
-        //             // if (statusBayar === 'Disetujui' || statusBayar === 'Ditolak') {
-        //             //     Swal.fire({
-        //             //         icon: 'error',
-        //             //         title: 'Pembayaran Tidak Valid',
-        //             //         text: 'Status sudah disetujui atau ditolak.',
-        //             //         confirmButtonText: 'OK',
-        //             //     });
-        //             //     return; // Hentikan proses
-        //             // }
-
-        //             // // 2. Validasi: Nominal pembayaran melebihi saldo kasbon
-        //             // if (nominalPembayaran > saldo) {
-        //             //     Swal.fire({
-        //             //         icon: 'error',
-        //             //         title: 'Pembayaran Tidak Valid',
-        //             //         text: 'Nominal pembayaran tidak boleh melebihi saldo akhir.',
-        //             //         confirmButtonText: 'OK',
-        //             //     });
-        //             //     return; // Hentikan proses
-        //             // }
-
-        //             // 3. Validasi: Status kasbon lunas dan saldo <= 0
-        //             if (saldo <= 0 || statusKasbon === 'Lunas') {
-        //                 Swal.fire({
-        //                     icon: 'error',
-        //                     title: 'Pembayaran Tidak Valid',
-        //                     text: 'Saldo sudah nol atau kasbon sudah lunas.',
-        //                     confirmButtonText: 'OK',
-        //                 });
-        //                 return; // Hentikan proses
-        //             }
-        //         }
-
-        //         // jika berhasil melalui pengecekan
-        //         processPayment(actionToPerform, nip);
-        //     });
-
-        //     // fungsi 
-        //     function processPayment(action, nip) {
-        //         fetch(`/kasbon/${encodeURIComponent(nip)}/update`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        //             },
-        //             body: JSON.stringify({ action }),
-        //         })
-        //             .then((response) => {
-        //                 if (response.status === 403) {
-        //                     // Jika status adalah 403, baca pesan error dari server
-        //                     return response.json().then((data) => {
-        //                         Swal.fire({
-        //                             icon: 'error',
-        //                             title: 'Gagal Memperbarui Status',
-        //                             text: data.message,
-        //                             confirmButtonText: 'OK',
-        //                         });
-        //                         throw new Error(data.message); // Hentikan eksekusi lebih lanjut
-        //                     });
-        //                 }
-
-        //                 if (!response.ok) {
-        //                     // Tangani error lain yang bukan 403
-        //                     throw new Error('Kesalahan jaringan atau server.');
-        //                 }
-        //                 return response.json();
-        //             })
-        //             .then((data) => {
-        //                 // Jika status adalah berhasil
-        //                 confirmModal.hide(); // Tutup modal setelah sukses
-        //                 Swal.fire({
-        //                     title: 'Sukses',
-        //                     text: data.message,
-        //                     icon: 'success',
-        //                 }).then(() => {
-        //                     window.location.reload(); // Reload halaman setelah sukses
-        //                 });
-        //             })
-        //             .catch((error) => {
-        //                 // Tangani error umum dan tampilkan pesan error
-        //                 console.error('Error:', error.message);
-        //                 Swal.fire({
-        //                     title: 'Error',
-        //                     text: error.message || 'Terjadi kesalahan saat memproses data.',
-        //                     icon: 'error',
-        //                 });
-        //             });
-        //     }
-        // });
-
         document.addEventListener('DOMContentLoaded', function () {
             const btnTerima = document.getElementById('btnTerima');
             const btnTolak = document.getElementById('btnTolak');
@@ -432,7 +299,6 @@
             const confirmMessage = document.getElementById('confirmMessage');
 
             let actionToPerform = ''; // Menyimpan status yang dipilih (Terima/Tolak)
-            // let nip = '';
             let id = '';
 
             // Event untuk tombol "Terima Pembayaran"
@@ -552,8 +418,6 @@
                     });
             }
         });
-
-
     </script>
 </body>
 </html>

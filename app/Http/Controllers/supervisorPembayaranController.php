@@ -17,6 +17,7 @@ class supervisorPembayaranController extends Controller
         
         // Query data pembayaran 
         if (strlen($search)){
+            // Jika ada input pencarian, filter data berdasarkan keterangan "Pembayaran"
             $pembayaran = Kasbon::where('keterangan', 'Pembayaran')
                                 ->when($search, function ($query, $search) {
                                     $query->where('nip', 'like', "%{$search}%")
@@ -31,23 +32,18 @@ class supervisorPembayaranController extends Controller
                                 ->orderBy('updated_at', 'desc')
                                 ->get();
         } else {
-            // Ambil data pembayaran dari database dengan filter keterangan
-            $pembayaran = Kasbon::where('keterangan', 'Pembayaran') // Filter keterangan "Pembayaran"
-                                ->orderBy('updated_at', 'desc') // Urutkan berdasarkan pembaruan terbaru
-                                ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembuatan jika sama
+            // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
+            $pembayaran = Kasbon::where('keterangan', 'Pembayaran') 
+                                ->orderBy('updated_at', 'desc') 
+                                ->orderBy('created_at', 'desc')
                                 ->get();
         }
             
-        // Kirim data ke view
+        // Kirim data ke view dengan header untuk mencegah caching
         return response()->view('supervisor.pembayaran', [
             "title" => "Pembayaran",
             'pembayaran' => $pembayaran,
         ])->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-        
-        // return view('supervisor.pembayaran', [
-        //     "title" => "Pembayaran",
-        //     'pembayaran' => $pembayaran,
-        // ]);
     }
 
     /**
@@ -91,40 +87,36 @@ class supervisorPembayaranController extends Controller
         $request->validate([
             'action' => 'required|in:terima,tolak', 
         ]);
-
-        \Log::info('Proses Pembayaran Kasbon:', [
-            'id' => $id,
-            'action' => $request->action,
-        ]);
     
         // Cari kasbon berdasarkan ID dengan keterangan "Pembayaran"
         $kasbon = Kasbon::where('id', $id)
                         ->where('keterangan', 'Pembayaran')
                         ->firstOrFail();
 
-        // Cek jika status_bayar sudah bukan "Diproses"
+        // Validasi: Jika status_bayar sudah bukan "Diproses", hentikan proses
         if ($kasbon->status_bayar !== 'Diproses') {
             return response()->json([
                 'message' => 'Status sudah pernah disetujui/ditolak',
             ], 403);
         }
 
-        // Ambil saldo kasbon berdasarkan NIP
+        // Ambil saldo akhir berdasarkan NIP untuk diperbarui
         $kasbonSaldo = Kasbon::where('nip', $kasbon->nip)
                              ->latest('updated_at')
                              ->first();
 
-        // if (!$kasbonByNIP) {
-        //     return response()->json([
-        //         'message' => 'Data kasbon tidak ditemukan untuk NIP terkait',
-        //     ], 404);
-        // }
+        // Validasi: Jika data kasbon untuk NIP tidak ditemukan
+        if (!$kasbonSaldo) {
+            return response()->json([
+                'message' => 'Data kasbon tidak ditemukan untuk NIP terkait',
+            ], 404);
+        }
         
         // Update Database
         if ($request->action === 'terima') {
             // Tambahkan nominal pembayaran ke saldo_akhir
             $kasbonSaldo->saldo_akhir += $kasbon->nominal_dibayar;
-            // Perbarui saldo_akhir pada kasbon terbaru
+            // Perbarui saldo_akhir pada kasbon pembayaran
             $kasbon->saldo_akhir = $kasbonSaldo->saldo_akhir;
             // Perbarui status berdasarkan saldo akhir
             $kasbonSaldo->status_kasbon = $kasbonSaldo->saldo_akhir < 2000000 ? 'Belum Lunas' : 'Lunas';
@@ -139,6 +131,7 @@ class supervisorPembayaranController extends Controller
         // Simpan perubahan
         $kasbon->save();
             
+        // Kembalikan response JSON dengan informasi terbaru
         return response()->json([
             'message' => 'Pembayaran berhasil diperbarui!',
             'status_bayar' => $kasbon->status_bayar,
