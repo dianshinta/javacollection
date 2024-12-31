@@ -68,7 +68,7 @@
                             <div class="card ">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table text-center">
                                             <thead>
                                                 <tr>
                                                     <th>NIP</th>
@@ -92,7 +92,7 @@
                                                     <tr>
                                                         <td>{{ $data->nip }}</td>
                                                         <td>{{ $data->nama }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->format('d/m/Y') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}</td>
                                                         <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
                                                         <td>
                                                             <!-- Status Kasbon -->
@@ -121,7 +121,7 @@
                                                             data-id="{{ $data->id }}"
                                                             data-nip="{{ $data->nip }}"
                                                             data-nama="{{ $data->nama }}"
-                                                            data-tanggal-bayar="{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->format('d/m/Y') }}"
+                                                            data-tanggal-bayar="{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}"
                                                             data-nominal-dibayar="{{ $data->nominal_dibayar }}"
                                                             data-saldo-akhir="{{ $data->saldo_akhir }}"
                                                             data-status-bayar="{{ $data->status_bayar }}"

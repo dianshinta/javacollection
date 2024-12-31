@@ -67,7 +67,7 @@
                             <div class="card ">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table text-center">
                                             <thead>
                                                 <tr>
                                                     <th>NIP</th>
@@ -82,7 +82,7 @@
                                                     <tr>
                                                         <td>{{ $data->nip }}</td>
                                                         <td>{{ $data->nama }}</td>
-                                                        <td>{{ $data->tanggal->format('d/m/Y') }}</td>
+                                                        <td>{{ $data->tanggal->translatedFormat('j F Y') }}</td>
                                                         <td>
                                                             @if ($data->status === 'Diproses')
                                                                 <span class="badge bg-warning">Diproses</span>
@@ -100,7 +100,7 @@
                                                             data-id="{{ $data->id }}"
                                                             data-nip="{{ $data->nip }}"
                                                             data-nama="{{ $data->nama }}"
-                                                            data-tanggal="{{ $data->tanggal->format('d/m/Y') }}"
+                                                            data-tanggal="{{ $data->tanggal->translatedFormat('j F Y') }}"
                                                             data-jenis="{{ $data->jenis }}"
                                                             data-keterangan="{{ $data->keterangan }}"
                                                             data-lampiran="{{ $data->lampiran }}">

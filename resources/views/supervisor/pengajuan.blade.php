@@ -73,7 +73,7 @@
                                                     <tr class="text-capitalize">
                                                         <td>{{ $riwayat->nip }}</td>
                                                         <td>{{ $riwayat->nama }}</td>
-                                                        <td>{{ $riwayat->tanggal_pengajuan }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($riwayat->tanggal_pengajuan)->translatedFormat('j F Y') }}</td>
                                                         <td>{{ 'Rp ' . number_format($riwayat->nominal_diajukan, 0, ',', '.') }}</td>
                                                         <td>
                                                             <a href="#" class="btn btn-info btn-round" 
@@ -81,7 +81,7 @@
                                                             data-bs-target="#kasbonModal"
                                                             data-nip="{{ $riwayat->nip }}" 
                                                             data-nama="{{ $riwayat->nama }}" 
-                                                            data-tanggal="{{ \Carbon\Carbon::parse($riwayat->tanggal_pengajuan)->format('d/m/Y') }}"
+                                                            data-tanggal="{{ \Carbon\Carbon::parse($riwayat->tanggal_pengajuan)->translatedFormat('j F Y') }}"
                                                             data-alasan="{{ $riwayat->alasan }}" 
                                                             data-pengajuan="Rp {{ number_format($riwayat->nominal_diajukan, 0, ',', '.') }}" 
                                                             data-limit="Rp {{ number_format($riwayat->saldo_akhir, 0, ',', '.') }}">
@@ -132,7 +132,7 @@
                                 <div class="col-7" id="modalPengajuan"></div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-5 label-bold">Saldo Kasbon:</div>
+                                <div class="col-5 label-bold">Limit Kasbon:</div>
                                 <div class="col-7 bg-gray" id="modalLimit"></div>
                             </div>
                         </div>                        
