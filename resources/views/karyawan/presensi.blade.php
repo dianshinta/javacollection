@@ -215,7 +215,7 @@
     });
   </script>
   <script>
-    const targetCoords = { latitude: -6.2254568, longitude: 106.876853 }; // Lokasi tujuan
+    const targetCoords = { latitude: -6.225796, longitude: 106.876853 }; // Lokasi tujuan
     const radiusAllowed = 2000; // Radius dalam meter
 
     // Fungsi untuk menghitung jarak dengan formula Haversine
@@ -269,90 +269,19 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const btnPresensi = document.getElementById('btn-presensi');
-      const currentDate = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
-      const lastPresensiDate = localStorage.getItem('lastPresensiDate');
+    $(document).ready(function() {
+      const today = new Date().toISOString().split('T')[0]; // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
+      const currentMinute = new Date().toISOString().slice(0, 16); // Mendapatkan tanggal dan jam dengan menit (YYYY-MM-DDTHH:MM)
 
-      // Periksa apakah tombol harus dinonaktifkan
-      if (lastPresensiDate === currentDate) {
-        btnPresensi.disabled = true;
-        
-        // Kecilkan font ketika tombol dinonaktifkan
-        btnPresensi.style.fontSize = "13px";
-        btnPresensi.textContent = 'Anda Sudah Presensi'; // Ubah teks tombol
+      // Cek apakah tombol harus dinonaktifkan (sudah klik presensi di menit ini)
+      const presensiDisabled = sessionStorage.getItem('presensiDisabled') === 'true';
+      const presensiTime = sessionStorage.getItem('presensiTime');
+
+      if (presensiDisabled && presensiTime === currentMinute) {
+          $('#btn-presensi').prop('disabled', true);
       }
 
-      // Tambahkan event listener untuk tombol presensi
-      btnPresensi.addEventListener('click', function () {
-        // Simpan tanggal saat ini ke localStorage
-        localStorage.setItem('lastPresensiDate', currentDate);
-
-        // Nonaktifkan tombol
-        btnPresensi.disabled = true;
-        btnPresensi.textContent = 'Anda Sudah Presensi';
-      });
-    });
-    
-    // Tambahkan event listener ke form presensi
-    document.getElementById('form-presensi').addEventListener('submit', function (event) {
-      event.preventDefault(); // Mencegah pengiriman form default
-
-      // Panggil fungsi validateLocation sebelum mengirim data
-      validateLocation((isValid, message) => {
-        if (isValid) {
-          // Kirim data presensi via AJAX jika lokasi valid
-          $.ajax({
-            url: "{{ route('presensi.store') }}",
-            method: "POST",
-            data: {
-              _token: "{{ csrf_token() }}",
-              status: statusPresensi, // Status yang dipilih
-              tanggal: new Date().toISOString().split('T')[0], // Format YYYY-MM-DD
-              waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }), // Format HH:MM:SS
-              toko: "Toko A", // Ganti dengan toko yang sesuai
-              nip: "123456" // NIP yang sesuai
-            },
-            success: function (response) {
-              // Simpan status keberhasilan dan pesan ke sessionStorage
-              sessionStorage.setItem('presensiStatus', 'success');
-              sessionStorage.setItem('presensiMessage', response.message || 'Data presensi telah berhasil disimpan.');
-
-              // Tampilkan SweetAlert dan atur reload setelah timer
-              Swal.fire({
-                icon: 'success',
-                title: 'Presensi Berhasil!',
-                text: sessionStorage.getItem('presensiMessage'),
-                showConfirmButton: false,
-                timer: 1500,
-                willClose: () => {
-                  // Reload halaman setelah SweetAlert tertutup
-                  location.reload();
-                }
-              });
-            },
-            error: function (xhr, status, error) {
-              // Menampilkan pesan kesalahan dengan informasi dari server (jika ada)
-              const errorMessage = xhr.responseJSON?.message || 'Terjadi kesalahan. Silakan coba lagi.';
-              Swal.fire({
-                icon: 'error',
-                title: 'Gagal melakukan presensi!',
-                text: errorMessage,
-                showConfirmButton: true
-              });
-            }
-          });
-        } else {
-          // Tampilkan pesan kesalahan jika lokasi tidak valid
-          Swal.fire({
-            icon: 'error',
-            title: 'Lokasi Tidak Valid',
-            text: message,
-            showConfirmButton: true
-          });
-        }
-      });
-      
+      // Logika presensi (terlambat atau hadir)
       const now = new Date();
       const hours = now.getHours();
       const minutes = now.getMinutes();
@@ -361,14 +290,63 @@
       const batasJam = 9;
       const batasMenit = 0;
 
-      if (hours > batasJam || (hours === batasJam && minutes > batasMenit)) {
-        statusPresensi = 'Terlambat';
-      } else {
-        statusPresensi = 'Hadir';
-      }
-    });
+      let statusPresensi = (hours > batasJam || (hours === batasJam && minutes > batasMenit)) ? 'Terlambat' : 'Hadir';
 
-    function updateDateTime() {
+      // Menambahkan statusPresensi ke data presensi saat submit
+      $('#form-presensi').on('submit', function(event) {
+          event.preventDefault(); // Mencegah pengiriman form default
+
+          validateLocation((isValid, message) => {
+              if (isValid) {
+                  $.ajax({
+                      url: "{{ route('presensi.store') }}",
+                      method: "POST",
+                      data: {
+                          _token: "{{ csrf_token() }}",
+                          status: statusPresensi, // Status yang dipilih
+                          tanggal: today, // Format YYYY-MM-DD
+                          waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).slice(0, 5), // Format HH:MM
+                          toko: "Toko A", // Ganti dengan toko yang sesuai
+                          nip: "123456" // NIP yang sesuai
+                      },
+                      success: function (response) {
+                        sessionStorage.setItem('presensiStatus', 'success');
+                        sessionStorage.setItem('presensiMessage', response.message || 'Data presensi telah berhasil disimpan.');
+                        sessionStorage.setItem('presensiDisabled', 'true'); // Simpan status tombol
+                        sessionStorage.setItem('presensiTime', currentMinute); // Simpan waktu presensi
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Presensi Berhasil!',
+                            text: sessionStorage.getItem('presensiMessage'),
+                            showConfirmButton: false,
+                            timer: 1500,
+                            willClose: () => location.reload()
+                        });
+                      },
+                      error: function (xhr, status, error) {
+                          const errorMessage = xhr.responseJSON?.message || 'Terjadi kesalahan. Silakan coba lagi.';
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'Gagal melakukan presensi!',
+                              text: errorMessage,
+                              showConfirmButton: true
+                          });
+                      }
+                  });
+              } else {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Lokasi Tidak Valid',
+                      text: message,
+                      showConfirmButton: true
+                  });
+              }
+          });
+      });
+  });
+
+  function updateDateTime() {
       var now = new Date();
       var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
       var months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
@@ -378,19 +356,15 @@
       var month = months[now.getMonth()];
       var year = now.getFullYear();
 
-      // Format waktu dengan 2 digit untuk menit dan detik
       var formattedDate = `${dayOfMonth} ${month} ${year}`;
       
-      // Update elemen dengan ID
       document.getElementById('current-day').textContent = dayOfWeek;
       document.getElementById('current-date').textContent = formattedDate;
-    }
+  }
 
-    // Update waktu dan tanggal setiap detik
-    setInterval(updateDateTime, 1000);
+  setInterval(updateDateTime, 1000);
+  updateDateTime();
 
-    // Panggil fungsi pertama kali saat halaman dimuat
-    updateDateTime();
   </script>
 </body>
 
