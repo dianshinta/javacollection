@@ -153,15 +153,21 @@
                             Status
                           </th>
                         </thead>
-                        <tbody>
-                          @foreach ($riwayatPresensi as $riwayat)
-                          <tr class="text-center">
-                            <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
-                            <td>{{ \Carbon\Carbon::parse($riwayat->tanggal)->translatedFormat('j F Y') }}</td>
-                            <td>{{ $riwayat->waktu }}</td>
-                            <td><span class="status">{{ $riwayat->status }}</span></td>
-                          </tr>
-                          @endforeach
+                        <tbody class="text-center">
+                          @if ($riwayatPresensi->isEmpty())
+                            <tr>
+                                <td colspan="6">Tidak ada data presensi</td>
+                            </tr>
+                          @else
+                            @foreach ($riwayatPresensi as $riwayat)
+                            <tr>
+                              <td>{{ $loop->iteration }}</td>  <!-- Corrected: use $loop->iteration for auto-increment -->
+                              <td>{{ \Carbon\Carbon::parse($riwayat->tanggal)->translatedFormat('j F Y') }}</td>
+                              <td>{{ $riwayat->waktu }}</td>
+                              <td><span class="status">{{ $riwayat->status }}</span></td>
+                            </tr>
+                            @endforeach
+                          @endif
                         </tbody>
                       </table>
                     </div>

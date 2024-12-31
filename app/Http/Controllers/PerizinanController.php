@@ -15,7 +15,9 @@ class PerizinanController extends Controller
             'nip' => 'required|string',
             'nama' => 'required|string',
             'tanggal' => 'required|date',
+            'jenis' => 'required|string',
             'keterangan' => 'required|string',
+            'lampiran' => 'nullable|file|max:2000'
         ]);        
 
         // Menyimpan data perizinan
@@ -35,6 +37,7 @@ class PerizinanController extends Controller
 
         // Simpan ke database
         $perizinan->save();
+        return back()->with('success', 'Data perizinan berhasil disimpan.');
     }
 
     public function update(Request $request)
@@ -47,9 +50,32 @@ class PerizinanController extends Controller
         ]);
 
         $perizinan = perizinan::find($validated['id']);
-        $perizinan->update($validated);
+        
+        // Perbarui data
+        $perizinan->tanggal = $validated['tanggal'];
+        $perizinan->jenis = $validated['jenis'];
+        $perizinan->keterangan = $validated['keterangan'];
 
-        return response()->json(['success' => true]);
+        // Jika ada file lampiran baru
+        if ($request->hasFile('lampiran')) {
+            // Hapus file lama jika ada
+            if ($perizinan->lampiran && file_exists(public_path('bukti_izin/' . $perizinan->lampiran))) {
+                unlink(public_path('bukti_izin/' . $perizinan->lampiran));
+            }
+
+            // Simpan file lampiran baru
+            $file = $request->file('lampiran');
+            $fileName = time() . '_' . $file->getClientOriginalName(); // Nama file unik
+            $filePath = $file->storeAs('bukti_izin', $fileName, 'public');
+            $file->move(public_path('bukti_izin'), $fileName); // Pindahkan file ke direktori public
+
+            $perizinan->lampiran = $filePath;
+        }
+
+        // Simpan perubahan ke database
+        $perizinan->save();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil diperbarui']);
     }
 
 
@@ -69,9 +95,20 @@ class PerizinanController extends Controller
         $id = $request->input('id');
 
         $perizinan = perizinan::find($id);
-        $perizinan->delete();
 
-        return response()->json(['success' => true]);
+        if ($perizinan) {
+            // Hapus file lampiran jika ada
+            if ($perizinan->lampiran && file_exists(public_path('storage/' . $perizinan->lampiran))) {
+                unlink(public_path('bukti_izin/' . $perizinan->lampiran));
+            }
+
+            // Hapus data dari database
+            $perizinan->delete();
+
+            return response()->json(['success' => true, 'message' => 'Data berhasil dihapus']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
     }
 
 }
