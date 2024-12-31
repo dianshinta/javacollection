@@ -271,13 +271,12 @@
 
     $(document).ready(function() {
       const today = new Date().toISOString().split('T')[0]; // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
-      const currentMinute = new Date().toISOString().slice(0, 16); // Mendapatkan tanggal dan jam dengan menit (YYYY-MM-DDTHH:MM)
 
       // Cek apakah tombol harus dinonaktifkan (sudah klik presensi di menit ini)
       const presensiDisabled = sessionStorage.getItem('presensiDisabled') === 'true';
-      const presensiTime = sessionStorage.getItem('presensiTime');
+      const presensiDate = sessionStorage.getItem('presensiDate');
 
-      if (presensiDisabled && presensiTime === currentMinute) {
+      if (presensiDisabled && presensiDate === today) {
           $('#btn-presensi').prop('disabled', true);
       }
 
@@ -313,8 +312,8 @@
                         sessionStorage.setItem('presensiStatus', 'success');
                         sessionStorage.setItem('presensiMessage', response.message || 'Data presensi telah berhasil disimpan.');
                         sessionStorage.setItem('presensiDisabled', 'true'); // Simpan status tombol
-                        sessionStorage.setItem('presensiTime', currentMinute); // Simpan waktu presensi
-                        
+                        sessionStorage.setItem('presensiDate', today); // Simpan waktu presensi
+
                         Swal.fire({
                             icon: 'success',
                             title: 'Presensi Berhasil!',
