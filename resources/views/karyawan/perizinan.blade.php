@@ -730,6 +730,25 @@
                                 }
                             });
 
+                            // Validasi tanggal tidak boleh sebelum hari ini
+                            var today = new Date();
+                            var yyyy = today.getFullYear();
+                            var mm = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                            var dd = String(today.getDate()).padStart(2, '0');
+                            var minDate = `${yyyy}-${mm}-${dd}`;
+
+                            $('#formUpdatePerizinan').find('input[type="date"]').each(function () {
+                                if ($(this).val() < minDate) {
+                                    isValid = false;
+                                    $(this).addClass('is-invalid');
+                                    $(this).siblings('.invalid-feedback').remove();
+                                    $(this).after('<div class="invalid-feedback">Tanggal tidak boleh sebelum hari ini.</div>');
+                                } else {
+                                    $(this).removeClass('is-invalid');
+                                    $(this).siblings('.invalid-feedback').remove();
+                                }
+                            });
+
                             // Validasi khusus untuk radio button "jenis"
                             var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
                             if (!jenisSelected) {
@@ -749,6 +768,8 @@
                             if (!isValid) {
                                 return false; // Jangan lanjutkan ke proses selanjutnya
                             }
+
+                            
 
                             // Menampilkan modal konfirmasi
                             $('#confirmUpdateModal').modal('show');
