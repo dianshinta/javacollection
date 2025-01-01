@@ -13,14 +13,17 @@ return new class extends Migration
     {
         Schema::create('employer_salaries', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->integer('nip')->unique();
+            $table->string('user_nip'); // Foreign key
+            $table->foreign('user_nip')->references('nip')->on('users')->onDelete('cascade');
             $table->string('nama');
             $table->string('jabatan');
+            $table->integer('kehadiran'); 
+            $table->integer('izin'); 
+            $table->integer('absen'); 
             $table->integer('gaji_pokok');
             $table->integer('kasbon');  
-            $table->integer('denda')->default(0); // Denda
-            $table->integer('kehadiran'); // count kehadiran
-            $table->integer('total_gaji')->nullable(); // Gaji akhir setelah perhitungan
+            $table->integer('denda')->default(0); 
+            $table->integer('total_gaji')->default(0); 
             $table->timestamps();
             // $table->foreignId('nip')->constrained( // Relasi ke NIP di tabel Users
             //     table: 'users',

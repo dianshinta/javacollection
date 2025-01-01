@@ -24,8 +24,15 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+
+
         //seeders gaji
         \App\Models\EmployerSalary::factory(20)->create(); 
-        //jalankan di terminal pakai : 
+        //jalankan di terminal pakai : php artisan db:seed
+
+        \App\Models\User::factory(5)->create(); 
+        
+        
     }
 }

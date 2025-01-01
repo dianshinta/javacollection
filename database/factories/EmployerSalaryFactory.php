@@ -10,6 +10,7 @@ use App\Models\EmployerSalary;
  */
 class EmployerSalaryFactory extends Factory
 {
+    //cara buat model factory, ketikkan di terminal : php artisan make:factory
     /**
      * Define the model's default state.
      *
@@ -18,12 +19,14 @@ class EmployerSalaryFactory extends Factory
     public function definition(): array
     {
         return [
-            'nip' => fake()->numberBetween(0, 1000),
+            'nip' => fake()->unique()->numberBetween(0, 1000),
             'nama' => fake()->name(),
             'jabatan' => fake()->sentence(1),
             'gaji_pokok' => fake()->numberBetween(1700000, 2500000),
             'kasbon' => fake()->numberBetween(0, 1700000),
-            'kehadiran' => fake()->numberBetween(0, 31)
+            'kehadiran' => fake()->numberBetween(0, 31),
+            'izin' => fake()->numberBetween(0,2)
+            
 
 
 

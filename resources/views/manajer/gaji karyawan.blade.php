@@ -171,16 +171,28 @@
                             <!-- Modal Edit Gaji -->
                             <div class="editable-gaji pt-3">
                                 <div>
-                                    <label for="editKehadiran">Jumlah Kehadiran: </label>
+                                    <label for="editKehadiran">Hadir: </label>
                                     <span id="modalKehadiran"></span>
+                                </div>
+                                <div>
+                                    <label for="editIzin">Izin: </label>
+                                    <span id="modalIzin"></span>
+                                </div>
+                                <div>
+                                    <label for="editAbsen">Absen: </label>
+                                    <span id="modalAbsen"></span>
+                                </div>
+                                <div>
+                                    <label for="editGajiPokok">Gaji Pokok: </label>
+                                    <span id="modalGajiPokok"></span>
+                                </div>
+                                <div>
+                                    <label for="editDenda">denda: </label>
+                                    <span id="modalDenda"></span>
                                 </div>
                                 <div>
                                     <label for="editKasbon">Kasbon: </label>
                                     <span id="modalKasbon"></span>
-                                </div>
-                                <div>
-                                    <label for="editPotongan">denda: </label>
-                                    <span id="modalPotongan"></span>
                                 </div>
                                 <div style="text-align: right;">
                                     <p>Jumlah <br>Rp.  <span id="modalTotal"></span></p>
@@ -308,8 +320,11 @@
                 $('#modalNama').text(data.nama);
                 $('#modalJabatan').text(data.jabatan);
                 $('#modalKehadiran').text(data.kehadiran);
+                $('#modalIzin').text(data.izin);
+                $('#modalGajiPokok').text(data.gaji_pokok);
+                $('#modalAbsen').text(data.absen);
+                $('#modalDenda').text(data.denda);
                 $('#modalKasbon').text(data.kasbon);
-                $('#modalPotongan').text(data.denda);
                 $('#modalTotal').text(data.total_gaji);
 
                 // Tampilkan modal

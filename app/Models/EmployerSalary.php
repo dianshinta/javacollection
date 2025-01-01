@@ -15,7 +15,7 @@ class EmployerSalary extends Model
     // protected $primarykey = 'post_id'; // mendefinisikan kembali primary key
     // protected $fillable = ['name']; // nandain kolom mana aja yang bisa diisi secara manual, selain dari kolom dalam array gaboleh 
     // protected $guarded = ['name']; // nandain kolom mana aja yang gabisa diisi secara manual, selain dari kolom dalam array boleh
-    protected $guarded = ['id', 'created_at', 'updated_at', 'total_gaji', 'denda'];
+    protected $guarded = ['id', 'created_at', 'updated_at', 'total_gaji', 'denda', 'absen'];
 
     //Fungsi menghitung total gaji
     public function calculateTotalGaji()
@@ -27,9 +27,16 @@ class EmployerSalary extends Model
     {
         // $hariDalamBulan = now()->daysInMonth;
         // $denda = ($hariDalamBulan - $kehadiran - $izin) * 3 * $user->gajiPokok;
-        $hariDalamBulan = now()->daysInMonth;
-        $denda = ($hariDalamBulan - $this->kehadiran - $this->izin) * 3 * $this->gaji_pokok;
+        $denda = ($this->absen - $this->izin) * 3 * $this->gaji_pokok;
         return $denda;
+    }
+    public function absen()
+    {
+        // $hariDalamBulan = now()->daysInMonth;
+        // $denda = ($hariDalamBulan - $kehadiran - $izin) * 3 * $user->gajiPokok;
+        $hariDalamBulan = now()->daysInMonth;
+        $absen = $hariDalamBulan - $this->kehadiran;
+        return $absen;
     }
 
 
@@ -40,6 +47,7 @@ class EmployerSalary extends Model
         // Event `saving` akan dipanggil sebelum data disimpan (baik create atau update)
         static::saving(function ($employerSalary) {
             // Hitung total gaji
+            $employerSalary->absen = $employerSalary->absen();
             $employerSalary->denda = $employerSalary->calculateDenda();
             $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();
         });
