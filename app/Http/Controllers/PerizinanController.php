@@ -31,7 +31,9 @@ class PerizinanController extends Controller
         // Jika ada file bukti, proses upload file
         if ($request->hasFile('lampiran')) {
             $file = $request->file('lampiran');
-            $filePath = $file->store('bukti_izin', 'public');
+            $fileName = time() . '_' . $file->getClientOriginalName(); // Nama asli file
+            $filePath = $file->storeAs('bukti_izin', $fileName, 'public');            
+            $file->move(public_path('bukti_izin'), $fileName); // Pindahkan file ke direktori public
             $perizinan->lampiran = $filePath;
         }
 

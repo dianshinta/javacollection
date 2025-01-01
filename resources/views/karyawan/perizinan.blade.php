@@ -489,25 +489,6 @@
                     $(this).next('.custom-file-label').text(fileName);
 
                     uploadedFile = this.files[0];
-
-                    $('#btn-tambah').text('Ganti File');  // Ganti teks tombol dengan nama file
-                
-                    // Pastikan tombol hanya muncul jika file diunggah
-                    $('#btn-fileName').remove(); // Menghapus tombol lama (jika ada)
-                    $('#btn-tambah').before(`
-                        <button id="btn-fileName" class="btn btn-info mt-2">${fileName}</button>
-                    `);
-                    
-                });
-
-                // Menampilkan file yang diunggah saat tombol nama file diklik
-                $(document).on('click', '#btn-fileName', function (event) {
-                    event.preventDefault();
-
-                    if (uploadedFile) {
-                        const fileUrl = URL.createObjectURL(uploadedFile);  // Membuat URL objek untuk file yang diunggah
-                        window.open(fileUrl, '_blank'); // Membuka file di tab baru
-                    }
                 });
 
                 // Saat tombol "Simpan Lampiran" diklik
@@ -519,23 +500,19 @@
                             text: 'Tidak ada file lampiran yang diunggah!',
                         });
                     } else {
+                        const fileName = uploadedFile.name;
+                        $('#btn-tambah').text('Ganti File');  // Ganti teks tombol dengan nama file
+                        // Pastikan tombol hanya muncul jika file diunggah
+                        $('#btn-fileName').remove(); // Menghapus tombol lama (jika ada)
+                        $('#btn-tambah').before(`
+                            <button id="btn-fileName" class="btn btn-info mt-2" disabled>${fileName}</button>
+                        `);
+                        
                         $('#buktiModal').modal('hide');
                     }
                 });
 
-                // Saat tombol "Simpan Lampiran" diklik
-                $('#btn-saveLampiranUpdate').on('click', function () {
-                    if (!uploadedFile) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Peringatan',
-                            text: 'Tidak ada file lampiran yang diunggah!',
-                        });
-                    } else {
-                        $('#buktiModalUpdate').modal('hide');
-                    }
-                });
-
+                
                 $('#btn-batalLampiran').on('click', function () {
                     uploadedFile = null;
 
@@ -663,33 +640,35 @@
                 const rows = document.querySelectorAll("#riwayatTable tbody tr");
                 rows.forEach(row => {
                     // Menampilkan nama file setelah dipilih
-                    $('#fileUploadUpdate').on('change', function () {
+                    $(document).on('change', '#fileUploadUpdate', function () {
                         const fileNameUpdate = this.files[0]?.name || 'Tidak ada file yang dipilih';
                         $(this).next('.custom-file-label').text(fileNameUpdate);
 
-                        uploadedFile = this.files[0];
+                        uploadedFile = this.files[0];        
+                    });
 
-                        $('#btn-tambahUpdate').text('Ganti File');  // Ganti teks tombol dengan nama file
+                    // Saat tombol "Simpan Lampiran" diklik
+                    $(document).on('click', '#btn-saveLampiranUpdate',function () {
+                        if (!uploadedFile) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Peringatan',
+                                text: 'Tidak ada file lampiran yang diunggah!',
+                            });
+                        } else {
+                            const fileNameUpdate = uploadedFile.name;
+                            $('#buktiModalUpdate').modal('hide');
+                            $('#btn-tambahUpdate').text('Ganti File');  // Ganti teks tombol dengan nama file
                     
-                        // Pastikan tombol hanya muncul jika file diunggah
-                        $('#btn-fileNameUpdate').remove(); // Menghapus tombol lama (jika ada)
-                        $('#btn-tambahUpdate').before(`
-                            <button id="btn-fileNameUpdate" class="btn btn-info mt-2">${fileNameUpdate}</button>
-                        `);
-                        
+                            // Pastikan tombol hanya muncul jika file diunggah
+                            $('#btn-fileNameUpdate').remove(); // Menghapus tombol lama (jika ada)
+                            $('#btn-tambahUpdate').before(`
+                                <button id="btn-fileNameUpdate" class="btn btn-info mt-2" disabled>${fileNameUpdate}</button>
+                            `); 
+                        }
                     });
 
                     $(document).off('click', '#btn-fileNameUpdate');
-
-                    // Menampilkan file yang diunggah saat tombol nama file diklik
-                    $(document).on('click', '#btn-fileName', function (event) {
-                        event.preventDefault();
-
-                        if (uploadedFile) {
-                            const fileUrl = URL.createObjectURL(uploadedFile);  // Membuat URL objek untuk file yang diunggah
-                            window.open(fileUrl, '_blank'); // Membuka file di tab baru
-                        }
-                    });
 
                     row.addEventListener("click", () => {
                         // Ambil data dari atribut data-*
@@ -787,7 +766,7 @@
                         });
 
                         // Ketika tombol "Yakin" pada modal konfirmasi diklik
-                        $('#btnYakinUpdate').on('click', function () {
+                        $(document).on('click', '#btnYakinUpdate', function () {
                             const dataTanggal = document.querySelector("#formUpdatePerizinan #tanggal").value;
                             const dataJenis = document.querySelector("#formUpdatePerizinan input[name='jenis']:checked")?.value;
                             const dataKeterangan = document.querySelector("#formUpdatePerizinan #keterangan").value;
@@ -853,11 +832,11 @@
                                 });
                         });
 
-                        $('#deletePerizinan').on('click', function () {
+                        $(document).on('click', '#deletePerizinan', function () {
                             $('#confirmDeleteModal').modal('show');
                         });
                         
-                        $('#btnYakinDelete').on('click', function () {
+                        $(document).on('click', '#btnYakinDelete', function () {
                             const formData = new FormData();
                             formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
                             formData.append("_token", "{{ csrf_token() }}");  // Token CSRF untuk keamanan
