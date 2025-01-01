@@ -9,6 +9,7 @@ use App\Http\Controllers\SupervisorPengajuanController;
 use App\Http\Controllers\PerizinanController;
 use App\Http\Controllers\KaryawanKasbonController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\EmployerSalaryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -89,11 +90,7 @@ Route::get('/manajer/beranda/', function () {
     return view('/manajer/beranda');
 })->name('manager.beranda');
 
-Route::get('/manajer/gaji', function() {
-    return view('/manajer/gaji', [
-        "title" => "Gaji"
-    ]);
-})->name('manajer.gaji');
+Route::get('/manajer/gaji', [EmployerSalaryController::class, 'index'])->name('manajer.gaji');
 
 // Menampilkan halaman login
 Route::get('/login', function () {
