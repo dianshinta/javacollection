@@ -85,3 +85,24 @@ td.text-center {
     white-space: nowrap;
     max-width: 150px; 
 }
+
+#btn-fileNameUpdate {
+    padding: 1em 0.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 210px;
+}
+
+#btn-fileName {
+    padding: 1em 0.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 210px;
+}
+
+.custom-file-label {
+    overflow: hidden;
+    white-space: nowrap;
+}

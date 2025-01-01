@@ -456,8 +456,6 @@
         <script src="../assets/js/core/popper.min.js"></script>
         <script src="../assets/js/core/bootstrap.min.js"></script>
         <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-        <!--  Google Maps Plugin    -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
         <!-- Chart JS -->
         <script src="../assets/js/plugins/chartjs.min.js"></script>
         <!--  Notifications Plugin    -->
@@ -511,25 +509,16 @@
                         $('#buktiModal').modal('hide');
                     }
                 });
-
                 
                 $('#btn-batalLampiran').on('click', function () {
-                    uploadedFile = null;
-
+                    $('#buktiModal').modal('hide');
                     $('.custom-file-label').text('Pilih file...');
-                    $('#btn-fileName').remove(); // Menghapus tombol lama (jika ada)
-                    $('#btn-tambah').text('Tambah');
-                    // Reset elemen input file
                     $('#fileUpload').val(''); // Mengosongkan nilai input file
                 });
 
                 $('#btn-batalLampiranUpdate').on('click', function () {
-                    uploadedFile = null;
-
+                    $('#buktiModalUpdate').modal('hide');
                     $('.custom-file-label').text('Pilih file...');
-                    $('#btn-fileNameUpdate').remove(); // Menghapus tombol lama (jika ada)
-                    $('#btn-tambahUpdate').text('Tambah');
-                    // Reset elemen input file
                     $('#fileUploadUpdate').val(''); // Mengosongkan nilai input file
                 });
 
@@ -741,6 +730,25 @@
                                 }
                             });
 
+                            // Validasi tanggal tidak boleh sebelum hari ini
+                            var today = new Date();
+                            var yyyy = today.getFullYear();
+                            var mm = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+                            var dd = String(today.getDate()).padStart(2, '0');
+                            var minDate = `${yyyy}-${mm}-${dd}`;
+
+                            $('#formUpdatePerizinan').find('input[type="date"]').each(function () {
+                                if ($(this).val() < minDate) {
+                                    isValid = false;
+                                    $(this).addClass('is-invalid');
+                                    $(this).siblings('.invalid-feedback').remove();
+                                    $(this).after('<div class="invalid-feedback">Tanggal tidak boleh sebelum hari ini.</div>');
+                                } else {
+                                    $(this).removeClass('is-invalid');
+                                    $(this).siblings('.invalid-feedback').remove();
+                                }
+                            });
+
                             // Validasi khusus untuk radio button "jenis"
                             var jenisSelected = $('input[name="jenis"]:checked').length > 0; // Cek apakah ada yang dipilih
                             if (!jenisSelected) {
@@ -760,6 +768,8 @@
                             if (!isValid) {
                                 return false; // Jangan lanjutkan ke proses selanjutnya
                             }
+
+                            
 
                             // Menampilkan modal konfirmasi
                             $('#confirmUpdateModal').modal('show');
