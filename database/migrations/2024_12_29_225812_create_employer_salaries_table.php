@@ -15,15 +15,13 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('user_nip'); // Foreign key
             $table->foreign('user_nip')->references('nip')->on('users')->onDelete('cascade');
-            $table->string('nama');
-            $table->string('jabatan');
-            $table->integer('kehadiran'); 
-            $table->integer('izin'); 
-            $table->integer('absen'); 
+            $table->integer('kehadiran');
+            $table->integer('izin');
+            $table->integer('absen');
             $table->integer('gaji_pokok');
-            $table->integer('kasbon');  
-            $table->integer('denda')->default(0); 
-            $table->integer('total_gaji')->default(0); 
+            $table->integer('kasbon');
+            $table->integer('denda')->default(0);
+            $table->integer('total_gaji')->default(0);
             $table->timestamps();
             // $table->foreignId('nip')->constrained( // Relasi ke NIP di tabel Users
             //     table: 'users',
@@ -37,7 +35,7 @@ return new class extends Migration
             //     table: 'kasbon',
             //     indexName: 'ES_kasbon'
             // );
-            
+
         });
     }
 

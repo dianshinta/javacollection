@@ -96,11 +96,11 @@
                                         </tr>
                                     </thead>
                                     @foreach ($datas as $data)
-                                    <tbody class="gaji-row" data-id="{{ $data['nip'] }}">
+                                    <tbody class="gaji-row" data-id="{{ $data['user_nip'] }}">
                                         <tr>
-                                            <td> {{ $data['nip'] }}</td> 
-                                            <td>{{ Str::limit($data['nama'], 20) }}</td>
-                                            <td>{{ $data['jabatan'] }}</td>
+                                            <td> {{ $data['user_nip'] }}</td> 
+                                            <td>{{ Str::limit($data->karyawan->name, 20) }}</td>
+                                            <td>{{ $data->karyawan->jabatan }}</td>
                                         </tr>
                                     </tbody>   
                                     @endforeach

@@ -40,7 +40,7 @@ class UserFactory extends Factory
             // $table->gajiPokok();
             // $table->timestamps();
 
-            'nip' => fake()->unique()->numberBetween(0, 1000),
+            'nip' => fake()->unique()->numerify('####'),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),

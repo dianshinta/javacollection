@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\EmployerSalary;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EmployerSalary>
@@ -19,14 +19,11 @@ class EmployerSalaryFactory extends Factory
     public function definition(): array
     {
         return [
-            'nip' => fake()->unique()->numberBetween(0, 1000),
-            'nama' => fake()->name(),
-            'jabatan' => fake()->sentence(1),
+            'user_nip' => User::factory(),
             'gaji_pokok' => fake()->numberBetween(1700000, 2500000),
             'kasbon' => fake()->numberBetween(0, 1700000),
             'kehadiran' => fake()->numberBetween(0, 31),
             'izin' => fake()->numberBetween(0,2)
-            
 
 
 

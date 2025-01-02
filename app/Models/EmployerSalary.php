@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Http\Controllers\EmployerSalaryController;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EmployerSalary extends Model
 {
@@ -16,6 +17,12 @@ class EmployerSalary extends Model
     // protected $fillable = ['name']; // nandain kolom mana aja yang bisa diisi secara manual, selain dari kolom dalam array gaboleh 
     // protected $guarded = ['name']; // nandain kolom mana aja yang gabisa diisi secara manual, selain dari kolom dalam array boleh
     protected $guarded = ['id', 'created_at', 'updated_at', 'total_gaji', 'denda', 'absen'];
+
+    //menghubungkan dengan tabel user
+    public function karyawan(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_nip', 'nip');
+    }
 
     //Fungsi menghitung total gaji
     public function calculateTotalGaji()
@@ -52,6 +59,8 @@ class EmployerSalary extends Model
             $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();
         });
     }
+
+
 
     // /**
     //  * Relasi ke tabel User (One-to-One).
