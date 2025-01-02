@@ -32,17 +32,14 @@ class EmployerSalary extends Model
     }
     public function calculateDenda()
     {
-        // $hariDalamBulan = now()->daysInMonth;
-        // $denda = ($hariDalamBulan - $kehadiran - $izin) * 3 * $user->gajiPokok;
-        $denda = ($this->absen - $this->izin) * 3 * $this->gaji_pokok;
+        $hariDalamBulan = now()->daysInMonth;
+        $denda = $this->absen() * 3 * ($this->gaji_pokok / $hariDalamBulan);
         return $denda;
     }
     public function absen()
     {
-        // $hariDalamBulan = now()->daysInMonth;
-        // $denda = ($hariDalamBulan - $kehadiran - $izin) * 3 * $user->gajiPokok;
         $hariDalamBulan = now()->daysInMonth;
-        $absen = $hariDalamBulan - $this->kehadiran;
+        $absen = $hariDalamBulan - $this->kehadiran - $this->izin;
         return $absen;
     }
 
@@ -53,41 +50,13 @@ class EmployerSalary extends Model
 
         // Event `saving` akan dipanggil sebelum data disimpan (baik create atau update)
         static::saving(function ($employerSalary) {
-            // Hitung total gaji
+            $employerSalary->nama = $employerSalary->karyawan->name; //mendefinisikan nama dari tabel user menggunakan fungsi karyawan
+            $employerSalary->jabatan = $employerSalary->karyawan->jabatan;  //mendefinisikan jabatan dari tabel user menggunakan fungsi karyawan
+            $employerSalary->gaji_pokok = $employerSalary->karyawan->gaji_pokok;  //mendefinisikan gaji pokok dari tabel user menggunakan fungsi karyawan
             $employerSalary->absen = $employerSalary->absen();
+            // $employerSalary->denda = $employerSalary->absen * 3 * $employerSalary->gaji_pokok;
             $employerSalary->denda = $employerSalary->calculateDenda();
             $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();
-
-            //ambil nama dan jabatan dari tabel user
-            $employerSalary->nama = $employerSalary->karyawan->name;
-            $employerSalary->jabatan = $employerSalary->karyawan->jabatan;
-            $employerSalary->gaji_pokok = $employerSalary->karyawan->gaji_pokok;
         });
     }
-
-
-
-    // /**
-    //  * Relasi ke tabel User (One-to-One).
-    //  */
-    // public function user(): HasOne
-    // {
-    //     return $this->hasOne(User::class, 'nip');
-    // }
-
-    // /**
-    //  * Relasi ke tabel Kasbon (One-to-One).
-    //  */
-    // public function kasbon(): HasOne
-    // {
-    //     return $this->hasOne(kasbon::class, 'id');
-    // }
-
-    // /**
-    //  * Relasi ke tabel Presensi (One-to-Many).
-    //  */
-    // public function presensi()
-    // {
-    //     return $this->hasOne(presensi::class);
-    // }
 }

@@ -308,15 +308,15 @@
     <script>
         $(document).ready(function () {
             $('.gaji-row').click(function () {
-            // Ambil NIP dari data-id pada baris yang diklik
-            const nip = $(this).data('id');
+                const nip = $(this).data('id');
 
-            // Cari data yang cocok dengan NIP tersebut
-            const data = @json($datas).find(item => item.nip == nip);
+                // Cari data yang cocok dengan NIP tersebut
+                const data = @json($datas).find(item => item.user_nip == nip);
+       
             
             // Isi data ke dalam modal
             if (data) {
-                $('#modalNip').text(data.nip);
+                $('#modalNip').text(data.user_nip);
                 $('#modalNama').text(data.nama);
                 $('#modalJabatan').text(data.jabatan);
                 $('#modalKehadiran').text(data.kehadiran);

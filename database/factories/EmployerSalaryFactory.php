@@ -21,7 +21,7 @@ class EmployerSalaryFactory extends Factory
         return [
             'user_nip' => User::factory(),
             'kasbon' => fake()->numberBetween(0, 1700000),
-            'kehadiran' => fake()->numberBetween(0, 31),
+            'kehadiran' => fake()->numberBetween(26, 31),
             'izin' => fake()->numberBetween(0,2)
 
 
