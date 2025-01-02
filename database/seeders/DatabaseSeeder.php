@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
 
         // Membuat 500 data Presensi dengan nip dari data User
         $users->each(function ($user) {
-            Presensi::factory(500)->create([
+            Presensi::factory(200)->create([
                 'nip' => function () {
                     return User::inRandomOrder()->first()->nip; // Nip diambil dari User
                 },
@@ -54,7 +54,7 @@ class DatabaseSeeder extends Seeder
 
         // Membuat data EmployerSalary dengan nip dari semua User
         $users->each(function ($user) {
-            EmployerSalary::factory()->create([
+            EmployerSalary::factory(10)->create([
                 'user_nip' => $user->nip,
                 'kehadiran_id' => Presensi::where('nip', $user->nip)->inRandomOrder()->first()->id,
             ]);

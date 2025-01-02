@@ -33,8 +33,8 @@ class presensiFactory extends Factory
             // 'kehadiran' => fake()->numberBetween(26, 31),
             // 'izin' => fake()->numberBetween(0,2)
 
-            'nip' => User::factory(),
-            'status'=> fake()->randomElement($statusKehadiran),
+            'nip' => User::inRandomOrder()->value('nip'),
+            'status' => fake()->randomElement($statusKehadiran),
             'tanggal' => fake()->dateTimeBetween('2025-01-01', '2025-05-31')->format('Y-m-d'),
             'waktu' => fake()->dateTimeBetween('2025-01-01 07:00:00', '2025-01-01 10:00:00')->format('H:i:s'),
             'toko' => fake()->randomElement($toko),

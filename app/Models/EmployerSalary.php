@@ -72,16 +72,13 @@ class EmployerSalary extends Model
             ->orderBy('tanggal', 'desc')
             ->first();
 
-        // Jika data presensi ada, ambil bulan dan tahun dari tanggal presensi terakhir
+        // Jika data presensi ada, gunakan bulan dan tahun dari tanggal presensi terakhir
         if ($presensiTerakhir) {
-            $bulanTahun = \Carbon\Carbon::parse($presensiTerakhir->tanggal)
-                ->locale('id')
-                ->translatedFormat('F Y');
-            return $bulanTahun;
+            return \Carbon\Carbon::parse($presensiTerakhir->tanggal)->startOfMonth()->format('Y-m-d');
         }
 
-        // Jika tidak ada data presensi, default ke bulan dan tahun saat ini
-        return now()->locale('id')->translatedFormat('F Y');
+        // Jika tidak ada data presensi, default ke awal bulan saat ini
+        return now()->startOfMonth()->format('Y-m-d');
     }
 
 
@@ -98,7 +95,7 @@ class EmployerSalary extends Model
             $employerSalary->nama = $employerSalary->karyawan->name; //mendefinisikan nama dari tabel user menggunakan fungsi karyawan
             $employerSalary->jabatan = $employerSalary->karyawan->jabatan;  //mendefinisikan jabatan dari tabel user menggunakan fungsi karyawan
             $employerSalary->gaji_pokok = $employerSalary->karyawan->gaji_pokok;  //mendefinisikan gaji pokok dari tabel user menggunakan fungsi karyawan
-            $employerSalary->kehadiran = $employerSalary->hadir();
+            $employerSalary->kehadiran_id = $employerSalary->hadir();
             $employerSalary->absen = $employerSalary->absen();
             $employerSalary->denda = $employerSalary->calculateDenda();
             $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();
