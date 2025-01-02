@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('jabatan');
             $table->rememberToken();
-            $table->integer('gajiPokok');
+            $table->integer('gaji_pokok');
             $table->timestamps();
         });
     }

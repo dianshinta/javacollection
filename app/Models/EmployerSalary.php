@@ -57,6 +57,11 @@ class EmployerSalary extends Model
             $employerSalary->absen = $employerSalary->absen();
             $employerSalary->denda = $employerSalary->calculateDenda();
             $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();
+
+            //ambil nama dan jabatan dari tabel user
+            $employerSalary->nama = $employerSalary->karyawan->name;
+            $employerSalary->jabatan = $employerSalary->karyawan->jabatan;
+            $employerSalary->gaji_pokok = $employerSalary->karyawan->gaji_pokok;
         });
     }
 

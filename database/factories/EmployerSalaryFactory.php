@@ -20,7 +20,6 @@ class EmployerSalaryFactory extends Factory
     {
         return [
             'user_nip' => User::factory(),
-            'gaji_pokok' => fake()->numberBetween(1700000, 2500000),
             'kasbon' => fake()->numberBetween(0, 1700000),
             'kehadiran' => fake()->numberBetween(0, 31),
             'izin' => fake()->numberBetween(0,2)

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->string('user_nip'); // Foreign key
             $table->foreign('user_nip')->references('nip')->on('users')->onDelete('cascade');
+            $table->string('nama');
+            $table->string('jabatan');
             $table->integer('kehadiran');
             $table->integer('izin');
             $table->integer('absen');
