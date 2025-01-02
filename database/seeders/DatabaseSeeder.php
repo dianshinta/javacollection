@@ -5,6 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Presensi;
+use App\Models\EmployerSalary;
 
 class DatabaseSeeder extends Seeder
 {
@@ -38,24 +40,24 @@ class DatabaseSeeder extends Seeder
         //     },
         // ]);
 
-        //membuat data fake di tabel user
-        \App\Models\User::factory(5)->create();
+        // Membuat 10 data User
+        $users = User::factory(10)->create();
 
-        //membuat data fake dari tabel user sekaligus tabel Gaji karyawan yang nip nya saling berkaitan
-        // \App\Models\User::factory(5)->create()->each(function ($user) {
-        //     \App\Models\EmployerSalary::factory()->create([
-        //         'user_nip' => $user->nip,
-        //     ]);
-        // });
-        
-        // \App\Models\EmployerSalary::factory(5)->recycle(User::factory(5)->create())->create();
+        // Membuat 500 data Presensi dengan nip dari data User
+        $users->each(function ($user) {
+            Presensi::factory(500)->create([
+                'nip' => function () {
+                    return User::inRandomOrder()->first()->nip; // Nip diambil dari User
+                },
+            ]);
+        });
 
-        //membuat data fake dari tabel kehadiran sekaligus tabel Gaji karyawan yang nip nya saling berkaitan
-         \App\Models\Presensi::factory(30)->create([
-            'nip' => function () {
-                return User::inRandomOrder()->first()->nip;
-            },
-        ]);
-
+        // Membuat data EmployerSalary dengan nip dari semua User
+        $users->each(function ($user) {
+            EmployerSalary::factory()->create([
+                'user_nip' => $user->nip,
+                'kehadiran_id' => Presensi::where('nip', $user->nip)->inRandomOrder()->first()->id,
+            ]);
+        });
     }
 }

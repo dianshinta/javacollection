@@ -35,7 +35,7 @@ class presensiFactory extends Factory
 
             'nip' => User::factory(),
             'status'=> fake()->randomElement($statusKehadiran),
-            'tanggal' => fake()->dateTimeBetween('2025-01-01', '2025-01-31')->format('Y-m-d'),
+            'tanggal' => fake()->dateTimeBetween('2025-01-01', '2025-05-31')->format('Y-m-d'),
             'waktu' => fake()->dateTimeBetween('2025-01-01 07:00:00', '2025-01-01 10:00:00')->format('H:i:s'),
             'toko' => fake()->randomElement($toko),
         ];

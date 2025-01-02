@@ -19,8 +19,8 @@ class CreateKehadiranTable extends Migration
             $table->date('tanggal');
             $table->time('waktu');
             $table->string('toko', 50);
-            $table->string('nip', 20); 
-            $table->foreign('nip')->references('nip')->on('users')->onDelete('cascade');//menghubungkan nip dari DB kehadiran ke users
+            $table->string('nip');
+            $table->foreign('nip')->references('nip')->on('users')->onDelete('cascade'); //menghubungkan nip dari DB kehadiran ke users
         });
     }
 

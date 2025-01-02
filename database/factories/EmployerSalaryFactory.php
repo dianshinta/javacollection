@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Presensi;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 
@@ -21,8 +22,8 @@ class EmployerSalaryFactory extends Factory
         return [
             'user_nip' => User::factory(),
             'kasbon' => fake()->numberBetween(0, 1700000),
-            'kehadiran' => fake()->numberBetween(26, 31),
-            'izin' => fake()->numberBetween(0,2)
+            'kehadiran' => Presensi::factory(),
+            'izin' => fake()->numberBetween(0, 2)
 
 
 

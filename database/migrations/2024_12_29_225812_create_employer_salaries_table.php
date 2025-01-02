@@ -17,27 +17,16 @@ return new class extends Migration
             $table->foreign('user_nip')->references('nip')->on('users')->onDelete('cascade');
             $table->string('nama');
             $table->string('jabatan');
-            $table->integer('kehadiran');
+            $table->unsignedBigInteger('kehadiran_id'); // Foreign key
+            $table->foreign('kehadiran_id')->references('id')->on('kehadiran');
             $table->integer('izin');
             $table->integer('absen');
             $table->integer('gaji_pokok');
             $table->integer('kasbon');
             $table->integer('denda')->default(0);
             $table->integer('total_gaji')->default(0);
+            $table->date('bulan_gaji')->nullable();
             $table->timestamps();
-            // $table->foreignId('nip')->constrained( // Relasi ke NIP di tabel Users
-            //     table: 'users',
-            //     indexName: 'ES_nip'
-            // );
-            // $table->foreignId('gaji_pokok')->constrained( //Relasi ke gaji pokok di tabel Users
-            //     table: 'users',
-            //     indexName: 'ES_gaji_pokok'
-            // );
-            // $table->foreignId('saldo_kasbon')->constrained(
-            //     table: 'kasbon',
-            //     indexName: 'ES_kasbon'
-            // );
-
         });
     }
 
