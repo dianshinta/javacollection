@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class presensi extends Model
 {
+    use HasFactory;
+    
     protected $table = 'kehadiran';
     public $timestamps = false;
     protected $primaryKey = 'id'; // Kolom primary key (id)

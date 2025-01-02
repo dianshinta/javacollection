@@ -37,14 +37,25 @@ class DatabaseSeeder extends Seeder
         //         return \App\Models\User::inRandomOrder()->first()->nip;
         //     },
         // ]);
-        \App\Models\User::factory(5)->create()->each(function ($user) {
-            \App\Models\EmployerSalary::factory()->create([
-                'user_nip' => $user->nip,
-            ]);
-        });
-        
 
-        // \App\Models\EmployerSalary::factory(5)->recycle(User::factory(5)->create())->create();//menjalankan employer dan user factory sekaligus
+        //membuat data fake di tabel user
+        \App\Models\User::factory(5)->create();
+
+        //membuat data fake dari tabel user sekaligus tabel Gaji karyawan yang nip nya saling berkaitan
+        // \App\Models\User::factory(5)->create()->each(function ($user) {
+        //     \App\Models\EmployerSalary::factory()->create([
+        //         'user_nip' => $user->nip,
+        //     ]);
+        // });
+        
+        // \App\Models\EmployerSalary::factory(5)->recycle(User::factory(5)->create())->create();
+
+        //membuat data fake dari tabel kehadiran sekaligus tabel Gaji karyawan yang nip nya saling berkaitan
+         \App\Models\Presensi::factory(30)->create([
+            'nip' => function () {
+                return User::inRandomOrder()->first()->nip;
+            },
+        ]);
 
     }
 }
