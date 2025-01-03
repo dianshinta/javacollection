@@ -20,7 +20,10 @@ class CreateKehadiranTable extends Migration
             $table->time('waktu');
             $table->string('toko', 50);
             $table->string('nip');
+            $table->unsignedBigInteger('bulan_id');
+
             $table->foreign('nip')->references('nip')->on('users')->onDelete('cascade'); //menghubungkan nip dari DB kehadiran ke users
+            $table->foreign('bulan_id')->references('id')->on('bulans')->onDelete('cascade'); //menghubungkan nip dari DB kehadiran ke users
         });
     }
 

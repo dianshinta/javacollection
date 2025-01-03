@@ -319,7 +319,7 @@
                 $('#modalNip').text(data.user_nip);
                 $('#modalNama').text(data.nama);
                 $('#modalJabatan').text(data.jabatan);
-                $('#modalKehadiran').text(data.kehadiran);
+                $('#modalKehadiran').text(data.hadir);
                 $('#modalIzin').text(data.izin);
                 $('#modalGajiPokok').text(data.gaji_pokok);
                 $('#modalAbsen').text(data.absen);

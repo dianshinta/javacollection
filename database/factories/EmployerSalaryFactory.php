@@ -22,11 +22,7 @@ class EmployerSalaryFactory extends Factory
         return [
             'user_nip' => User::factory(),
             'kasbon' => fake()->numberBetween(0, 1700000),
-            'kehadiran_id' => Presensi::factory(),
             'izin' => fake()->numberBetween(0, 2)
-
-
-
             // $table->id(); // Primary key
             // $table->integer('nip')->unique();
             // $table->string('nama');

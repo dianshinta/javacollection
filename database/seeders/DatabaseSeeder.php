@@ -54,9 +54,8 @@ class DatabaseSeeder extends Seeder
 
         // Membuat data EmployerSalary dengan nip dari semua User
         $users->each(function ($user) {
-            EmployerSalary::factory(10)->create([
-                'user_nip' => $user->nip,
-                'kehadiran_id' => Presensi::where('nip', $user->nip)->inRandomOrder()->first()->id,
+            EmployerSalary::factory()->create([
+                'user_nip' => $user->nip
             ]);
         });
     }

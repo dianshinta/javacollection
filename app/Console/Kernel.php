@@ -13,6 +13,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+
+        //sinkronisasi tabel gaji, kehadiran, perizinan, kasbon ke tabel bulan biar diupdate secara otomatis setiap hari
+        $schedule->command('bulan:sinkronisasi')->daily();
     }
 
     /**
