@@ -301,7 +301,7 @@
                                     <div class="modal-footer mt-5 text-center justify-content-center">
                                         <div class="btn-group-custom justify-content-center">
                                             <button type="button" class="btn btn-save" id="changePerizinan">Ubah</button>
-                                            <button type="button" class="btn btn-danger" id="deletePerizinan">Batalkan Izin</button>
+                                            <button type="button" class="btn btn-danger" id="deletePerizinan">Hapus Izin</button>
                                         </div>
                                     </div>
                                 </form>
@@ -916,7 +916,24 @@
             });
         });
 
-        
+        // Menutup modal bukti
+        $('#buktiModal').on('hidden.bs.modal', function () {
+            // Mengecek apakah modal perizinan masih terbuka
+            if ($('#perizinanModal').hasClass('show')) {
+                // Kembalikan overflow pada body dan html ke normal
+                $('#perizinanModal').css('overflow', 'auto');
+            }
+        });
+
+        // Menutup modal bukti update
+        $('#buktiModalUpdate').on('hidden.bs.modal', function () {
+            // Mengecek apakah modal perizinan masih terbuka
+            if ($('#updatePerizinanModal').hasClass('show')) {
+                // Kembalikan overflow pada body dan html ke normal
+                $('#updatePerizinanModal').css('overflow', 'auto');
+            }
+        });
+
         </script>
 </body>
 </html>

@@ -180,3 +180,13 @@
     margin: 25px 10px 0 10px;
     border-radius: 15px;
 }
+
+@media (max-width: 768px) {
+  .card-stats {
+    margin: auto;
+  }
+
+  #btn-presensi {
+    font-size: 0.5rem;
+  }
+}

@@ -98,15 +98,15 @@ Coded by www.creative-tim.com
           <h5 class="font-weight-bold">Selamat datang!</h5>
         </div>
         <div class="d-flex justify-content-start align-items-center gap-4 mb-4">
-          <div class="d-flex align-items-center mr-5">
+          <div class="d-flex align-items-center mr-2">
             <i class="nc-icon nc-circle-10 text-primary mr-2"></i>          
             <div>
-              <span>Putu Dian Shinta Prativi</span>
+              <span  style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">Putu Dian Shinta Prativi</span>
               <small class="text-muted d-block">222212822</small>
             </div>
           </div>
           
-          <div class="d-flex align-items-center mr-5">
+          <div class="d-flex align-items-center mr-2">
             <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
             <div>
               <span id="current-day">Sabtu</span>
@@ -114,10 +114,10 @@ Coded by www.creative-tim.com
             </div>
           </div>
           
-          <div class="d-flex align-items-center me-4">
-            <i class="nc-icon nc-pin-3 text-primary mr-2"></i>
+          <div class="d-flex align-items-center ml-1">
+            <i class="nc-icon nc-pin-3 text-primary mr-1"></i>
             <div>
-              <span>Cab. Tanah Abang</span>
+              <span style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">Tanah Abang</span>
             </div>
           </div>
         </div>

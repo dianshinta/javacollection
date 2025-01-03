@@ -421,6 +421,7 @@ Copyright (c) 2015 Daniel Eden
     position: relative;
     top: 1px; }
 
+
 .btn-primary {
   background-color: #51cbce;
   color: #FFFFFF; }
@@ -3800,31 +3801,44 @@ License - nucleoapp.com/license/
 .map {
   height: 500px; }
 
+.card-stats {
+  max-width: 100%;
+  word-wrap: break-word;
+}
 .card-stats .card-body {
-  padding: 15px 15px 0px; }
-  .card-stats .card-body .numbers {
-    text-align: right;
-    font-size: 2em; }
-    .card-stats .card-body .numbers p {
-      margin-bottom: 0; }
-    .card-stats .card-body .numbers .card-category {
-      color: #9A9A9A;
-      font-size: 16px;
-      line-height: 1.4em; }
+  padding: 15px 15px 0px;
+}
 
+.card-stats .card-body .numbers {
+  text-align: right;
+  font-size: 2em;
+}
+
+.card-stats .card-body .numbers p {
+  margin-bottom: 0;
+}
+
+.card-stats .card-body .numbers .card-category {
+  color: #9A9A9A;
+  font-size: 16px;
+  line-height: 1.4em;
+}
 .card-stats .card-footer {
   padding: 0px 15px 15px; }
-  .card-stats .card-footer .stats {
-    color: #9A9A9A; }
-  .card-stats .card-footer hr {
-    margin-top: 10px;
-    margin-bottom: 15px; }
+
+.card-stats .card-footer .stats {
+  color: #9A9A9A; }
+
+.card-stats .card-footer hr {
+  margin-top: 10px;
+  margin-bottom: 15px; }
 
 .card-stats .icon-big {
   font-size: 3em;
   min-height: 64px; }
-  .card-stats .icon-big i {
-    line-height: 59px; }
+
+.card-stats .icon-big i {
+  line-height: 59px; }
 
 @media screen and (max-width: 991px) {
   .navbar {
@@ -4196,32 +4210,56 @@ License - nucleoapp.com/license/
 
 @media screen and (max-width: 413px) {
   .fixed-plugin .dropdown.show-dropdown.show .dropdown-menu.show {
-    width: 225px !important; }
-    .fixed-plugin .dropdown.show-dropdown.show .dropdown-menu.show[x-placement=top-start] {
-      transform: translate3d(0, 400px, 0) !important; }
-    .fixed-plugin .dropdown.show-dropdown.show .dropdown-menu.show:before, .fixed-plugin .dropdown.show-dropdown.show .dropdown-menu.show:after {
-      bottom: 360px !important; }
+    width: 225px !important;
+  }
+
+  .fixed-plugin .dropdown.show-dropdown.show .dropdown-menu.show[x-placement=top-start] {
+    transform: translate3d(0, 400px, 0) !important;
+  }
+
+  .fixed-plugin .dropdown.show-dropdown.show .dropdown-menu.show:before,
+  .fixed-plugin .dropdown.show-dropdown.show .dropdown-menu.show:after {
+    bottom: 360px !important;
+  }
+
   .login-page .container {
-    padding-top: 100px !important; } }
+    padding-top: 100px !important;
+  }
+}
 
 @media screen and (max-width: 576px) {
   .navbar[class*='navbar-toggleable-'] .container {
     margin-left: 0;
-    margin-right: 0; }
+    margin-right: 0;
+  }
+
   .card-contributions .card-stats {
-    flex-direction: column; }
-    .card-contributions .card-stats .bootstrap-switch {
-      margin-bottom: 15px; }
+    flex-direction: column;
+  }
+
+  .card-contributions .card-stats .bootstrap-switch {
+    margin-bottom: 15px;
+  }
+
   .footer .copyright {
-    text-align: center; }
+    text-align: center;
+  }
+
   .section-nucleo-icons .icons-container i {
-    font-size: 30px; }
-    .section-nucleo-icons .icons-container i:nth-child(6) {
-      font-size: 48px; }
+    font-size: 30px;
+  }
+
+  .section-nucleo-icons .icons-container i:nth-child(6) {
+    font-size: 48px;
+  }
+
   .page-header .container h6.category-absolute {
-    width: 90%; }
+    width: 90%;
+  }
+
   .card-timeline .timeline .timeline-panel {
     width: 38%;
-    padding: 15px; } }
-
+    padding: 15px;
+  }
+}
 /*# sourceMappingURL=paper-dashboard.css.map */
