@@ -15,6 +15,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Menampilkan halaman login
+Route::get('/login', function () {
+    return view('auth.login'); // Pastikan ada file `auth/login.blade.php`
+})->name('login');
+
+Route::get('/resetpassword', function () {
+    return view('auth.resetpassword'); // Pastikan ada file `auth/resetpassword.blade.php`
+})->name('resetpassword');
+
+// Menampilkan halaman registrasi
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
 // Menampilkan halaman karyawan
 Route::get('/karyawan/atur/', function () {
     return view('/karyawan/atur');
