@@ -99,6 +99,9 @@ Route::post('/kasbon/{id}/update', [supervisorPembayaranController::class, 'upda
 
 Route::get('/supervisor/kasbon/', [SupervisorPengajuanController::class, 'index'])->name('supervisor.pengajuan');
 
+Route::get('/supervisor/infokaryawan', [SupervisorController::class, 'infokaryawan'])->name('supervisor.infokaryawan');
+
+
 // Menampilkan halaman manager
 Route::get('/manajer/beranda/', function () {
     return view('/manajer/beranda');
@@ -106,10 +109,21 @@ Route::get('/manajer/beranda/', function () {
 
 Route::get('/manajer/gaji', [EmployerSalaryController::class, 'index'])->name('manajer.gaji');
 
-// Menampilkan halaman login
-Route::get('/login', function () {
-    return view('auth.login'); // Pastikan ada file `auth/login.blade.php`
-})->name('login');
-
 // Mengambil data untuk ditampilkan ke grafik
 Route::get('/api/chart-data', [ChartController::class, 'getChartData']);
+
+// Menampilkan halaman edit karyawan manajer
+Route::get('/editkaryawan', function () {
+    return view('manajer.editkaryawan');
+})->name('manajer.editkaryawan');
+
+Route::get('/karyawan', [EditKaryawanController::class, 'karyawans'])->name('manajer.editkaryawan');
+Route::post('/karyawan/save', [EditKaryawanController::class, 'save'])->name('karyawan.save');
+Route::delete('/karyawan/{id}/delete', [EditKaryawanController::class, 'delete'])->name('karyawan.delete');
+// Menampilkan halaman edit karyawan
+Route::get('/karyawan/{id}/edit', [EditKaryawanController::class, 'edit'])->name('karyawan.edit');
+// Route untuk update data karyawan
+Route::put('/karyawan/{id}/update', [EditKaryawanController::class, 'update'])->name('karyawan.update');
+// Route untuk menambah karyawan
+Route::get('/karyawan/create', [EditKaryawanController::class, 'create'])->name('karyawan.create');
+Route::post('/karyawan', [EditKaryawanController::class, 'store'])->name('karyawan.store');
