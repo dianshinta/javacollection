@@ -91,7 +91,7 @@ td.text-center {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 210px;
+    max-width: 150px;
 }
 
 #btn-fileName {
@@ -99,7 +99,7 @@ td.text-center {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    max-width: 210px;
+    max-width: 138px;
 }
 
 .custom-file-label {

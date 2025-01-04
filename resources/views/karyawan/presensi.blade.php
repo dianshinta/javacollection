@@ -85,7 +85,7 @@
           <h5 class="font-weight-bold">Presensi dulu, yuk!</h5>
         </div>
         
-        <div class="d-flex justify-content-start gap-4 mb-4">
+        <div class="d-flex justify-content-start gap-4 mb-1">
             <div class="d-flex flex-column justify-content-start gap-4 mb-4">
                 <div class="d-flex align-items-center mr-5 mb-4">
                     <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
@@ -115,7 +115,7 @@
                             <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
                             <input type="hidden" name="waktu" value="{{ date('H:i:s') }}">
                             <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
-                            <input type="hidden" name="nip" value="1598"> <!-- Isi sesuai kebutuhan -->
+                            <input type="hidden" name="nip" value="5943"> <!-- Isi sesuai kebutuhan -->
                             <input type="hidden" name="redirect_to" value="karyawan.presensi">
                             <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden, text-overflow: ellipsis;">
                                 Presensi
@@ -282,9 +282,9 @@
       const presensiDisabled = sessionStorage.getItem('presensiDisabled') === 'true';
       const presensiDate = sessionStorage.getItem('presensiDate');
 
-      // if (presensiDisabled && presensiDate === today) {
-      //     $('#btn-presensi').prop('disabled', true);
-      // }
+      if (presensiDisabled && presensiDate === today) {
+          $('#btn-presensi').prop('disabled', true);
+      }
 
       // Logika presensi (terlambat atau hadir)
       const now = new Date();
@@ -297,9 +297,9 @@
 
       let statusPresensi = (hours > batasJam || (hours === batasJam && minutes > batasMenit)) ? 'Terlambat' : 'Hadir';
 
-      // if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
-      //   $('#btn-presensi').prop('disabled', true);
-      // }
+      if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
+        $('#btn-presensi').prop('disabled', true);
+      }
 
       // Menambahkan statusPresensi ke data presensi saat submit
       $('#form-presensi').on('submit', function(event) {
@@ -316,7 +316,7 @@
                           tanggal: today, // Format YYYY-MM-DD
                           waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).slice(0, 5), // Format HH:MM
                           toko: "Toko A", // Ganti dengan toko yang sesuai
-                          nip: "1598" // NIP yang sesuai
+                          nip: "5943" // NIP yang sesuai
                       },
                       success: function (response) {
                         sessionStorage.setItem('presensiStatus', 'success');

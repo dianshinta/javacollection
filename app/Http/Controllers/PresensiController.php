@@ -35,7 +35,7 @@ class PresensiController extends Controller
 
     public function index() {
         // Ambil riwayat presensi. Anda bisa menambahkan kondisi jika perlu (misal berdasarkan NIP).
-        $riwayatPresensi = presensi::where('nip', '1598')->orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
+        $riwayatPresensi = presensi::where('nip', '5943')->orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
 
         // Kirim data ke view 'karyawan.presensi'
         session()->flash('success', 'Presensi berhasil direkam!');

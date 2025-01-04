@@ -166,7 +166,7 @@
                 </div>
 
                 <!-- Perizinan Modal -->
-                <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
+                <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -238,7 +238,7 @@
                 </div>
                 
                 <!-- Update Perizinan Modal -->
-                <div class="modal fade" id="updatePerizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
+                <div class="modal fade" id="updatePerizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -312,16 +312,16 @@
 
                 <!-- Modal Konfirmasi -->
                 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
-                    aria-hidden="true">
+                    aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                             </div>
                             <div class="modal-body">
-                                <p>Apakah Anda yakin ingin mengajukan izin ini?</p>
+                                <p>Ajukan izin ini?</p>
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                                    <button type="button" class="btn btn-success" id="btnYakin">Ya, ajukan</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnBatal">Batal</button>
                                 </div>
                             </div>
                         </div>
@@ -330,16 +330,16 @@
 
                 <!-- Modal Konfirmasi Update -->
                 <div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog" aria-labelledby="confirmUpdateModalLabel"
-                    aria-hidden="true">
+                    aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                             </div>
                             <div class="modal-body">
-                                <p>Apakah Anda yakin ingin mengubah izin ini?</p>
+                                <p>Ubah izin ini?</p>
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-success" id="btnYakinUpdate">Yakin</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                                    <button type="button" class="btn btn-success" id="btnYakinUpdate">Ya, ubah</button>
+                                    <button type="button" class="btn btn-danger close" data-dismiss="modal" id="btnBatal">Batal</button>
                                 </div>
                             </div>
                         </div>
@@ -348,16 +348,16 @@
 
                 <!-- Modal Konfirmasi Delete-->
                 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
-                    aria-hidden="true">
+                    aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                             </div>
                             <div class="modal-body">
-                                <p>Apakah Anda yakin ingin menghapus izin ini?</p>
+                                <p>Hapus izin ini?</p>
                                 <div class="text-center">
                                     <button type="button" class="btn btn-success" id="btnYakinDelete">Ya, hapus</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                                    <button type="button" class="btn btn-danger close" data-dismiss="modal" id="btnBatal">Batal</button>
                                 </div>
                             </div>
                         </div>
@@ -365,7 +365,7 @@
                 </div>
 
                 <!-- Modal Box for Tambah Bukti -->
-                <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true">
+                <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
@@ -399,7 +399,7 @@
                 </div>
 
                 <!-- Modal Box for Tambah Bukti Update -->
-                <div class="modal fade" id="buktiModalUpdate" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true">
+                <div class="modal fade" id="buktiModalUpdate" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
