@@ -8,17 +8,6 @@
     color: black;
 }
 
-.container-fluid {
-    width: 100%;
-}
-
-.header {
-    background-color: #fff2f2;
-    padding: 15px;
-    font-size: 24px;
-    font-weight: bold;
-}
-
 .table {
     border-collapse: separate;
     border-spacing: 0 3px;
@@ -82,67 +71,38 @@
 .btn-bonus {
     background-color: #e1e92b;
     border: 1px solid;
-    padding: 5px 10px;
+    padding: 10px;
     border-radius: 50px;
     cursor: pointer;
 }
   
 /* Search bar */
 .search-bar {
-    margin-bottom: 20px;
-    width: 100%;
     border-radius: 50px;
     overflow: hidden;
-    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-/* Input field styling */
-.search-input {
+  
+.search-bar input {
     border: none;
     outline: none;
     box-shadow: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    flex: 1;
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
+}
+  
+.search-bar .input-group-text {
+    background-color: #f8f9fa;
+    border: none;
 }
 
-/* Placeholder styling */
-.search-input::placeholder {
+.search-bar .input-group-text i {
+    color: #6c757d;
+    font-size: 1rem;
+}
+
+.search-bar input::placeholder {
     color: #adb5bd;
     font-style: italic;
 }
-
-/* Input group text (icon wrapper) */
-.input-group-text {
-    background-color: transparent; /* Hilangkan background */
-    border: none; /* Hilangkan border */
-    margin: 0;
-    padding: 0;
-}
-
-/* Tombol pencarian */
-.search-btn {
-    border: none;
-    background: none;
-    cursor: pointer;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
-}
-
-/* Ikon pencarian */
-.search-btn i {
-    color: #6c757d;
-    font-size: 1.2rem;
-}
-
 
 #bonusModal .modal-title {
     font-weight: bold;

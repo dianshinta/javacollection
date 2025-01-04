@@ -102,6 +102,14 @@ class karyawanKasbonController extends Controller
         // Hitung sisa limit
         $saldo_akhir = $limit_awal - $total_pengajuan + $total_pembayaran;
 
+        // Update limit di database
+        $kasbonAktif = kasbon::where('nip', $nip)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $kasbonAktif->saldo_akhir = $saldo_akhir;
+        $kasbonAktif->update();
+
         return response()->json([
             'limit_awal' => $limit_awal,
             'sisa_limit' => $saldo_akhir,
