@@ -17,6 +17,11 @@ class Presensi extends Model
         return $this->belongsTo(User::class, 'nip', 'nip');
     }
 
+    public function Toko()
+    {
+        return $this->belongsTo(Toko::class, 'toko_id', 'id');
+    }
+
     public function bulan(): BelongsTo
     {
         return $this->belongsTo(Bulan::class, 'bulan_id');

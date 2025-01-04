@@ -44,5 +44,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    
+    public function attendances()
+    {
+        return $this->hasMany(presensi::class);
+    }
+
+    public function supervisedBranches()
+    {
+        return $this->belongsToMany(Toko::class, 'cabang_supervisor');
+    }
 }

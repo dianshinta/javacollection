@@ -93,7 +93,7 @@
                   <div class="card-body ">
                     <div class="selected-menu">
                       <div class="selected-btn">
-                        <span class="sBtn-text">Cabang A</span>
+                        <span class="sBtn-text">Pilih Cabang</span>
                         <i class="bx bx-chevron-down"></i>
                       </div>
                     </div>
@@ -139,13 +139,10 @@
                     <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
                   </div>
                   <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
-                  </div>
-                  <div class="legend-list">
                     <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
                   </div>
                   <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+                    <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tidak Hadir
                   </div>
                 </div>
               </div>
@@ -170,13 +167,10 @@
                     <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
                   </div>
                   <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
-                  </div>
-                  <div class="legend-list">
                     <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
                   </div>
                   <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+                    <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tidak Hadir
                   </div>
                 </div>
               </div>

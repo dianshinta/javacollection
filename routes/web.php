@@ -9,7 +9,7 @@ use App\Http\Controllers\SupervisorPengajuanController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\PerizinanController;
 use App\Http\Controllers\KaryawanKasbonController;
-use App\Http\Controllers\ChartController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployerSalaryController;
 use App\Http\Controllers\EditKaryawanController;
 
@@ -112,7 +112,10 @@ Route::get('/manajer/beranda/', function () {
 Route::get('/manajer/gaji', [EmployerSalaryController::class, 'index'])->name('manajer.gaji');
 
 // Mengambil data untuk ditampilkan ke grafik
-Route::get('/api/chart-data', [ChartController::class, 'getChartData']);
+Route::get('/api/chart-data', [AttendanceController::class, 'getChartData']);
+
+//Mengambil data pilihan untuk ditampilkan pada grafik
+Route::get('/api/index-data', [AttendanceController::class, 'index']);
 
 // Menampilkan halaman edit karyawan manajer
 Route::get('/editkaryawan', function () {
