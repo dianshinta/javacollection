@@ -44,12 +44,17 @@
                 <div class="row align-items-start">
                     <!-- Main Content -->
                     <div class="col-md-12">
-                        <div class="input-group search-bar">
-                            <input type="text" class="form-control search-bar" id="searchBar" placeholder="Cari Karyawan..">
-                            <span class="input-group-text ">
-                              <i class="bi bi-search"></i>
-                            </span>
-                        </div>
+                        <!-- Pencarian -->
+                        <form method="GET" action="{{ route('supervisor.pengajuan') }}" class="d-flex">
+                            <div class="input-group search-bar">
+                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan..">
+                                <span>
+                                    <button type="submit" class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
                         <div class="card">
                             <div class="card-body">
                                 <div class="table-responsive">

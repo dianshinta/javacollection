@@ -48,175 +48,173 @@
                     <h5 class="font-weight-bold">Daftar Pembayaran</h5>
                 </div>
 
-                <div class="top-0 start-0">
-                    <div>
-                        <!-- Main Content -->
-                        <div class="col">
-                            <!-- Pencarian -->
-                            <form method="GET" action="{{ route('supervisor.pembayaran') }}"  class="d-flex">
-                                <div class="input-group search-bar">
-                                    <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan..">
-                                    <span class="input-group-text">
-                                        <button type="submit">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
+                <div class="row align-items-start">
+                    <!-- Main Content -->
+                    <div class="col-md-12">
+                        <!-- Pencarian -->
+                        <form method="GET" action="{{ route('supervisor.pembayaran') }}"  class="d-flex">
+                            <div class="input-group search-bar">
+                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan..">
+                                <span>
+                                    <button type="submit" class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
 
-                            <!-- Tabel Pembayaran -->
-                            <div class="card ">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table text-center">
-                                            <thead>
+                        <!-- Tabel Pembayaran -->
+                        <div class="card ">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>NIP</th>
+                                                <th>Nama</th>
+                                                <th>Tanggal Pembayaran</th>
+                                                <th>Nominal Bayar</th>
+                                                <th>Status Kasbon</th>
+                                                <th>Status Bayar</th>
+                                                <th>Lampiran</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Jika data kosong -->
+                                            @if ($pembayaran->isEmpty())
+                                            <tr>
+                                                <td colspan="7" class="text-center">Tidak ada pembayaran</td>
+                                            </tr>
+                                            @else
+                                                <!-- Looping data pembayaran -->
+                                                @foreach($pembayaran as $data)
                                                 <tr>
-                                                    <th>NIP</th>
-                                                    <th>Nama</th>
-                                                    <th>Tanggal Pembayaran</th>
-                                                    <th>Nominal Bayar</th>
-                                                    <th>Status Kasbon</th>
-                                                    <th>Status Bayar</th>
-                                                    <th>Lampiran</th>
+                                                    <td>{{ $data->nip }}</td>
+                                                    <td>{{ $data->nama }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}</td>
+                                                    <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
+                                                    <td>
+                                                        <!-- Status Kasbon -->
+                                                        @if ($data->status_kasbon === 'Lunas')
+                                                            <span class="badge bg-success">Lunas</span>
+                                                        @else
+                                                            <span class="badge bg-danger">Belum Lunas</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                         <!-- Status Pembayaran -->
+                                                        @if ($data->status_bayar === 'Diproses')
+                                                            <span class="badge bg-warning">Diproses</span>
+                                                        @elseif ($data->status_bayar === 'Disetujui')
+                                                            <span class="badge bg-success">Disetujui</span>
+                                                        @else
+                                                            <span class="badge bg-danger">Ditolak</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                         <!-- Tombol Lihat Lampiran -->
+                                                        <a href="#" 
+                                                        class="btn btn-info btn-round" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#pembayaranModal"
+                                                        data-id="{{ $data->id }}"
+                                                        data-nip="{{ $data->nip }}"
+                                                        data-nama="{{ $data->nama }}"
+                                                        data-tanggal-bayar="{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}"
+                                                        data-nominal-dibayar="{{ $data->nominal_dibayar }}"
+                                                        data-saldo-akhir="{{ $data->saldo_akhir }}"
+                                                        data-status-bayar="{{ $data->status_bayar }}"
+                                                        data-status-kasbon="{{ $data->status_kasbon }}"
+                                                        data-lampiran="{{ asset($data->lampiran) }}">
+                                                            <i class="bi bi-eye"></i> Lihat
+                                                        </a>
+                                                    </td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Jika data kosong -->
-                                                @if ($pembayaran->isEmpty())
-                                                <tr>
-                                                    <td colspan="7" class="text-center">Tidak ada pembayaran</td>
-                                                </tr>
-                                                @else
-                                                    <!-- Looping data pembayaran -->
-                                                    @foreach($pembayaran as $data)
-                                                    <tr>
-                                                        <td>{{ $data->nip }}</td>
-                                                        <td>{{ $data->nama }}</td>
-                                                        <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}</td>
-                                                        <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
-                                                        <td>
-                                                            <!-- Status Kasbon -->
-                                                            @if ($data->status_kasbon === 'Lunas')
-                                                                <span class="badge bg-success">Lunas</span>
-                                                            @else
-                                                                <span class="badge bg-danger">Belum Lunas</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                             <!-- Status Pembayaran -->
-                                                            @if ($data->status_bayar === 'Diproses')
-                                                                <span class="badge bg-warning">Diproses</span>
-                                                            @elseif ($data->status_bayar === 'Disetujui')
-                                                                <span class="badge bg-success">Disetujui</span>
-                                                            @else
-                                                                <span class="badge bg-danger">Ditolak</span>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                             <!-- Tombol Lihat Lampiran -->
-                                                            <a href="#" 
-                                                            class="btn btn-info btn-round" 
-                                                            data-bs-toggle="modal" 
-                                                            data-bs-target="#pembayaranModal"
-                                                            data-id="{{ $data->id }}"
-                                                            data-nip="{{ $data->nip }}"
-                                                            data-nama="{{ $data->nama }}"
-                                                            data-tanggal-bayar="{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}"
-                                                            data-nominal-dibayar="{{ $data->nominal_dibayar }}"
-                                                            data-saldo-akhir="{{ $data->saldo_akhir }}"
-                                                            data-status-bayar="{{ $data->status_bayar }}"
-                                                            data-status-kasbon="{{ $data->status_kasbon }}"
-                                                            data-lampiran="{{ asset($data->lampiran) }}">
-                                                                <i class="bi bi-eye"></i> Lihat
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-                                                @endif
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                    <!-- Tambahkan pagination -->
-                                    <div class="d-flex justify-content-center">
-                                        <nav>
-                                            {{ $pembayaran->links('pagination::bootstrap-4') }}
-                                        </nav>
-                                    </div>
+                                <!-- Tambahkan pagination -->
+                                <div class="d-flex justify-content-center">
+                                    <nav>
+                                        {{ $pembayaran->links('pagination::bootstrap-4') }}
+                                    </nav>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>        
-
-                <!-- Modal -->
-                <div class="modal fade" id="pembayaranModal" tabindex="-1" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>    
-                        </div>
-                        <h5 class="modal-title" id="pembayaranModalLabel">Pembayaran Kasbon</h5>
-                        <div class="modal-body">
-                            <!-- Detail Data Pembayaran -->
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">NIP:</div>
-                                <div class="col-7 bg-gray" id="modal-nip"></div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Nama:</div>
-                                <div class="col-7 bg-gray" id="modal-nama"></div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Tanggal:</div>
-                                <div class="col-7 bg-gray" id="modal-tanggal-bayar"></div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Nominal Pembayaran:</div>
-                                <div class="col-7 bg-gray" id="modal-nominal-dibayar"></div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Limit Kasbon:</div>
-                                <div class="col-7" id="modal-saldo-akhir"></div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Bukti Pembayaran:</div>
-                                <a href="#" target="_blank" class="btn btn-sm btn-light ml-3" id="modal-lampiran">
-                                    Preview </a>
-                            </div>
-                            <div class="container mt-5 text-center">
-                                <div class="btn-group-custom justify-content-center">
-                                    <!-- Tombol Terima -->
-                                    <button class="btn btn-rounded btn-accept" id="btnTerima">
-                                        Terima Pembayaran </button>
-                                    <!-- Tombol Tolak -->
-                                    <button class="btn btn-rounded btn-reject" id="btnTolak">
-                                        Tolak Pembayaran </button>
-                                </div>
-                            </div>                  
-                        </div>
-                    </div>
                     </div>
                 </div>
+            </div>        
 
-                <!-- Modal Konfirmasi -->
-                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal -->
+            <div class="modal fade" id="pembayaranModal" tabindex="-1" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>    
+                    </div>
+                    <h5 class="modal-title" id="pembayaranModalLabel">Pembayaran Kasbon</h5>
+                    <div class="modal-body">
+                        <!-- Detail Data Pembayaran -->
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">NIP:</div>
+                            <div class="col-7 bg-gray" id="modal-nip"></div>
                         </div>
-                        <div class="modal-body">
-                            <p id="confirmMessage"></p>  <!--Text confirm-->
-                            <div class="text-center">
-                                <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Nama:</div>
+                            <div class="col-7 bg-gray" id="modal-nama"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Tanggal:</div>
+                            <div class="col-7 bg-gray" id="modal-tanggal-bayar"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Nominal Pembayaran:</div>
+                            <div class="col-7 bg-gray" id="modal-nominal-dibayar"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Limit Kasbon:</div>
+                            <div class="col-7" id="modal-saldo-akhir"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Bukti Pembayaran:</div>
+                            <a href="#" target="_blank" class="btn btn-sm btn-light ml-3" id="modal-lampiran">
+                                Preview </a>
+                        </div>
+                        <div class="container mt-5 text-center">
+                            <div class="btn-group-custom justify-content-center">
+                                <!-- Tombol Terima -->
+                                <button class="btn btn-rounded btn-accept" id="btnTerima">
+                                    Terima Pembayaran </button>
+                                <!-- Tombol Tolak -->
+                                <button class="btn btn-rounded btn-reject" id="btnTolak">
+                                    Tolak Pembayaran </button>
                             </div>
+                        </div>                  
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Modal Konfirmasi -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="confirmMessage"></p>  <!--Text confirm-->
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
                         </div>
                     </div>
-                    </div>
+                </div>
                 </div>
             </div>
         </div>

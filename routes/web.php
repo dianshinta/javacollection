@@ -6,10 +6,12 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\supervisorPerizinanController;
 use App\Http\Controllers\supervisorPembayaranController;
 use App\Http\Controllers\SupervisorPengajuanController;
+use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\PerizinanController;
 use App\Http\Controllers\KaryawanKasbonController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\EmployerSalaryController;
+use App\Http\Controllers\EditKaryawanController;
 
 Route::get('/', function () {
     return view('welcome');

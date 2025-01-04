@@ -47,37 +47,41 @@
                     <small class="text-muted d-block">Perizinan</small>
                     <h5 class="font-weight-bold">Daftar Perizinan</h5>
                 </div>
-                <div class="top-0 start-0">
-                    <div>
-                        <!-- Main Content -->
-                        <div class="col">
-                            <!-- Pencarian -->
-                            <form method="GET" action="{{ route('supervisor.perizinan') }}" class="d-flex">
-                                <div class="input-group search-bar">
-                                    <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." value="{{ $search ?? '' }}" >
-                                    <span class="input-group-text">
-                                        <button type="submit">
-                                            <i class="bi bi-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                            
-                            <!-- Tabel Perizinan -->
-                            <div class="card ">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table text-center">
-                                            <thead>
+                <div class="row align-items-start">
+                    <!-- Main Content -->
+                    <div class="col-md-12">
+                        <!-- Pencarian -->
+                        <form method="GET" action="{{ route('supervisor.perizinan') }}" class="d-flex">
+                            <div class="input-group search-bar">
+                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." value="{{ $search ?? '' }}" >
+                                <span>
+                                    <button type="submit" class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                        
+                        <!-- Tabel Perizinan -->
+                        <div class="card ">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>NIP</th>
+                                                <th>Nama</th>
+                                                <th>Tanggal</th>
+                                                <th>Status</th>
+                                                <th>Lampiran</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if ($perizinan->isEmpty())
                                                 <tr>
-                                                    <th>NIP</th>
-                                                    <th>Nama</th>
-                                                    <th>Tanggal</th>
-                                                    <th>Status</th>
-                                                    <th>Lampiran</th>
+                                                    <td colspan="6">Tidak ada perizinan</td>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
+                                            @else
                                                 @foreach($perizinan as $data)
                                                     <tr>
                                                         <td>{{ $data->nip }}</td>
@@ -109,104 +113,104 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
-                                            </tbody> 
-                                        </table>
-                                    </div>
+                                            @endif
+                                        </tbody> 
+                                    </table>
+                                </div>
 
-                                    <!-- Tambahkan pagination -->
-                                    <div class="d-flex justify-content-center">
-                                        <nav>
-                                            {{ $perizinan->links('pagination::bootstrap-4') }}
-                                        </nav>
-                                    </div>
+                                <!-- Tambahkan pagination -->
+                                <div class="d-flex justify-content-center">
+                                    <nav>
+                                        {{ $perizinan->links('pagination::bootstrap-4') }}
+                                    </nav>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>        
-
-                <!-- Modal -->
-                <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>    
-                        </div>
-                        <h5 class="modal-title" id="perizinanModalLabel">Formulir Perizinan</h5>
-                        <div class="modal-body">
-                            <!-- Hidden Input for ID -->
-                            <input type="hidden" id="modal-id">
-
-                            <!-- Detail NIP -->
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">NIP:</div>
-                                <div class="col-7 bg-gray" id="modal-nip"></div>
-                            </div>
-
-                            <!-- Detail Nama -->
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Nama:</div>
-                                <div class="col-7 bg-gray" id="modal-nama"></div>
-                            </div>
-
-                            <!-- Detail Tanggal -->
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Tanggal:</div>
-                                <div class="col-7 bg-gray" id="modal-tanggal"></div>
-                            </div>
-
-                            <!-- Detail Jenis -->
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Jenis:</div>
-                                <div class="col-7 bg-gray" id="modal-jenis"></div>
-                            </div>
-
-                            <!-- Keterangan -->
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Keterangan:</div>
-                                <div class="col-7">
-                                    <textarea class="form-control" rows="4" id="modal-keterangan" disabled>Izin sakit flu dan demam</textarea>
-                                </div>
-                            </div>
-
-                            <!-- Lampiran -->
-                            <div class="row mb-2">
-                                <div class="col-5 label-bold">Lampiran:</div>
-                                <a href="#" target="_blank" class="btn btn-sm btn-secondary ml-3" id="modal-lampiran">
-                                    Preview </a>
-                            </div>
-
-                            <!-- Tombol Aksi -->
-                            <div class="container mt-5 text-center">
-                                <div class="btn-group-custom justify-content-center">
-                                <!-- Tombol Terima -->
-                                <button class="btn btn-rounded btn-accept" id="btnTerima">
-                                    Terima Perizinan </button>
-                                <!-- Tombol Tolak -->
-                                <button class="btn btn-rounded btn-reject" id="btnTolak">
-                                    Tolak Perizinan </button>
-                                </div>
-                            </div>                  
-                        </div>
-                    </div>
                     </div>
                 </div>
+            </div>        
 
-                <!-- Modal Konfirmasi -->
-                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal -->
+            <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>    
+                    </div>
+                    <h5 class="modal-title" id="perizinanModalLabel">Formulir Perizinan</h5>
+                    <div class="modal-body">
+                        <!-- Hidden Input for ID -->
+                        <input type="hidden" id="modal-id">
+
+                        <!-- Detail NIP -->
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">NIP:</div>
+                            <div class="col-7 bg-gray" id="modal-nip"></div>
+                        </div>
+
+                        <!-- Detail Nama -->
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Nama:</div>
+                            <div class="col-7 bg-gray" id="modal-nama"></div>
+                        </div>
+
+                        <!-- Detail Tanggal -->
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Tanggal:</div>
+                            <div class="col-7 bg-gray" id="modal-tanggal"></div>
+                        </div>
+
+                        <!-- Detail Jenis -->
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Jenis:</div>
+                            <div class="col-7 bg-gray" id="modal-jenis"></div>
+                        </div>
+
+                        <!-- Keterangan -->
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Keterangan:</div>
+                            <div class="col-7">
+                                <textarea class="form-control" rows="4" id="modal-keterangan" disabled>Izin sakit flu dan demam</textarea>
                             </div>
-                            <div class="modal-body">
-                                <p id="confirmMessage"></p> <!--Text confirm-->
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
-                                </div>
+                        </div>
+
+                        <!-- Lampiran -->
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Lampiran:</div>
+                            <a href="#" target="_blank" class="btn btn-sm btn-secondary ml-3" id="modal-lampiran">
+                                Preview </a>
+                        </div>
+
+                        <!-- Tombol Aksi -->
+                        <div class="container mt-5 text-center">
+                            <div class="btn-group-custom justify-content-center">
+                            <!-- Tombol Terima -->
+                            <button class="btn btn-rounded btn-accept" id="btnTerima">
+                                Terima Perizinan </button>
+                            <!-- Tombol Tolak -->
+                            <button class="btn btn-rounded btn-reject" id="btnTolak">
+                                Tolak Perizinan </button>
+                            </div>
+                        </div>                  
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Modal Konfirmasi -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="confirmMessage"></p> <!--Text confirm-->
+                            <div class="text-center">
+                                <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
                             </div>
                         </div>
                     </div>
