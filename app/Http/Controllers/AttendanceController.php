@@ -42,8 +42,7 @@ class AttendanceController extends Controller
     }
 
     public function getChartData(Request $request){
-        //$namaCabang = $request->query('toko'); // Nama cabang dari query parameter
-        $namaCabang = 'Cabang A';
+        $namaCabang = $request->query('toko'); // Nama cabang dari query parameter
         $now = Carbon::now();
 
         // Cari toko_id berdasarkan nama cabang
