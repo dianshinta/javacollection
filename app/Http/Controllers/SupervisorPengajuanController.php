@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kasbon;
+use App\Models\kasbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,18 +15,26 @@ class SupervisorPengajuanController extends Controller
     {
         // Ambil parameter pencarian 
         $search = $request->input('search');
-        
-        // Query data pengajuan
-        $pengajuan = Kasbon::where('keterangan', 'Pengajuan') // Filter hanya data dengan keterangan "Pengajuan"
+        if (strlen($search)){
+            $pengajuan = kasbon::where('keterangan', 'Pengajuan') // Filter hanya data dengan keterangan "Pengajuan"
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nip', 'like', "%{$search}%")
-                    ->orWhere('nama', 'like', "%{$search}%");
+                    ->orWhere('nama', 'like', "%{$search}%")
+                    ->orWhere('tanggal_pengajuan', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembuatan terbaru
-            ->get();
-            
+            ->orderBy('updated_at', 'desc') 
+            ->orderBy('created_at', 'desc')
+            ->paginate(2); 
+        } else {
+            // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
+            $pengajuan = kasbon::where('keterangan', 'Pengajuan') 
+                                ->orderBy('updated_at', 'desc') 
+                                ->orderBy('created_at', 'desc')
+                                ->paginate(2);
+        }
+
         // Kirim data ke view
         return response()->view('supervisor.pengajuan', [
             "title" => "Pengajuan",
