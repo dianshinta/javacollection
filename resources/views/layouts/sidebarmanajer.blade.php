@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Beranda | JAVA COLLECTION 
+    Beranda | JAVA COLLECTION
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -19,8 +19,6 @@
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
 </head>
 
 <body class="">
@@ -33,7 +31,7 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-        <li class="{{ request()->is('manajer/beranda') ? 'active' : '' }}">
+          <li class="{{ request()->is('manajer/beranda') ? 'active' : '' }}">
             <a href="{{route('manager.beranda')}}">
               <i class="nc-icon nc-layout-11"></i>
               <p>Beranda</p>
@@ -53,50 +51,56 @@
           </li>
         </ul>
         <div class="mt-auto p-3">
-    <form action="{{ route('logout') }}" method="POST">
-      @csrf
-      <button type="submit" class="btn btn-danger btn-block">
-        <i class="nc-icon nc-button-power"></i> Logout
-      </button>
-    </form>
-  </div>
+          <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger btn-block">
+              <i class="nc-icon nc-button-power"></i> Logout
+            </button>
+          </form>
+        </div>
       </div>
     </div>
+
     <div class="main-panel">
+      <!-- Navbar for mobile view -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item {{ request()->is('manajer/beranda') ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('manager.beranda') }}">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('manajer.gaji') }}">Gaji</a>
+            </li>
+            <li class="nav-item {{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">Karyawan</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
       <div class="content">
         <div class="mb-4">
           <small class="text-muted d-block">Beranda</small>
           <h5 class="font-weight-bold">Selamat datang!</h5>
         </div>
         @yield('content')
-        </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
+
   <!--   Core JS Files   -->
   <script src="../assets/js/core/jquery.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chart JS -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-  <!--  Notifications Plugin    -->
-  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
-  <script type="module" src="../assets/js/dashboard-manajer.js"></script>
-
 
   <script>
     $(document).ready(function() {
-      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-      demo.initChartsPages();
+      // Initializing the hamburger menu and other JS logic if necessary
     });
   </script>
 </body>
