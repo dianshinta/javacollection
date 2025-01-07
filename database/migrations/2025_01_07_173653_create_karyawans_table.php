@@ -25,7 +25,7 @@ class CreateKaryawansTable extends Migration
             $table->timestamps();
 
             // Foreign key ke tabel toko (jika ada)
-            $table->foreign('toko_id')->references('id')->on('tokos')->onDelete('cascade');
+            $table->foreign('toko_id')->references('id')->on('toko')->onDelete('cascade');
         });
     }
 
