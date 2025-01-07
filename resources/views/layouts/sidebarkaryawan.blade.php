@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +10,7 @@
     Beranda | JAVA COLLECTION
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-  <!--     Fonts and icons     -->
+  <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -20,24 +19,69 @@
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- CSS for Hamburger Menu -->
+  <style>
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #fff;
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
 
+    /* When sidebar is active, slide it in */
+    .sidebar.active {
+      left: 0;
+    }
+
+    /* Hide sidebar off-screen by default on small screens */
+    @media (max-width: 768px) {
+      .sidebar {
+        left: -250px;
+      }
+
+      /* Hamburger Menu */
+      .hamburger-menu {
+        display: block;
+        font-size: 30px;
+        cursor: pointer;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 2000;
+      }
+
+      /* Ensure the sidebar hides again if it's not active */
+      .sidebar.active {
+        left: 0;
+      }
+    }
+
+    /* Ensure hamburger is hidden on larger screens */
+    @media (min-width: 768px) {
+      .hamburger-menu {
+        display: none;
+      }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="">
-  <div class="wrapper ">
+  <div class="wrapper">
     <div class="sidebar" data-color="white" data-active-color="danger">
       <div class="logo">
-       
         <span class="simple-text font-weight-bold">
           JAVA COLLECTION
         </span>
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="active ">
+          <li class="active">
             <a href="{{route('karyawan.beranda')}}">
               <i class="nc-icon nc-layout-11"></i>
               <p>Beranda</p>
@@ -71,57 +115,55 @@
           </li>
           <li>
             <a href="{{route('karyawan.gaji')}}">
-                <i class="nc-icon nc-money-coins"></i>
-                <p>Gaji</p>
+              <i class="nc-icon nc-money-coins"></i>
+              <p>Gaji</p>
             </a>
-        </li>
+          </li>
         </ul>
         <div class="mt-auto p-3">
-    <form action="{{ route('logout') }}" method="POST">
-      @csrf
-      <button type="submit" class="btn btn-danger btn-block">
-        <i class="nc-icon nc-button-power"></i> Logout
-      </button>
-    </form>
-  </div>
+          <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger btn-block">
+              <i class="nc-icon nc-button-power"></i> Logout
+            </button>
+          </form>
+        </div>
       </div>
     </div>
+
     <div class="main-panel">
+      <!-- Hamburger Button -->
+      <div class="hamburger-menu" onclick="toggleSidebar()">&#9776;</div>
+
       <div class="content">
         <div class="mb-4">
           <small class="text-muted d-block">Beranda</small>
           <h5 class="font-weight-bold">Selamat datang!</h5>
         </div>
         @yield('content')
-        </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
-  <!--   Core JS Files   -->
+
+  <!-- Core JS Files -->
   <script src="../assets/js/core/jquery.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-  <!--  Notifications Plugin    -->
+  <!-- Notifications Plugin -->
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+  <!-- Control Center for Now Ui Dashboard -->
+  <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
   <script type="module" src="../assets/js/dashboard-manajer.js"></script>
 
-
   <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-      demo.initChartsPages();
-    });
+    // Function to toggle the sidebar visibility
+    function toggleSidebar() {
+      var sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('active');
+    }
   </script>
 </body>
 
