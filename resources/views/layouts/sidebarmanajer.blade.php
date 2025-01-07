@@ -33,7 +33,7 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="active ">
+        <li class="{{ request()->is('manajer/beranda') ? 'active' : '' }}">
             <a href="{{route('manager.beranda')}}">
               <i class="nc-icon nc-layout-11"></i>
               <p>Beranda</p>
@@ -52,6 +52,14 @@
             </a>
           </li>
         </ul>
+        <div class="mt-auto p-3">
+    <form action="{{ route('logout') }}" method="POST">
+      @csrf
+      <button type="submit" class="btn btn-danger btn-block">
+        <i class="nc-icon nc-button-power"></i> Logout
+      </button>
+    </form>
+  </div>
       </div>
     </div>
     <div class="main-panel">

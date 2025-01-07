@@ -32,6 +32,11 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
+Route::post('/logout', function () {
+    Auth::logout(); // Mengakhiri sesi pengguna
+    return redirect('/login'); // Mengarahkan ke halaman login
+})->name('logout');
+
 // Menampilkan halaman karyawan
 Route::get('/karyawan/atur/', function () {
     return view('/karyawan/atur');

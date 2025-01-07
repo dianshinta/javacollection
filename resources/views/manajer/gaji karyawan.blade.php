@@ -48,7 +48,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="./icons.html">
+                <a href="{{ route('manajer.editkaryawan') }}">
                     <i class="nc-icon nc-single-02"></i>
                     <p>Karyawan</p>
                   </a>
