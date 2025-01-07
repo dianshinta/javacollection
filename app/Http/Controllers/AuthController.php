@@ -62,11 +62,11 @@ class AuthController extends Controller
             //$request->session()->regenerate(); // Keamanan tambahan
     
             if ($user->jabatan === 'manajer') {
-                return redirect('berandaman');
+                return redirect('manajer/beranda');
             } elseif ($user->jabatan === 'karyawan') {
-                return redirect('berandakar');
+                return redirect('karyawan/beranda');
             } elseif ($user->jabatan === 'supervisor') {
-                return redirect('berandasup');
+                return redirect('supervisor/beranda');
             }
     
             // Default redirect jika jabatan tidak dikenali

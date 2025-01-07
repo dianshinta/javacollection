@@ -14,7 +14,7 @@ use App\Http\Controllers\EmployerSalaryController;
 use App\Http\Controllers\EditKaryawanController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 // Menampilkan halaman login

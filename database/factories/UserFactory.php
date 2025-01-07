@@ -41,11 +41,9 @@ class UserFactory extends Factory
             // $table->timestamps();
 
             'nip' => fake()->unique()->numerify('####'),
-            'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
             'jabatan' => fake()->sentence(1),
-            'gaji_pokok' => fake()->numberBetween(1700000, 2500000),
 
         ];
     }
