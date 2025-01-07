@@ -22,13 +22,11 @@
                         </a>
                     </li>
                     <!-- Sub menu informasi -->
-                    <li>
-                        {{-- <li class="{{($title === 'Informasi') ? 'active' : '' }}">
-                            <a href="{{route('informasi')}}">
-                                <p>Informasi</p>
-                            </a>
-                        </li> --}}
-                    </li>
+                    <li class="{{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}">
+                <a href="{{ route('supervisor.infokaryawan') }}">
+                    <p>Informasi Karyawan</p>
+                </a>
+            </li>
                 </ul>
             </div>
         </li>

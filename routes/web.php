@@ -12,9 +12,10 @@ use App\Http\Controllers\KaryawanKasbonController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\EmployerSalaryController;
 use App\Http\Controllers\EditKaryawanController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return view('login');
+    return view('auth.login');
 });
 
 // Menampilkan halaman login
@@ -117,18 +118,23 @@ Route::get('/api/chart-data', [AttendanceController::class, 'getChartData']);
 //Mengambil data pilihan untuk ditampilkan pada grafik
 Route::get('/api/index-data', [AttendanceController::class, 'index']);
 
+
 // Menampilkan halaman edit karyawan manajer
-Route::get('/editkaryawan', function () {
+Route::get('/manajer/editkaryawan', function () {
     return view('manajer.editkaryawan');
 })->name('manajer.editkaryawan');
 
-Route::get('/karyawan', [EditKaryawanController::class, 'karyawans'])->name('manajer.editkaryawan');
-Route::post('/karyawan/save', [EditKaryawanController::class, 'save'])->name('karyawan.save');
-Route::delete('/karyawan/{id}/delete', [EditKaryawanController::class, 'delete'])->name('karyawan.delete');
+
+
+Route::get('/karyawan', [KaryawanController::class, 'karyawans'])->name('manajer.editkaryawan');
+Route::post('/karyawan/save', [KaryawanController::class, 'save'])->name('karyawan.save');
+Route::delete('/karyawan/{id}/delete', [KaryawanController::class, 'delete'])->name('karyawan.delete');
 // Menampilkan halaman edit karyawan
-Route::get('/karyawan/{id}/edit', [EditKaryawanController::class, 'edit'])->name('karyawan.edit');
+Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
 // Route untuk update data karyawan
-Route::put('/karyawan/{id}/update', [EditKaryawanController::class, 'update'])->name('karyawan.update');
+Route::put('/karyawan/{id}/update', [KaryawanController::class, 'update'])->name('karyawan.update');
 // Route untuk menambah karyawan
-Route::get('/karyawan/create', [EditKaryawanController::class, 'create'])->name('karyawan.create');
-Route::post('/karyawan', [EditKaryawanController::class, 'store'])->name('karyawan.store');
+Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
+Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
+
+

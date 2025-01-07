@@ -46,7 +46,7 @@
             </a>
           </li>
           <li>
-            <a href="./icons.html">
+            <a href="edit">
               <i class="nc-icon nc-single-02"></i>
               <p>Karyawan</p>
             </a>

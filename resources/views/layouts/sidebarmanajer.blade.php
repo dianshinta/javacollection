@@ -45,8 +45,8 @@
               <p>Gaji</p>
             </a>
           </li>
-          <li>
-            <a href="./icons.html">
+          <li class="{{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
+            <a href="{{ route('manajer.editkaryawan') }}">
               <i class="nc-icon nc-single-02"></i>
               <p>Karyawan</p>
             </a>
