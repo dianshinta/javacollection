@@ -19,11 +19,50 @@
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    .top-right-logout {
+      position: absolute;
+      top: 0px;
+      right: 15px;
+      z-index: 999;
+    }
+
+    /* Change navbar background color to maroon */
+    .navbar {
+      background-color: #f8f9fa !important; 
+    }
+
+    /* Active link color */
+    .navbar-nav .nav-item.active .nav-link {
+      color: #500606 !important; /* Change active link color to red */
+    }
+
+    /* Hover link color */
+    .navbar-nav .nav-item .nav-link:hover {
+      color: #c8cbcf !important; /* Change hover link color to light gray */
+    }
+
+    /* Optional: ensure navbar text is white when not active */
+    .navbar-nav .nav-item .nav-link {
+      color: grey !important;
+    }
+
+    /* Set the color of the hamburger bars (three lines) to white */
+    .navbar-toggler-icon {
+      background-color: white !important; /* Set the bars (lines) to white */
+    }
+
+    /* Change hamburger icon color when it’s clicked (active state) */
+    .navbar-toggler.collapsed .navbar-toggler-icon {
+      background-color: white !important; /* Change color to maroon when collapsed */
+    }
+
+    </style>
 </head>
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="white" data-active-color="danger">
+    <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
       <div class="logo">
         <span class="simple-text font-weight-bold">
           JAVA COLLECTION
@@ -50,6 +89,7 @@
             </a>
           </li>
         </ul>
+
         <div class="mt-auto p-3">
           <form action="{{ route('logout') }}" method="POST">
             @csrf
@@ -59,11 +99,21 @@
           </form>
         </div>
       </div>
-    </div>
+    </div>    
 
     <div class="main-panel">
       <!-- Navbar for mobile view -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- Navbar for mobile view -->
+      <div class="top-right-logout d-block d-lg-none">
+        <form action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="btn btn-danger">
+            <i class="nc-icon nc-button-power"></i> Logout
+          </button>
+        </form>
+      </div>
+            
+      <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -78,7 +128,7 @@
             <li class="nav-item {{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
               <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">Karyawan</a>
             </li>
-          </ul>
+          </ul>        
         </div>
       </nav>
 
@@ -106,3 +156,4 @@
 </body>
 
 </html>
+<!-- fix!!!!!! manajer -->
