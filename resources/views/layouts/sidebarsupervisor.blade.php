@@ -10,7 +10,7 @@
     Beranda | JAVA COLLECTION
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-  <!--     Fonts and icons     -->
+  <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -29,14 +29,19 @@
           JAVA COLLECTION
         </span>
       </div>
-      <div class="sidebar-wrapper">
+      <!-- Menu -->
+        @include('supervisor.menu')
+      <!-- END MENU -->
+      {{-- <div class="sidebar-wrapper">
         <ul class="nav">
+          <!-- Beranda -->
           <li class="{{ request()->is('supervisor/beranda') ? 'active' : '' }}">
             <a href="{{route('supervisor.beranda')}}">
               <i class="nc-icon nc-layout-11"></i>
               <p>Beranda</p>
             </a>
           </li>
+          <!-- Karyawan -->
           <li class="dropdown {{ request()->is('supervisor/*') && !request()->is('supervisor/berandasup') ? 'active' : '' }}">
             <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#karyawanDropdown">
               <i class="nc-icon nc-single-copy-04"></i>
@@ -44,11 +49,13 @@
             </a>
             <div class="collapse {{ request()->is('supervisor/*') && !request()->is('supervisor/berandasup') ? 'show' : '' }}" id="karyawanDropdown">
               <ul class="nav" style="margin-left: 62px;">
+                <!-- Sub menu perizinan -->
                 <li class="{{ request()->is('supervisor/perizinan') ? 'active' : '' }}">
-                  <a href="/perizinan">
+                  <a href="{{route('supervisor.perizinan')}}">
                     <p>Perizinan</p>
                   </a>
                 </li>
+                <!-- Sub menu informasi -->
                 <li class="{{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}">
                   <a href="{{ route('supervisor.infokaryawan') }}">
                     <p>Informasi Karyawan</p>
@@ -57,6 +64,7 @@
               </ul>
             </div>
           </li>
+          <!-- Kasbon -->
           <li class="dropdown {{ request()->is('pengajuan', 'pembayarankasbon') ? 'active' : '' }}">
             <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="{{ request()->is('pengajuan', 'pembayarankasbon') ? 'true' : 'false' }}" data-target="#kasbonDropdown">
               <i class="nc-icon nc-single-copy-04"></i>
@@ -64,13 +72,15 @@
             </a>
             <div class="collapse {{ request()->is('pengajuan', 'pembayarankasbon') ? 'show' : '' }}" id="kasbonDropdown">
               <ul class="nav" style="margin-left: 62px;">
+                <!-- Sub menu pengajuan -->
                 <li class="{{ request()->is('pengajuan') ? 'active' : '' }}">
-                  <a href="/pengajuan">
+                  <a href="{{route('supervisor.pengajuan')}}">
                     <p>Pengajuan</p>
                   </a>
                 </li>
+                <!-- Sub menu pembayaran -->
                 <li class="{{ request()->is('pembayarankasbon') ? 'active' : '' }}">
-                  <a href="/pembayarankasbon">
+                  <a href="{{route('supervisor.pembayaran')}}">
                     <p>Pembayaran</p>
                   </a>
                 </li>
@@ -78,6 +88,7 @@
             </div>
           </li>
         </ul>
+        <!-- Logout -->
         <div class="mt-auto p-3">
           <form action="{{ route('logout') }}" method="POST">
             @csrf
@@ -86,7 +97,7 @@
             </button>
           </form>
         </div>
-      </div>
+      </div> --}}
     </div>
 
     <!-- Main Panel Content -->
@@ -99,10 +110,6 @@
       </div>
 
       <div class="content">
-        <div class="mb-4">
-          <small class="text-muted d-block">Beranda</small>
-          <h5 class="font-weight-bold">Selamat datang!</h5>
-        </div>
         @yield('content')
       </div>
     </div>
@@ -123,5 +130,4 @@
     });
   </script>
 </body>
-
 </html>

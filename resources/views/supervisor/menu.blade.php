@@ -23,10 +23,10 @@
                     </li>
                     <!-- Sub menu informasi -->
                     <li class="{{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}">
-                <a href="{{ route('supervisor.infokaryawan') }}">
-                    <p>Informasi Karyawan</p>
-                </a>
-            </li>
+                        <a href="{{ route('supervisor.infokaryawan') }}">
+                            <p>Informasi Karyawan</p>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -56,4 +56,13 @@
             </div>
         </li>
     </ul>
+    <!-- Logout -->
+    <div class="mt-auto p-3">
+        <form action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="btn btn-danger btn-block">
+            <i class="nc-icon nc-button-power"></i> Logout
+          </button>
+        </form>
+      </div>
 </div>

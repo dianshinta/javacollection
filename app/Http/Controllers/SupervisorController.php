@@ -14,7 +14,9 @@ class SupervisorController extends Controller
         $karyawans = Karyawan::all();
 
         // Kirim data ke view
-        return view('supervisor.infokaryawan', compact('karyawans'));
+        return view('supervisor.infokaryawan', compact('karyawans') + [
+            "title" => "Informasi Karyawan",
+        ]);
     }
     public function berandasup()
     {
