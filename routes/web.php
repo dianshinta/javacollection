@@ -37,7 +37,7 @@ Route::post('/logout', function () {
     return redirect('/login'); // Mengarahkan ke halaman login
 })->name('logout');
 
-// Menampilkan halaman karyawan
+// BAGIAN HALAMAN KARYAWAN
 Route::get('/karyawan/atur/', function () {
     return view('/karyawan/atur');
 });
@@ -51,19 +51,16 @@ Route::get('/karyawan/beranda/', function () {
 })->name('karyawan.beranda');
 
 Route::post('/perizinan/store', [PerizinanController::class, 'store'])->name('perizinan.store');
+
 Route::post('/perizinan/update', [PerizinanController::class, 'update'])->name('perizinan.update');
+
 Route::post('/perizinan/delete', [PerizinanController::class, 'destroy'])->name('perizinan.delete');
+
 Route::get('/karyawan/perizinan', [PerizinanController::class, 'index'])->name('karyawan.perizinan');
 
 Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])->name('karyawan.presensi');
 
 Route::post('/presensi/store', [PresensiController::class, 'store'])->name('presensi.store');
-
-// Route::get('/karyawan/kasbon/', function () {
-//     return view('/karyawan/kasbon');
-// })->name('karyawan.kasbon');
-
-// Halaman kasbon karyawan
 
 Route::get('/karyawan/kasbon/', [KaryawanKasbonController::class, 'index'])->name('karyawan.kasbon');
 
@@ -77,8 +74,7 @@ Route::get('/karyawan/gaji/', function () {
     return view('/karyawan/gaji');
 })->name('karyawan.gaji');
 
-// Menampilkan halaman supervisor
-
+// BAGIAN HALAMAN SUPERVISOR
 Route::get('/supervisor/beranda/', function () {
     return view('/supervisor/beranda', [
         "title" => "Beranda"
@@ -89,28 +85,15 @@ Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'ind
 
 Route::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])->name('perizinan.update-status');
 
-// Route::get('/supervisor/pembayaran/', function () {
-//     return view('/supervisor/pembayaran', [
-//         "title" => "Pembayaran"
-//     ]);
-// })->name('supervisor.pembayaran');
-
 Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'index'])->name('supervisor.pembayaran');
 
 Route::post('/kasbon/{id}/update', [supervisorPembayaranController::class, 'update'])->name('kasbon.update');
-
-// Route::get('/supervisor/kasbon/', function () {
-//     return view('/supervisor/pengajuan', [
-//         "title" => "Pengajuan"
-//     ]);
-// })->name('supervisor.pengajuan');
 
 Route::get('/supervisor/kasbon/', [SupervisorPengajuanController::class, 'index'])->name('supervisor.pengajuan');
 
 Route::get('/supervisor/infokaryawan', [SupervisorController::class, 'infokaryawan'])->name('supervisor.infokaryawan');
 
-
-// Menampilkan halaman manager
+// BAGIAN HALAMAN MANAJER
 Route::get('/manajer/beranda/', function () {
     return view('/manajer/beranda');
 })->name('manager.beranda');
@@ -123,23 +106,24 @@ Route::get('/api/chart-data', [AttendanceController::class, 'getChartData']);
 //Mengambil data pilihan untuk ditampilkan pada grafik
 Route::get('/api/index-data', [AttendanceController::class, 'index']);
 
-
 // Menampilkan halaman edit karyawan manajer
 Route::get('/manajer/editkaryawan', function () {
     return view('manajer.editkaryawan');
 })->name('manajer.editkaryawan');
 
-
-
 Route::get('/karyawan', [KaryawanController::class, 'karyawans'])->name('manajer.editkaryawan');
+
 Route::post('/karyawan/save', [KaryawanController::class, 'save'])->name('karyawan.save');
+
 Route::delete('/karyawan/{id}/delete', [KaryawanController::class, 'delete'])->name('karyawan.delete');
+
 // Menampilkan halaman edit karyawan
 Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
+
 // Route untuk update data karyawan
 Route::put('/karyawan/{id}/update', [KaryawanController::class, 'update'])->name('karyawan.update');
+
 // Route untuk menambah karyawan
 Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
+
 Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
-
-
