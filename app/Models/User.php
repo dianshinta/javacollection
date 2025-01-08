@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $primaryKey = 'nip';
+    public $incrementing = false; // Jika nip bukan auto-increment
+    protected $keyType = 'string'; // Jika nip berbentuk string
+
     /**
      * The attributes that are mass assignable.
      *
