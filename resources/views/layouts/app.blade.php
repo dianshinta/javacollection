@@ -25,7 +25,7 @@
         .container {
             display: flex;
             width: 800px;
-            height: 450px;
+            height: 550px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
@@ -109,6 +109,23 @@
             flex: 1;
             background: linear-gradient(to right, #6b0f0f, #500d0d);
         }
+
+        .radio-group {
+    display: flex; /* Gunakan flexbox untuk membuat elemen berjajar */
+    gap: 20px; /* Jarak antar radio button */
+    margin-top: 10px; /* Jarak antara label "Jabatan" dan radio buttons */
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center; /* Pusatkan teks dengan radio button secara vertikal */
+    cursor: pointer; /* Ubah kursor saat dihover */
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px; /* Jarak kecil antara radio button dan teks */
+}
+
     </style>
 </head>
 <body>

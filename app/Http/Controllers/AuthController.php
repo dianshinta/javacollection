@@ -19,6 +19,7 @@ class AuthController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'nip' => 'required|unique:users',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'jabatan' => 'required',
@@ -31,6 +32,7 @@ class AuthController extends Controller
         // Menyimpan data pengguna baru ke database
         $user = User::create([
             'nip' => $request->nip,
+            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'jabatan' => $request->jabatan,
