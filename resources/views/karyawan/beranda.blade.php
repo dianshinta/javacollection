@@ -1,6 +1,10 @@
 @extends('layouts.sidebarkaryawan')
 
 @section('content')
+<div class="mb-4">
+          <small class="text-muted d-block">Beranda</small>
+          <h5 class="font-weight-bold">Selamat datang!</h5>
+        </div>
         <div class="d-flex justify-content-start align-items-center gap-4 mb-4">
           <div class="d-flex align-items-center mr-2">
             <i class="nc-icon nc-circle-10 text-primary mr-2"></i>          
