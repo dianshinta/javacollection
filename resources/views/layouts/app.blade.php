@@ -25,7 +25,7 @@
         .container {
             display: flex;
             width: 800px;
-            height: 450px;
+            height: 550px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
@@ -109,6 +109,73 @@
             flex: 1;
             background: linear-gradient(to right, #6b0f0f, #500d0d);
         }
+
+        .radio-group {
+    display: flex; /* Gunakan flexbox untuk membuat elemen berjajar */
+    gap: 20px; /* Jarak antar radio button */
+    margin-top: 10px; /* Jarak antara label "Jabatan" dan radio buttons */
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center; /* Pusatkan teks dengan radio button secara vertikal */
+    cursor: pointer; /* Ubah kursor saat dihover */
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px; /* Jarak kecil antara radio button dan teks */
+}
+
+/* Media query untuk layar dengan lebar maksimum 768px (tablet dan ponsel) */
+@media (max-width: 768px) {
+    body {
+        padding: 20px; /* Tambahkan padding agar elemen tidak terlalu rapat ke tepi */
+    }
+
+    .container {
+        flex-direction: column; /* Ubah layout dari horizontal menjadi vertikal */
+        width: 100%; /* Ambil lebar penuh layar */
+        height: auto; /* Tinggi otomatis mengikuti konten */
+    }
+
+    .form-section {
+        padding: 20px; /* Kurangi padding agar lebih proporsional pada layar kecil */
+    }
+
+    .form-section h2 {
+        font-size: 20px; /* Kurangi ukuran font judul */
+    }
+
+    .form-section button {
+        font-size: 14px; /* Kurangi ukuran font tombol */
+    }
+
+    .image-section {
+        height: 200px; /* Tetapkan tinggi gambar pada layar kecil */
+        background-size: cover; /* Pastikan gambar tetap rapi */
+    }
+}
+
+/* Media query untuk layar dengan lebar maksimum 480px (ponsel kecil) */
+@media (max-width: 480px) {
+    .form-section {
+        padding: 15px; /* Sesuaikan padding lebih kecil */
+    }
+
+    .form-section h2 {
+        font-size: 18px; /* Kurangi lagi ukuran font judul */
+    }
+
+    .form-section button {
+        font-size: 12px; /* Ukuran font tombol lebih kecil */
+    }
+
+    .form-section .link-group a {
+        font-size: 12px; /* Sesuaikan ukuran teks link */
+    }
+}
+
+
     </style>
 </head>
 <body>

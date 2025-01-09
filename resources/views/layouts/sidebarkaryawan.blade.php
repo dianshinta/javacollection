@@ -179,10 +179,6 @@
       </div>
 
       <div class="content">
-        <div class="mb-4">
-          <small class="text-muted d-block">Beranda</small>
-          <h5 class="font-weight-bold">Selamat datang!</h5>
-        </div>
         @yield('content')
       </div>
     </div>

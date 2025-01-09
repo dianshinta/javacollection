@@ -14,6 +14,10 @@
                 <input type="text" id="nip" name="nip" placeholder="Masukkan NIP Anda" required>
             </div>
             <div class="input-group">
+                <label for="name">Nama</label>
+                <input type="text" id="name" name="name" placeholder="Masukkan Nama Anda" required>
+            </div>
+            <div class="input-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Masukkan Email Anda" required>
             </div>
@@ -22,9 +26,23 @@
                 <input type="password" id="password" name="password" placeholder="Buat Kata Sandi" required>
             </div>
             <div class="input-group">
-                <label for="jabatan">Jabatan</label>
-                <input type="text" id="jabatan" name="jabatan" placeholder="Masukkan Jabatan Anda" required>
-            </div>
+    <label for="jabatan">Jabatan</label>
+    <div class="radio-group">
+        <label>
+            <input type="radio" id="karyawan" name="jabatan" value="karyawan" required>
+            Karyawan
+        </label>
+        <label>
+            <input type="radio" id="manajer" name="jabatan" value="manajer" required>
+            Manajer
+        </label>
+        <label>
+            <input type="radio" id="supervisor" name="jabatan" value="supervisor" required>
+            Supervisor
+        </label>
+    </div>
+</div>
+
             <button type="submit">Daftar</button>
         </form>
 
@@ -41,6 +59,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
 
 // Ambil data dari form
 const nip = document.getElementById('nip').value;
+const name = document.getElementById('name').value;
 const email = document.getElementById('email').value;
 const password = document.getElementById('password').value;
 const jabatan = document.getElementById('jabatan').value;
@@ -54,6 +73,7 @@ fetch('/api/register', {
     },
     body: JSON.stringify({
         nip: nip,
+        name: name,
         email: email,
         password: password,
         jabatan: jabatan,
