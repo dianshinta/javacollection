@@ -32,7 +32,7 @@ class Presensi extends Model
     protected $primaryKey = 'id'; // Kolom primary key (id)
     public $incrementing = true; // Pastikan auto-increment diaktifkan
     protected $keyType = 'int'; // Pastikan tipe data id adalah integer    
-    protected $fillable = ['status', 'tanggal', 'waktu', 'toko', 'nip'];
+    protected $fillable = ['status', 'tanggal', 'waktu', 'toko_id', 'nip'];
 
     //fungsi ngitung kehadiran
     public static function hadir(string $nip, int $bulanId): int
