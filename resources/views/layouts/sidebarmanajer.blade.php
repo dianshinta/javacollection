@@ -29,7 +29,7 @@
 
     /* Change navbar background color to maroon */
     .navbar {
-      background-color: #f8f9fa !important; 
+      background-color: #fff2f2 !important; 
     }
 
     /* Active link color */
@@ -156,4 +156,3 @@
 </body>
 
 </html>
-<!-- fix!!!!!! manajer -->

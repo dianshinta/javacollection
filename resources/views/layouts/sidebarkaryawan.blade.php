@@ -19,61 +19,67 @@
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <!-- CSS for Hamburger Menu -->
+
+  
+
   <style>
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 250px;
-      height: 100%;
-      background-color: #fff;
-      transition: left 0.3s ease;
-      z-index: 1000;
+    .navbar {
+      background-color: #fff2f2 !important; /* Pink color */
     }
 
-    /* When sidebar is active, slide it in */
-    .sidebar.active {
-      left: 0;
+    .top-right-logout {
+      position: absolute;
+      top: 0px;
+      right: 15px;
+      z-index: 999;
     }
 
-    /* Hide sidebar off-screen by default on small screens */
-    @media (max-width: 768px) {
-      .sidebar {
-        left: -250px;
-      }
-
-      /* Hamburger Menu */
-      .hamburger-menu {
-        display: block;
-        font-size: 30px;
-        cursor: pointer;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        z-index: 2000;
-      }
-
-      /* Ensure the sidebar hides again if it's not active */
-      .sidebar.active {
-        left: 0;
-      }
+    .navbar-toggler-icon {
+      background-color: white !important; /* Warna icon hamburger */
     }
 
-    /* Ensure hamburger is hidden on larger screens */
-    @media (min-width: 768px) {
-      .hamburger-menu {
-        display: none;
-      }
+    .navbar-nav .nav-item.active .nav-link {
+      color: #500606 !important; /* Warna teks menu yang aktif */
     }
+
+    .navbar-nav .nav-item .nav-link:hover {
+      color: lightgray !important; /* Warna teks menu saat hover */
+    }
+
+    /* Navbar text color */
+    .navbar-nav .nav-link {
+      color: grey !important; /* Set text color to  */
+    }
+
+    /* Change hamburger icon color when it’s clicked (active state) */
+    .navbar-toggler.collapsed .navbar-toggler-icon {
+      background-color: white !important; /* Change color to maroon when collapsed */
+    }
+
+    /* Navbar for mobile 
+    .navbar-collapse {
+      display: none !important;
+    }
+
+    .navbar-collapse.show {
+      display: block !important;
+    } */
+
+    .dropdown-menu {
+      display: none; /* Hide dropdown by default */
+    }
+
+    .dropdown-menu.show {
+      display: block; /* Show dropdown when active */
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="">
   <div class="wrapper">
-    <div class="sidebar" data-color="white" data-active-color="danger">
+    <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
       <div class="logo">
         <span class="simple-text font-weight-bold">
           JAVA COLLECTION
@@ -131,9 +137,46 @@
       </div>
     </div>
 
-    <div class="main-panel">
-      <!-- Hamburger Button -->
-      <div class="hamburger-menu" onclick="toggleSidebar()">&#9776;</div>
+     <!-- Navbar for mobile -->
+     <div class="main-panel">
+
+      <!-- Tombol Hamburger -->
+      <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Collapse -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item {{ request()->is('karyawan/beranda') ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('karyawan.beranda') }}">Beranda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('karyawan.presensi') }}">Presensi</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('karyawan.perizinan') }}">Perizinan</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('karyawan.kasbon') }}">Kasbon</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('karyawan.gaji') }}">Gaji</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      
+
+      <div class="top-right-logout d-block d-lg-none">
+        <form action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="btn btn-danger">
+            <i class="nc-icon nc-button-power"></i> Logout
+          </button>
+        </form>
+      </div>
 
       <div class="content">
         <div class="mb-4">
@@ -158,13 +201,49 @@
   <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
   <script type="module" src="../assets/js/dashboard-manajer.js"></script>
 
-  <script>
+  <!--script>
     // Function to toggle the sidebar visibility
     function toggleSidebar() {
       var sidebar = document.querySelector('.sidebar');
       sidebar.classList.toggle('active');
     }
+  </script> -->
+    <script>
+    $(document).ready(function () {
+      // Toggle navbar visibility for mobile
+      $('.navbar-toggler').click(function () {
+        var navbar = $('#navbarNav');
+        navbar.toggleClass('show'); // Membuka dan menutup navbar
+      });
+    
+      // Close navbar when clicking outside
+      $(document).click(function (e) {
+        if (
+          !$(e.target).closest('.navbar-toggler').length && 
+          !$(e.target).closest('#navbarNav').length
+        ) {
+          $('#navbarNav').removeClass('show'); // Menutup navbar jika klik di luar
+        }
+      });
+    
+      // Toggle dropdown menu for 'Pengajuan' on mobile
+      $('.dropdown-toggle').click(function(e) {
+        e.preventDefault(); // Mencegah aksi default
+        $(this).next('.dropdown-menu').toggleClass('show'); // Menampilkan menu dropdown
+      });
+    
+      // Close dropdown if clicking outside
+      $(document).click(function(e) {
+        if (!$(e.target).closest('.dropdown-toggle').length) {
+          $('.dropdown-menu').removeClass('show'); // Menutup dropdown jika klik di luar
+        }
+      });
+    });
   </script>
+  
+
+
+
 </body>
 
 </html>
