@@ -126,6 +126,56 @@
     margin-right: 5px; /* Jarak kecil antara radio button dan teks */
 }
 
+/* Media query untuk layar dengan lebar maksimum 768px (tablet dan ponsel) */
+@media (max-width: 768px) {
+    body {
+        padding: 20px; /* Tambahkan padding agar elemen tidak terlalu rapat ke tepi */
+    }
+
+    .container {
+        flex-direction: column; /* Ubah layout dari horizontal menjadi vertikal */
+        width: 100%; /* Ambil lebar penuh layar */
+        height: auto; /* Tinggi otomatis mengikuti konten */
+    }
+
+    .form-section {
+        padding: 20px; /* Kurangi padding agar lebih proporsional pada layar kecil */
+    }
+
+    .form-section h2 {
+        font-size: 20px; /* Kurangi ukuran font judul */
+    }
+
+    .form-section button {
+        font-size: 14px; /* Kurangi ukuran font tombol */
+    }
+
+    .image-section {
+        height: 200px; /* Tetapkan tinggi gambar pada layar kecil */
+        background-size: cover; /* Pastikan gambar tetap rapi */
+    }
+}
+
+/* Media query untuk layar dengan lebar maksimum 480px (ponsel kecil) */
+@media (max-width: 480px) {
+    .form-section {
+        padding: 15px; /* Sesuaikan padding lebih kecil */
+    }
+
+    .form-section h2 {
+        font-size: 18px; /* Kurangi lagi ukuran font judul */
+    }
+
+    .form-section button {
+        font-size: 12px; /* Ukuran font tombol lebih kecil */
+    }
+
+    .form-section .link-group a {
+        font-size: 12px; /* Sesuaikan ukuran teks link */
+    }
+}
+
+
     </style>
 </head>
 <body>
