@@ -20,13 +20,6 @@
               <small class="text-muted d-block">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</small> <!-- Tanggal -->
             </div>
           </div>
-          
-          <div class="d-flex align-items-center me-4">
-            <i class="nc-icon nc-pin-3 text-primary mr-2"></i>
-            <div>
-              <span>Cab. Tanah Abang</span>
-            </div>
-          </div>
         </div>
 
         <!-- Cabang -->

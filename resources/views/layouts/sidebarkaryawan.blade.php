@@ -19,6 +19,28 @@
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <!-- dari presensi.blade.php -->
+  <link href="../assets/css/supervisor-perizinan.css" rel="stylesheet" />
+
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- dari gaji.blade.php -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- CSS Files -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+    <link href="../assets/css/perizinan-modal.css" rel="stylesheet" />
+    <link href="../assets/css/pengajuan-modal.css" rel="stylesheet" />
+    <link href="../assets/css/supervisor-perizinan.css" rel="stylesheet" />
+
+    
+
+
   <style>
     .top-right-logout {
       position: absolute;
@@ -154,16 +176,16 @@
             <li class="nav-item {{ request()->is('karyawan/beranda') ? 'active' : '' }}">
               <a class="nav-link" href="{{ route('karyawan.beranda') }}">Beranda</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ request()->is('karyawan/presensi') ? 'active' : '' }}">
               <a class="nav-link" href="{{ route('karyawan.presensi') }}">Presensi</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ request()->is('karyawan/perizinan') ? 'active' : '' }}">
               <a class="nav-link" href="{{ route('karyawan.perizinan') }}">Perizinan</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ request()->is('karyawan/kasbon') ? 'active' : '' }}">
               <a class="nav-link" href="{{ route('karyawan.kasbon') }}">Kasbon</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ request()->is('karyawan/gaji') ? 'active' : '' }}">
               <a class="nav-link" href="{{ route('karyawan.gaji') }}">Gaji</a>
             </li>
           </ul>

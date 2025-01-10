@@ -187,7 +187,7 @@ Coded by www.creative-tim.com
                         <form class="lampiran-body" enctype="multipart/form-data">
                             <!-- Field untuk Upload File -->
                             <div class="form-group">
-                                <label for="fileUpload" class="form-label font-weight-bold">Unggah File Bukti Izin</label>
+                                <label for="fileUpload" class="form-label font-weight-bold">Unggah File Bukti Pembayaran</label>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="fileUpload" name="lampiran"
@@ -314,11 +314,16 @@ Coded by www.creative-tim.com
                                                         </td>
                                                         <td>{{ $riwayat->keterangan }}</td>
                                                         <td class="text-right">
-                                                            <div class="button-container">
-                                                                <button type="button" class="custom-button" data-toggle="modal" data-target="#lampiranModal">
-                                                                    Lihat
-                                                                </button>
-                                                            </div>
+                                                            @if ($riwayat->keterangan === 'Pembayaran')
+                                                                <div class="button-container">
+                                                                    <button type="button" class="custom-button">
+                                                                        <a href="" target="_blank" class="text-decoration-none text-dark" 
+                                                                        id="modal-lampiran" data-keterangan="{{ $riwayat->keterangan }}" 
+                                                                        data-lampiran="{{ asset($riwayat->lampiran) }}">
+                                                                            Lihat</a>
+                                                                    </button>
+                                                                </div>
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -571,6 +576,16 @@ Coded by www.creative-tim.com
                     };
                     reader.readAsDataURL(buktiBayar);
                 });
+
+                const button = document.querySelector('.custom-button a');
+                const lampiran = button.getAttribute('data-lampiran');
+
+                if (lampiran) {
+                    const modalLampiran = document.getElementById('modal-lampiran');
+                    modalLampiran.href = lampiran; // Set href dengan URL file yang ada
+                } else {
+                    alert('Lampiran tidak ditemukan!');
+                }
             });
         </script>
     </div>

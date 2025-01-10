@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Toko::class, 'cabang_supervisor');
     }
+
+    public function karyawan() 
+    {
+        return $this->hasOne(Karyawan::class, 'nip', 'nip');
+    }
 }

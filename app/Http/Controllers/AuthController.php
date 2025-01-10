@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Events\UserCreated;
 
 
 class AuthController extends Controller
@@ -15,31 +18,57 @@ class AuthController extends Controller
     
     // Fungsi untuk registrasi
     public function register(Request $request)
-    {
-        // Validasi input
-        $validator = Validator::make($request->all(), [
-            'nip' => 'required|unique:users',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email:dns|unique:users',
-            'password' => 'required|min:6',
-            'jabatan' => 'required',
-        ]);
+{
+    // Validasi input
+    $validator = Validator::make($request->all(), [
+        'nip' => 'required|unique:users',
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6',
+        'jabatan' => 'required',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
-
-        // Menyimpan data pengguna baru ke database
-        $user = User::create([
-            'nip' => $request->nip,
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'jabatan' => $request->jabatan,
-        ]);
-
-        return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors()], 400);
     }
+
+    // Menyimpan data pengguna baru ke database
+    $user = User::create([
+        'nip' => $request->nip,
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'jabatan' => $request->jabatan,
+    ]);
+
+    // Jika jabatan adalah karyawan, tambahkan data ke tabel karyawans
+    if ($user->jabatan === 'karyawan') {
+        if (!Karyawan::where('nip', $user->nip)->exists()) {
+            Karyawan::create([
+                'nip' => $user->nip,
+                'nama' => $user->name,
+                'jabatan' => $user->jabatan,
+                'tempat_lahir' => null,
+                'tanggal_lahir' => null,
+                'gender' => null,
+                'toko_id' => null,
+                'alamat' => null,
+                'no_telp' => null,
+                'bank' => null,
+                'no_rek' => null,
+                'kasbon' => 0,
+            ]);
+        }
+    }
+
+    // Dispatch event jika diperlukan
+    UserCreated::dispatch($user);
+
+    return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
+}
+
+ 
+
 
 
     // Fungsi untuk login
