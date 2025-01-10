@@ -55,8 +55,8 @@
                         <div class="d-flex align-items-center mr-5">
                             <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
                             <div>
-                            <span>Sabtu</span>
-                            <small class="text-muted d-block">26 Oktober 2024</small>
+                                <span>{{ \Carbon\Carbon::now()->translatedFormat('l') }}</span> <!-- Nama Hari -->
+                                <small class="text-muted d-block">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</small> <!-- Tanggal -->
                             </div>
                         </div> 
                     </div>
