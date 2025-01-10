@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\perizinan;
 
@@ -10,6 +12,9 @@ class PerizinanController extends Controller
     //
     public function store(Request $request)
     {
+        $nip = Auth::user()->nip;
+        $nama = Auth::user()->name;
+
         // Validasi data
         $request->validate([
             'nip' => 'required|string',
@@ -22,8 +27,8 @@ class PerizinanController extends Controller
 
         // Menyimpan data perizinan
         $perizinan = new Perizinan();
-        $perizinan->nip = $request->input('nip');
-        $perizinan->nama = $request->input('nama');
+        $perizinan->nip = $nip;
+        $perizinan->nama = $nama;
         $perizinan->tanggal = $request->input('tanggal');
         $perizinan->jenis = $request->input('jenis');
         $perizinan->keterangan = $request->input('keterangan');
@@ -33,7 +38,6 @@ class PerizinanController extends Controller
             $file = $request->file('lampiran');
             $fileName = time() . '_' . $file->getClientOriginalName(); // Nama asli file
             $filePath = $file->storeAs('bukti_izin', $fileName, 'public');            
-            $file->move(public_path('bukti_izin'), $fileName); // Pindahkan file ke direktori public
             $perizinan->lampiran = $filePath;
         }
 
@@ -61,15 +65,15 @@ class PerizinanController extends Controller
         // Jika ada file lampiran baru
         if ($request->hasFile('lampiran')) {
             // Hapus file lama jika ada
-            if ($perizinan->lampiran && file_exists(public_path('bukti_izin/' . $perizinan->lampiran))) {
-                unlink(public_path('bukti_izin/' . $perizinan->lampiran));
+            if ($perizinan->lampiran) {
+                Storage::disk('public')->delete($perizinan->lampiran);
             }
 
             // Simpan file lampiran baru
             $file = $request->file('lampiran');
             $fileName = time() . '_' . $file->getClientOriginalName(); // Nama file unik
             $filePath = $file->storeAs('bukti_izin', $fileName, 'public');
-            $file->move(public_path('bukti_izin'), $fileName); // Pindahkan file ke direktori public
+            // $file->move(public_path('bukti_izin'), $fileName); // Pindahkan file ke direktori public
 
             $perizinan->lampiran = $filePath;
         }
@@ -83,10 +87,11 @@ class PerizinanController extends Controller
 
     public function index()
     {
+        $nip = Auth::user()->nip;
+
         // Mengambil data perizinan dari database (opsional, tambahkan jika diperlukan)
         $perizinans = perizinan::all(); // Ambil semua data perizinan
-
-        $perizinans = perizinan::orderBy('updated_at', 'desc')
+        $perizinans = perizinan::where('nip', $nip)->orderBy('updated_at', 'desc')
                                 ->get();
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
         return view('karyawan.perizinan', compact('perizinans'));
@@ -100,8 +105,8 @@ class PerizinanController extends Controller
 
         if ($perizinan) {
             // Hapus file lampiran jika ada
-            if ($perizinan->lampiran && file_exists(public_path('storage/' . $perizinan->lampiran))) {
-                unlink(public_path('bukti_izin/' . $perizinan->lampiran));
+            if ($perizinan->lampiran) {
+                Storage::disk('public')->delete($perizinan->lampiran);
             }
 
             // Hapus data dari database

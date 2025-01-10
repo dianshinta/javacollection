@@ -4,7 +4,7 @@
 <div class="mb-4">
     <small class="text-muted d-block">Informasi Karyawan</small>
     <h5 class="font-weight-bold">Daftar Karyawan</h5>
-  </div>
+</div>
 <div class="container">
     <div class="card ">
         <div class="card-body">
