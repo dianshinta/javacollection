@@ -16,26 +16,22 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <!-- CSS Files -->
   <link href="../assets/css/bootstrap.min-employee.css" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-  
-
   <style>
+    .top-right-logout {
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      z-index: 999;
+    }
     .navbar {
       background-color: #fff2f2 !important; /* Pink color */
     }
 
-    .top-right-logout {
-    position: fixed; /* Tetap terlihat saat scroll */
-    bottom: 20px; /* Atur jarak dari bawah */
-    left: 15px; /* Jarak dari sisi kiri */
-    z-index: 9999; /* Pastikan tetap terlihat */
-}
-
     .navbar-toggler-icon {
-      background-color: white !important; /* Warna icon hamburger */
+      background-color: transparent !important; /* Warna icon hamburger */
     }
 
     .navbar-nav .nav-item.active .nav-link {
@@ -53,7 +49,7 @@
 
     /* Change hamburger icon color when it’s clicked (active state) */
     .navbar-toggler.collapsed .navbar-toggler-icon {
-      background-color: white !important; /* Change color to maroon when collapsed */
+      background-color: transparent !important; /* Change color to maroon when collapsed */
     }
 
     /* Navbar for mobile 

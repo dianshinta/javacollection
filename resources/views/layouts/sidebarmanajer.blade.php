@@ -22,7 +22,7 @@
   <style>
     .top-right-logout {
       position: absolute;
-      top: 0px;
+      top: 8px;
       right: 15px;
       z-index: 999;
     }
@@ -49,12 +49,12 @@
 
     /* Set the color of the hamburger bars (three lines) to white */
     .navbar-toggler-icon {
-      background-color: white !important; /* Set the bars (lines) to white */
+      background-color: transparent !important; /* Set the bars (lines) to white */
     }
 
     /* Change hamburger icon color when it’s clicked (active state) */
     .navbar-toggler.collapsed .navbar-toggler-icon {
-      background-color: white !important; /* Change color to maroon when collapsed */
+      background-color: transparent !important; /* Change color to maroon when collapsed */
     }
 
     </style>
