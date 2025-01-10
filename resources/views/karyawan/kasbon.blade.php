@@ -98,36 +98,6 @@ Coded by www.creative-tim.com
             </div>
         </div>
 
-        <!-- Modal Box for Tambah Lampiran -->
-        <div class="modal fade" id="lampiranModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header" id="modalHeader">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <h5 class="modal-title pb-3" id="bonusModalLabel">Tambah Lampiran</h5>
-                        <form class="lampiran-body" enctype="multipart/form-data">
-                            <!-- Field untuk Upload File -->
-                            <div class="form-group">
-                                <label for="fileUpload" class="file-label">Pilih File</label>
-                                <input type="file" class="form-control" id="fileUpload" name="fileUpload"
-                                    accept="image/*, .pdf, .doc, .docx" style="display: none;">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer mx-auto">
-                        <button type="button" class="btn btn-save" id="saveLampiran">
-                            Simpan
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <!-- Modal Box for Pengajuan Kasbon -->
         <div class="modal fade" id="pengajuanModal" tabindex="-1" role="dialog" aria-labelledby="pengajuanModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -177,42 +147,72 @@ Coded by www.creative-tim.com
                     </div>
                     <h5 class="modal-title">Formulir Pembayaran Kasbon</h5>
                     <div class="modal-body">
-                        <form id="formPembayaran" action="{{ route('kasbon.payment') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label for="tanggal">Tanggal:</label>
-                                <input type="date" id="tanggal_pembayaran" class="form-control" required>
+                        <div class="form-group">
+                            <label for="tanggal">Tanggal:</label>
+                            <input type="date" id="tanggal_pembayaran" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="nominal">Nominal:</label>
+                            <div class="input-group">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </span>
+                                <input type="number" id="nominal_pembayaran" class="form-control" min="0" placeholder="0">
                             </div>
-                            <div class="form-group">
-                                <label for="nominal">Nominal:</label>
-                                <div class="input-group">
-                                    <span class="input-group-prepend">
-                                        <span class="input-group-text">Rp</span>
-                                    </span>
-                                    <input type="number" id="nominal_pembayaran" class="form-control" min="0" placeholder="0" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="lampiran">Bukti:</label>
-                                <div>
-                                    <div class="button-container">
-                                        <button id="btn-tambah" type="button" class="custom-button" data-toggle="modal"
-                                            data-target="#buktiModal">
-                                            Tambah
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn" id="kirimPembayaranBtn">Kirim 
-                                    <i class="bi bi-caret-right-fill"></i>
+                        </div>
+                        <div class="form-group">
+                            <label for="lampiran">Bukti:</label>
+                            <div class="button-container">
+                                <button id="btn-tambah" type="button" class="custom-button" data-toggle="modal"
+                                    data-target="#lampiranModal">
+                                    Tambah
                                 </button>
                             </div>
-                        </form>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn" id="kirimPembayaranBtn">Kirim 
+                                <i class="bi bi-caret-right-fill"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal Box for Tambah Lampiran -->
+        <div class="modal fade" id="lampiranModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form class="lampiran-body" enctype="multipart/form-data">
+                            <!-- Field untuk Upload File -->
+                            <div class="form-group">
+                                <label for="fileUpload" class="form-label font-weight-bold">Unggah File Bukti Izin</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="fileUpload" name="lampiran"
+                                            accept="image/*, .pdf, .doc, .docx">
+                                        <label class="custom-file-label" for="fileUpload">Pilih file...</label>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted mt-1">
+                                    Dapat mengunggah file dengan format: JPG, PNG, PDF, DOC, DOCX.
+                                </small>
+                            </div>
+                            <!-- Display Nama File -->
+                            <div class="form-group">
+                                <p id="fileNameDisplay" class="text-secondary"></p>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="btn-batalLampiran" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-success" id="btn-saveLampiran">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
 
         <div class="main-panel">
             <div class="content">
@@ -331,40 +331,6 @@ Coded by www.creative-tim.com
                     </div>
                 </div>
 
-                <!-- Modal Box for Tambah Bukti -->
-                <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" data-backdrop="static">
-                    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <form class="lampiran-body" enctype="multipart/form-data">
-                                    <!-- Field untuk Upload File -->
-                                    <div class="form-group">
-                                        <label for="fileUpload" class="form-label font-weight-bold">Unggah File Bukti Izin</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="fileUpload" name="lampiran"
-                                                    accept="image/*, .pdf, .doc, .docx">
-                                                <label class="custom-file-label" for="fileUpload">Pilih file...</label>
-                                            </div>
-                                        </div>
-                                        <small class="form-text text-muted mt-1">
-                                            Dapat mengunggah file dengan format: JPG, PNG, PDF, DOC, DOCX.
-                                        </small>
-                                    </div>
-                                    <!-- Display Nama File -->
-                                    <div class="form-group">
-                                        <p id="fileNameDisplay" class="text-secondary"></p>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" id="btn-batalLampiran" data-dismiss="modal">Batal</button>
-                                <button type="button" class="btn btn-success" id="btn-saveLampiran">Simpan</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <footer class="footer footer-black  footer-white ">
                     <div class="container-fluid">
                         <div class="row">
@@ -411,19 +377,13 @@ Coded by www.creative-tim.com
             });
 
             $(document).ready(function () {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                // Handle "Ajukan Kasbon" button click
                 $('#ajukanBtn').on('click', function () {
+                    // Collect form data
                     var tanggal = $('#tanggal').val();
                     var nominal = $('#nominal').val();
                     var alasan = $('#alasan').val();
 
-                    // Validate input fields
+                    // Validate the data before sending
                     if (!tanggal || !nominal || !alasan) {
                         Swal.fire({
                             title: 'Gagal!',
@@ -434,9 +394,9 @@ Coded by www.creative-tim.com
                         return;
                     }
 
-                    // Submit data via AJAX
+                    // Send data via AJAX to the backend
                     $.ajax({
-                        url: '{{ route('kasbon.save') }}',
+                        url: '{{ route('kasbon.save') }}', // Route to submit data
                         method: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -445,7 +405,7 @@ Coded by www.creative-tim.com
                             alasan: alasan,
                         },
                         success: function (response) {
-                            $('#pengajuanModal').modal('hide');
+                            $('#pengajuanModal').modal('hide'); // Close the modal
                             Swal.fire({
                                 title: 'Pengajuan kasbon berhasil!',
                                 text: response.success,
@@ -453,13 +413,16 @@ Coded by www.creative-tim.com
                                 showConfirmButton: false,
                                 timer: 1500,
                                 willClose: () => {
+                                    // Reload halaman setelah SweetAlert tertutup
                                     location.reload();
                                 }
                             }).then(() => {
+                                // Update nilai sisa limit di frontend
                                 $('#sisaLimit').text(response.sisa_limit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
-                                $('#progressBar').css('width', response.persentase + '%');
-                                $('#progressBar').attr('aria-valuenow', response.persentase);
-                                $('#progressBar').text(response.kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+                                // Update progress bar
+                                $('#progressBar').css('width', persentase + '%');
+                                $('#progressBar').attr('aria-valuenow', persentase);
+                                $('#progressBar').text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
                             });
                         },
                         error: function (response) {
@@ -473,19 +436,25 @@ Coded by www.creative-tim.com
                         }
                     });
                 });
+            });
 
-                // Update sisa limit function
+            $(document).ready(function () {
                 function updateSisaLimit() {
                     $.ajax({
-                        url: '{{ route('kasbon.limit') }}',
+                        url: '{{ route('kasbon.limit') }}', // Sesuaikan dengan route backend Anda
                         method: 'GET',
                         success: function (response) {
-                            const limitAwal = response.limit_awal;
-                            const sisaLimit = response.sisa_limit;
+                            const limitAwal = response.limit_awal; // Limit awal dari backend
+                            const sisaLimit = response.sisa_limit; // Sisa limit dari backend
                             const kasbonAktif = limitAwal - sisaLimit;
+
+                            // Hitung persentase progress
                             const persentase = Math.min((kasbonAktif / limitAwal) * 100, 100).toFixed(2);
 
+                            // Update teks sisa limit
                             $('#sisaLimit').text(sisaLimit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
+
+                            // Update progress bar
                             $('#progressBar').css('width', persentase + '%');
                             $('#progressBar').attr('aria-valuenow', persentase);
                             $('#progressBar').text(kasbonAktif.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }));
@@ -493,7 +462,7 @@ Coded by www.creative-tim.com
                         error: function () {
                             Swal.fire({
                                 title: 'Gagal!',
-                                text: 'Gagal mengambil limit.',
+                                text: response.responseJSON ? response.responseJSON.message : 'Gagal mengambil limit.',
                                 icon: 'error',
                                 confirmButtonText: 'Coba Lagi',
                             });
@@ -501,28 +470,29 @@ Coded by www.creative-tim.com
                     });
                 }
 
-                // Call updateSisaLimit on page load
+                // Panggil fungsi saat halaman dimuat
                 updateSisaLimit();
+            });
 
-                let uploadedFile = null; // Variabel untuk menyimpan file yang diunggah
+            $(document).ready(function () {
+                let uploadedFile = null;  // Menyimpan lampiran sementara
 
-                // Mengubah teks label saat file dipilih
+                // Menampilkan nama file setelah dipilih
                 $('#fileUpload').on('change', function () {
-                    const fileName = this.files[0]?.name || 'Pilih file...'; // Mengambil nama file atau teks default
-                    $(this).next('.custom-file-label').text(fileName); // Mengubah teks label
-                    uploadedFile = this.files[0]; // Menyimpan file yang diunggah
-                    console.log('Nama file: ', uploadedFile);
+                    const fileName = this.files[0]?.name || 'Tidak ada file yang dipilih';
+                    $(this).next('.custom-file-label').text(fileName);
+
+                    uploadedFile = this.files[0];
                 });
 
-                // Tombol "Simpan"
+                // Saat tombol "Simpan Lampiran" diklik
                 $('#btn-saveLampiran').on('click', function () {
                     if (!uploadedFile) {
                         Swal.fire({
                             icon: 'warning',
                             title: 'Peringatan',
-                            text: 'Silakan unggah file terlebih dahulu!',
+                            text: 'Tidak ada file lampiran yang diunggah!',
                         });
-                        return;
                     } else {
                         const fileName = uploadedFile.name;
                         $('#btn-tambah').text('Ganti File');  // Ganti teks tombol dengan nama file
@@ -532,57 +502,74 @@ Coded by www.creative-tim.com
                             <button id="btn-fileName" class="btn btn-info mt-2" disabled>${fileName}</button>
                         `);
                         
-                        $('#buktiModal').modal('hide');
+                        $('#lampiranModal').modal('hide');
                     }
                 });
 
-                // Tombol "Batal"
                 $('#btn-batalLampiran').on('click', function () {
-                    $('#buktiModal').modal('hide');
+                    $('#lampiranModal').modal('hide');
                     $('.custom-file-label').text('Pilih file...');
                     $('#fileUpload').val(''); // Mengosongkan nilai input file
                 });
-
-                // Ketika tombol "Kirim Pembayaran" diklik
+                
                 $('#kirimPembayaranBtn').on('click', function () {
-                    if (!uploadedFile) {
+                    // Pastikan tanggal, nominal, dan lampiran diambil dengan benar
+                    var tanggal = $('#tanggal_pembayaran').val();
+                    var nominal = $('#nominal_pembayaran').val();
+                    var buktiBayar = uploadedFile // Ambil file pertama dari input file
+
+                    // Validate the data before sending
+                    if (!tanggal || !nominal || !buktiBayar) {
                         Swal.fire({
-                            icon: 'warning',
-                            title: 'Peringatan',
-                            text: 'Silakan unggah file terlebih dahulu!',
+                            title: 'Gagal!',
+                            text: 'Pastikan semua data terisi',
+                            icon: 'error',
+                            confirmButtonText: 'OK',
                         });
                         return;
                     }
 
-                    const formData = new FormData($('#formPembayaran')[0]);
-                    formData.append('lampiran', uploadedFile); // Tambahkan file ke FormData
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        var lampiranBase64 = e.target.result.split(',')[1];
 
-                    $.ajax({
-                        url: $('#formPembayaran').attr('action'), // Mengambil URL dari atribut action form
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Pembayaran Berhasil!',
-                                showConfirmButton: false,
-                                timer: 1500,
-                                willClose: () => {
-                                    // Reload halaman setelah SweetAlert tertutup
-                                    location.reload();
-                                }
-                            });
-                        },
-                        error: function (response) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal!',
-                                text: response.responseJSON ? response.responseJSON.message : 'Terjadi kesalahan, silakan coba lagi.',
-                            });
-                        }
-                    });
+                        // Kirim data menggunakan AJAX
+                        $.ajax({
+                            url: '{{ route('kasbon.payment') }}', // Ganti dengan route yang sesuai
+                            method: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}', // Tambahkan CSRF token jika diperlukan
+                                tanggal_pembayaran: tanggal,
+                                nominal_pembayaran: nominal,
+                                lampiran: lampiranBase64,
+                                lampiran_nama: buktiBayar.name,
+                            },
+                            success: function (response) {
+                                $('#pembayaranModal').modal('hide');
+                                Swal.fire({
+                                    title: 'Pembayaran Berhasil!',
+                                    text: response.success,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    willClose: () => {
+                                        // Reload halaman setelah SweetAlert tertutup
+                                        location.reload();
+                                    }
+                                });
+                            },
+                            error: function (response) {
+                                $('#pembayaranModal').modal('hide');
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    text: response.responseJSON ? response.responseJSON.message : 'Terjadi kesalahan. Silakan coba lagi.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK',
+                                });
+                            }
+                        });
+                    };
+                    reader.readAsDataURL(buktiBayar);
                 });
             });
         </script>
