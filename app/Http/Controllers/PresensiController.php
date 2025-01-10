@@ -47,19 +47,15 @@ class PresensiController extends Controller
         // Ambil riwayat presensi. Anda bisa menambahkan kondisi jika perlu (misal berdasarkan NIP).
         $riwayatPresensi = presensi::where('nip', $nip)->orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
 
+        // Mengambil data user yang sedang login dan relasi karyawan dan toko
+        $user = auth()->user(); // Mengambil user yang sedang login
+        $user = $user->load('karyawan.toko'); // Mengambil relasi karyawan dan toko
+        
         // Kirim data ke view 'karyawan.presensi'
         session()->flash('success', 'Presensi berhasil direkam!');
-        return view( 'karyawan.presensi', compact('riwayatPresensi', 'hasPresensiToday'));
+        return view( 'karyawan.presensi', compact('riwayatPresensi', 'hasPresensiToday', 'user'));
     }
 
-    public function beranda() {
-        $nip = Auth::user()->nip;
-        $today = date('Y-m-d');
 
-        $hasPresensiToday = presensi::where('nip', $nip)
-                                    ->whereDate('tanggal', $today)
-                                    ->exists();
-        
-        return view( 'karyawan.beranda', compact( 'hasPresensiToday'));
-    }
+
 }

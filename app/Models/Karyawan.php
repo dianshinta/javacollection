@@ -16,4 +16,8 @@ class Karyawan extends Model
         'gender', 'toko_id', 'alamat', 'no_telp',
         'bank', 'no_rek', 'kasbon'
     ];
+
+    public function toko() {
+        return $this->belongsTo(Toko::class, 'toko_id', 'id');
+    }
 }

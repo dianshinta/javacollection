@@ -98,7 +98,12 @@
                   <div class="d-flex align-items-center me-4">
                     <i class="nc-icon nc-pin-3 text-primary mr-2"></i>
                     <div>
-                      <span>Tanah Abang</span>
+                      @if ($user && $user->karyawan && $user->karyawan->toko)
+                          <span>{{ $user->karyawan->toko->name }}</span>
+                      @else
+                          <span>-</span>
+                      @endif
+                      <!-- <span>Tanah Abang</span> -->
                     </div>
                 </div>
             </div>          
