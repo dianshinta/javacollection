@@ -1,4 +1,18 @@
-<div class="sidebar-wrapper">
+<div class="navbar-wrapper d-md-none">
+    <!-- Hamburger Menu -->
+    <button class="navbar-toggler" id="hamburger-menu" type="button">
+        <i class="nc-icon nc-align-left-2"></i>
+    </button>
+    <!-- Logout Button -->
+    <form action="{{ route('logout') }}" method="POST" class="d-inline-block ml-auto">
+        @csrf
+        <button type="submit" class="btn btn-danger btn-sm">
+            <i class="nc-icon nc-button-power"></i>
+        </button>
+    </form>
+</div>
+
+<div class="sidebar-wrapper d-none d-md-block" id="sidebar">
     <ul class="nav">
         <!-- Beranda -->
         <li class="{{ ($title === 'Beranda') ? 'active' : '' }}">
@@ -64,5 +78,33 @@
             <i class="nc-icon nc-button-power"></i> Logout
           </button>
         </form>
-      </div>
+    </div>
 </div>
+
+<!-- Tambahkan script untuk hamburger -->
+<script>
+    document.getElementById('hamburger-menu').addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('d-none');
+    });
+</script>
+
+<!-- Tambahkan styling -->
+<style>
+    .navbar-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .navbar-toggler {
+        border: none;
+        background: none;
+    }
+
+    .navbar-wrapper form {
+        margin-left: auto;
+    }
+</style>
