@@ -10,12 +10,12 @@
     Beranda | JAVA COLLECTION
   </title>
   <style>
-     .top-right-logout {
-    position: fixed; /* Tetap terlihat saat scroll */
-    bottom: 20px; /* Atur jarak dari bawah */
-    left: 15px; /* Jarak dari sisi kiri */
-    z-index: 9999; /* Pastikan tetap terlihat */
-}
+    .top-right-logout {
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      z-index: 999;
+    }
   </style>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!-- Fonts and icons -->

@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <!-- CSS Files -->
-  <link href="../assets/css/bootstrap.min-employee.css" rel="stylesheet" />
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
@@ -43,7 +43,7 @@
     }
 
     /* Navbar text color */
-    .navbar-nav .nav-link {
+    .navbar-nav .nav-item .nav-link {
       color: grey !important; /* Set text color to  */
     }
 
@@ -52,8 +52,7 @@
       background-color: transparent !important; /* Change color to maroon when collapsed */
     }
 
-    /* Navbar for mobile 
-    .navbar-collapse {
+    /* .navbar-collapse {
       display: none !important;
     }
 
@@ -135,7 +134,14 @@
 
      <!-- Navbar for mobile -->
      <div class="main-panel">
-
+      <div class="top-right-logout d-block d-lg-none">
+        <form action="{{ route('logout') }}" method="POST">
+          @csrf
+          <button type="submit" class="btn btn-danger">
+            <i class="nc-icon nc-button-power"></i> Logout
+          </button>
+        </form>
+      </div>
       <!-- Tombol Hamburger -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -163,32 +169,21 @@
           </ul>
         </div>
       </nav>
-      
 
-      <div class="top-right-logout d-block">
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="btn btn-danger">
-            <i class="nc-icon nc-button-power"></i> Logout
-        </button>
-    </form>
-</div>
-
-<script>
-    function clearSession(event) {
-        // Konfirmasi logout (opsional)
-        const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
-        if (!confirmLogout) {
-            event.preventDefault();
-            return;
-        }
-        
-        // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
-        sessionStorage.clear();
-        localStorage.removeItem('id'); // Contoh jika ada data user
-    }
-</script>
-
+      <script>
+          function clearSession(event) {
+              // Konfirmasi logout (opsional)
+              const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
+              if (!confirmLogout) {
+                  event.preventDefault();
+                  return;
+              }
+              
+              // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
+              sessionStorage.clear();
+              localStorage.removeItem('id'); // Contoh jika ada data user
+          }
+      </script>
 
       <div class="content">
         @yield('content')
@@ -206,8 +201,7 @@
   <!-- Notifications Plugin -->
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard -->
-  <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
-  <script type="module" src="../assets/js/dashboard-manajer.js"></script>
+  <script type="module" src="../assets/js/dashboard-employee.js"></script>
 
   <!--script>
     // Function to toggle the sidebar visibility
