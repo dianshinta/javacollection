@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class perizinan extends Model
 {
@@ -17,6 +18,7 @@ class perizinan extends Model
     
     // Primary key
     protected $primaryKey = 'id'; // Primary key adalah kolom id
+
 
     // Field yang dapat diisi massal
     protected $fillable = [
@@ -36,4 +38,19 @@ class perizinan extends Model
         'keterangan' => 'string',
         'status' => 'string',
     ];
+
+    //fungsi save ke database
+    protected static function boot()
+    {
+        parent::boot();
+
+        //save kolom bulan_id
+        static::saving(function ($presensi) {
+            //jika kolom tanggal sudah ada sebelum menjalankan logika tambahBulanBaru:
+            if ($presensi->tanggal) {
+                $bulan = Bulan::tambahBulanBaru($presensi->tanggal);
+                $presensi->bulan_id = $bulan->id;
+            }
+        });
+    }
 }

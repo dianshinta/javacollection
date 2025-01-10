@@ -16,9 +16,9 @@ class EmployerSalaryController extends Controller
      */
     public function index()
     {
-        $this->updateNamaInEmployerSalaries();
+        $this->updateInEmployerSalaries();
 
-        return view('/manajer/gajiKaryawan', ["title" => "Gaji", 'datas' => EmployerSalary::all()]);
+        return view('/manajer/gajikaryawan', ["title" => "Gaji", 'datas' => EmployerSalary::all()]);
     }
 
     /**
@@ -60,7 +60,7 @@ class EmployerSalaryController extends Controller
     }
 
     //update nama dalam tabel employer salaries
-    public function updateNamaInEmployerSalaries()
+    public function updateInEmployerSalaries()
     {
         // Ambil semua data employer_salaries
         $employerSalaries = EmployerSalary::all();
@@ -72,6 +72,7 @@ class EmployerSalaryController extends Controller
             if ($karyawan) {
                 // Perbarui kolom nama
                 $employerSalary->nama = $karyawan->nama;
+                $employerSalary->gaji_pokok = $karyawan->gaji_pokok;
                 $employerSalary->save();
             }
         }

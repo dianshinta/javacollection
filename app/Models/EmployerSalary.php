@@ -28,7 +28,7 @@ class EmployerSalary extends Model
     //menghubungkan dengan model karyawan
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class, 'karyawan_nip', 'id');
+        return $this->belongsTo(Karyawan::class, 'karyawan_nip', 'nip');
     }
 
     //menghubungkan dengan model presensi
@@ -41,6 +41,11 @@ class EmployerSalary extends Model
     public function bulans()
     {
         return $this->belongsTo(Bulan::class, 'karyawan_nip', 'bulan_id');
+    }
+    
+    public function perizinan()
+    {
+        return $this->belongsTo(perizinan::class, 'karyawan_nip', 'bulan_id');
     }
 
     //Fungsi menghitung total gaji
@@ -75,7 +80,14 @@ class EmployerSalary extends Model
             ->where('status', 'Tidak Hadir')
             ->count();
     }
-
+    
+    public static function calculateIzin(string $user_nip, int $bulan_id): int
+    {
+        return perizinan::where('nip', $user_nip)
+            ->where('bulan_id', $bulan_id)
+            ->where('status', 'Disetujui')
+            ->count();
+    }
 
     protected static function boot()
     {
@@ -87,9 +99,9 @@ class EmployerSalary extends Model
             // Hitung kehadiran dan absen berdasarkan user_nip dan bulan_id
             $employerSalary->hadir = self::calculateHadir($employerSalary->karyawan_nip, $employerSalary->bulan_id);
             $employerSalary->absen = self::calculateAbsen($employerSalary->karyawan_nip, $employerSalary->bulan_id);
+            $employerSalary->izin = self::calculateIzin($employerSalary->karyawan_nip, $employerSalary->bulan_id);
 
             // Hitung denda dan total gaji
-            $employerSalary->gaji_pokok = $employerSalary->karyawan->gaji_pokok;
             $employerSalary->denda = $employerSalary->calculateDenda();
             $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();
         });

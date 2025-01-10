@@ -98,10 +98,10 @@
                                 </tr>
                             </thead>
                             @foreach ($datas as $data)
-                            <tbody class="gaji-row" data-id="{{ $data['user_nip'] }}">
+                            <tbody class="gaji-row" data-id="{{ $data['karyawan_nip'] }}">
                                 <tr>
-                                    <td> {{ $data['user_nip'] }}</td> 
-                                    <td>{{ Str::limit($data->karyawan->name, 20) }}</td>
+                                    <td> {{ $data['karyawan_nip'] }}</td> 
+                                    <td>{{ Str::limit($data->karyawan->nama, 20) }}</td>
                                     <td>{{ $data->karyawan->jabatan }}</td>
                                 </tr>
                             </tbody>   
@@ -312,12 +312,12 @@
                 const nip = $(this).data('id');
 
                 // Cari data yang cocok dengan NIP tersebut
-                const data = @json($datas).find(item => item.user_nip == nip);
+                const data = @json($datas).find(item => item.karyawan_nip == nip);
        
             
             // Isi data ke dalam modal
             if (data) {
-                $('#modalNip').text(data.user_nip);
+                $('#modalNip').text(data.karyawan_nip);
                 $('#modalNama').text(data.nama);
                 $('#modalJabatan').text(data.jabatan);
                 $('#modalKehadiran').text(data.hadir);

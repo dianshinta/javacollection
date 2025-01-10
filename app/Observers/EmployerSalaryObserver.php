@@ -21,10 +21,10 @@ class EmployerSalaryObserver
     public function saving(EmployerSalary $employerSalary)
     {
         //memperbarui nama user berdasarkan nipnya
-        $user = User::where('nip', $employerSalary->user_nip)->first();
-        if ($user) {
-            $employerSalary->nama = $user->name;
-        }
+        // $user = User::where('nip', $employerSalary->user_nip)->first();
+        // if ($user) {
+        //     $employerSalary->nama = $user->name;
+        // }
     }
 
     /**
