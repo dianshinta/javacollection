@@ -9,8 +9,8 @@
           <div class="d-flex align-items-center mr-5">
             <i class="nc-icon nc-circle-10 text-primary mr-2"></i>          
             <div>
-              {{-- <span  style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ Auth::user()->name }}</span>
-              <small class="text-muted d-block">{{ Auth::user()->nip }}</small> --}}
+              <span  style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ Auth::user()->name }}</span>
+              <small class="text-muted d-block">{{ Auth::user()->nip }}</small>
             </div>
           </div>
           <div class="d-flex align-items-center mr-5">
