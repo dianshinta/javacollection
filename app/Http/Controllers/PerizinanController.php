@@ -25,6 +25,15 @@ class PerizinanController extends Controller
             'lampiran' => 'nullable|file|max:2000'
         ]);        
 
+        // Cek apakah ada perizinan dengan tanggal yang sama
+        $existingPerizinan = perizinan::where('nip', $nip)
+                            ->whereDate('tanggal', $request->input('tanggal'))
+                            ->exists();
+
+        if ($existingPerizinan) {
+            return back()->withErrors(['error' => 'Anda sudah mengajukan izin pada tanggal tersebut.']);
+        }
+
         // Menyimpan data perizinan
         $perizinan = new Perizinan();
         $perizinan->nip = $nip;
@@ -48,6 +57,8 @@ class PerizinanController extends Controller
 
     public function update(Request $request)
     {
+        $nip = Auth::user()->nip;
+
         $validated = $request->validate([
             'id' => 'required|exists:perizinan,id',
             'tanggal' => 'required|date',
@@ -56,7 +67,7 @@ class PerizinanController extends Controller
         ]);
 
         $perizinan = perizinan::find($validated['id']);
-        
+
         // Perbarui data
         $perizinan->tanggal = $validated['tanggal'];
         $perizinan->jenis = $validated['jenis'];
@@ -85,10 +96,20 @@ class PerizinanController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
         $nip = Auth::user()->nip;
 
+        // Ambil tanggal-tanggal izin yang sudah diajukan
+        $existingDates = perizinan::where('nip', $nip)
+                        ->pluck('tanggal')  // Ambil hanya kolom tanggal
+                        ->toArray();
+
+        // Tanggal-tanggal yang sudah diambil untuk izin (dalam format 'YYYY-MM-DD')
+        $existingDates = array_map(function($date) {
+            return \Carbon\Carbon::parse($date)->format('Y-m-d');
+        }, $existingDates);        
+        
         // Mendapatkan tanggal sekarang dan menghitung jumlah izin dalam sebulan
         $currentMonth = \Carbon\Carbon::today()->month;
         $currentYear = \Carbon\Carbon::today()->year;
@@ -103,7 +124,7 @@ class PerizinanController extends Controller
         $perizinans = perizinan::where('nip', $nip)->orderBy('updated_at', 'desc')
                                 ->get();
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
-        return view('karyawan.perizinan', compact('perizinans', 'izinTaken'));
+        return view('karyawan.perizinan', compact('perizinans', 'izinTaken', 'existingDates'));
     }
 
     public function destroy(Request $request)

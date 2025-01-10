@@ -479,6 +479,20 @@
                     }
                 });
 
+                // Mengambil tanggal yang sudah digunakan
+                var existingDates = @json($existingDates);
+
+                // Mengatur input tanggal
+                $('#tanggal').on('input', function() {
+                    var selectedDate = $(this).val();
+
+                    // Jika tanggal yang dipilih ada dalam daftar tanggal yang sudah digunakan
+                    if (existingDates.includes(selectedDate)) {
+                        alert('Tanggal ini sudah digunakan untuk izin sebelumnya.');
+                        $(this).val(''); // Mengosongkan input tanggal
+                    }
+                });
+
                 let uploadedFile = null;  // Menyimpan lampiran sementara
 
                 // Menampilkan nama file setelah dipilih
@@ -628,38 +642,38 @@
 
                 const rows = document.querySelectorAll("#riwayatTable tbody tr");
                 rows.forEach(row => {
-                    // Menampilkan nama file setelah dipilih
-                    $(document).on('change', '#fileUploadUpdate', function () {
-                        const fileNameUpdate = this.files[0]?.name || 'Tidak ada file yang dipilih';
-                        $(this).next('.custom-file-label').text(fileNameUpdate);
-
-                        uploadedFile = this.files[0];        
-                    });
-
-                    // Saat tombol "Simpan Lampiran" diklik
-                    $(document).on('click', '#btn-saveLampiranUpdate',function () {
-                        if (!uploadedFile) {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Peringatan',
-                                text: 'Tidak ada file lampiran yang diunggah!',
-                            });
-                        } else {
-                            const fileNameUpdate = uploadedFile.name;
-                            $('#buktiModalUpdate').modal('hide');
-                            $('#btn-tambahUpdate').text('Ganti File');  // Ganti teks tombol dengan nama file
-                    
-                            // Pastikan tombol hanya muncul jika file diunggah
-                            $('#btn-fileNameUpdate').remove(); // Menghapus tombol lama (jika ada)
-                            $('#btn-tambahUpdate').before(`
-                                <button id="btn-fileNameUpdate" class="btn btn-info mt-2" disabled>${fileNameUpdate}</button>
-                            `); 
-                        }
-                    });
-
-                    $(document).off('click', '#btn-fileNameUpdate');
-
                     row.addEventListener("click", () => {
+                        // Menampilkan nama file setelah dipilih
+                        $(document).on('change', '#fileUploadUpdate', function () {
+                            const fileNameUpdate = this.files[0]?.name || 'Tidak ada file yang dipilih';
+                            $(this).next('.custom-file-label').text(fileNameUpdate);
+
+                            uploadedFile = this.files[0];        
+                        });
+
+                        // Saat tombol "Simpan Lampiran" diklik
+                        $(document).on('click', '#btn-saveLampiranUpdate',function () {
+                            if (!uploadedFile) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Peringatan',
+                                    text: 'Tidak ada file lampiran yang diunggah!',
+                                });
+                            } else {
+                                const fileNameUpdate = uploadedFile.name;
+                                $('#buktiModalUpdate').modal('hide');
+                                $('#btn-tambahUpdate').text('Ganti File');  // Ganti teks tombol dengan nama file
+                        
+                                // Pastikan tombol hanya muncul jika file diunggah
+                                $('#btn-fileNameUpdate').remove(); // Menghapus tombol lama (jika ada)
+                                $('#btn-tambahUpdate').before(`
+                                    <button id="btn-fileNameUpdate" class="btn btn-info mt-2" disabled>${fileNameUpdate}</button>
+                                `); 
+                            }
+                        });
+
+                        $(document).off('click', '#btn-fileNameUpdate');
+                        
                         // Ambil data dari atribut data-*
                         const id = row.getAttribute("data-id");
                         const tanggal = row.getAttribute("data-tanggal");
@@ -769,19 +783,16 @@
                                 return false; // Jangan lanjutkan ke proses selanjutnya
                             }
 
-                            
-
                             // Menampilkan modal konfirmasi
                             $('#confirmUpdateModal').modal('show');
                         });
 
                         // Ketika tombol "Yakin" pada modal konfirmasi diklik
-                        $(document).on('click', '#btnYakinUpdate', function () {
+                        $(document).off('click', '#btnYakinUpdate').on('click', '#btnYakinUpdate', function () {
                             const dataTanggal = document.querySelector("#formUpdatePerizinan #tanggal").value;
                             const dataJenis = document.querySelector("#formUpdatePerizinan input[name='jenis']:checked")?.value;
                             const dataKeterangan = document.querySelector("#formUpdatePerizinan #keterangan").value;
 
-                            // const perizinanId = document.querySelector("#updatePerizinanModal").getAttribute("data-id");
                             // Kirim data ke server menggunakan AJAX
                             const formData = new FormData();
                             formData.append("tanggal", dataTanggal);
