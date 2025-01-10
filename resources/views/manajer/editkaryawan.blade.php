@@ -3,10 +3,12 @@
 @section('content')
 
 <div class="container">
-    <div class="mb-4">
-        <small class="text-muted d-block">Informasi Karyawan</small>
-        <h5 class="font-weight-bold">Daftar Karyawan</h5>
-    </div>
+<div class="mb-4">
+<small class="text-muted d-block">Informasi Karyawan</small>
+<h5 class="font-weight-bold">Daftar Karyawan</h5>
+</div>
+
+
     <div class="mb-3">
     <a href="{{ route('karyawan.create') }}" class="btn btn-success">Tambah Karyawan</a>
     </div>
