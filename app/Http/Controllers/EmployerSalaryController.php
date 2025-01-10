@@ -15,7 +15,7 @@ class EmployerSalaryController extends Controller
      */
     public function index()
     {
-        return view('/manajer/gaji karyawan', ["title" => "Gaji", 'datas' => EmployerSalary::all()]);
+        return view('/manajer/gajikaryawan', ["title" => "Gaji", 'datas' => EmployerSalary::all()]);
     }
 
 }

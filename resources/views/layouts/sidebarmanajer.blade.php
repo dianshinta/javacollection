@@ -136,20 +136,20 @@
         </div>
       </nav>
 
-      <script>
-          function clearSession(event) {
-              // Konfirmasi logout (opsional)
-              const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
-              if (!confirmLogout) {
-                  event.preventDefault();
-                  return;
-              }
-              
-              // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
-              sessionStorage.clear();
-              localStorage.removeItem('id'); // Contoh jika ada data user
+  <script>
+      function clearSession(event) {
+          // Konfirmasi logout (opsional)
+          const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
+          if (!confirmLogout) {
+              event.preventDefault();
+              return;
           }
-      </script>
+          
+          // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
+          sessionStorage.clear();
+          localStorage.removeItem('id'); // Contoh jika ada data user
+      }
+  </script>
       <div class="content">
         
         @yield('content')

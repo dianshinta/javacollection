@@ -123,7 +123,9 @@ Route::middleware('auth')->group(function() {
 
 // BAGIAN HALAMAN MANAJER
 Route::get('/manajer/beranda/', function () {
-    return view('/manajer/beranda');
+    return view('/manajer/beranda', [
+        "title" => "Beranda"
+    ]);
 })->name('manager.beranda');
 
 Route::get('/manajer/gaji', [EmployerSalaryController::class, 'index'])->name('manajer.gaji');

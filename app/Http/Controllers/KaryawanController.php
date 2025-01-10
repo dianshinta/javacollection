@@ -15,7 +15,7 @@ class KaryawanController extends Controller
         $karyawans = Karyawan::all();
 
         // Mengirim data ke view
-        return view('manajer.editkaryawan', compact('karyawans'));
+        return view('manajer.editkaryawan', compact('karyawans'))->with('title', 'Karyawan');
     }
 
     // Simpan data baru atau update
