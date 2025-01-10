@@ -124,8 +124,22 @@ class karyawanKasbonController extends Controller
         $validated = $request->validate([
             'tanggal_pembayaran' => 'required|date|after_or_equal:today',
             'nominal_pembayaran' => 'required|numeric|min:1',
-            'lampiran' => 'required|file'
+            'lampiran' => 'required',
+            'lampiran_nama' => 'required|string',
         ]);
+
+        // Dekode file base64
+        $decodedFile = base64_decode($validated['lampiran']);
+        if (!$decodedFile) {
+            return response()->json(['error' => 'Lampiran tidak valid.'], 400);
+        }
+
+        // Buat nama file acak
+        $randomFileName = Str::random(16) . '.' . pathinfo($validated['lampiran_nama'], PATHINFO_EXTENSION);
+
+        // Simpan file di storage publik
+        $filePath = 'uploads/lampiran/' . $randomFileName;
+        Storage::disk('public')->put($filePath, $decodedFile);
 
         $nip = 1;
 
@@ -167,19 +181,10 @@ class karyawanKasbonController extends Controller
             'keterangan' => 'Pembayaran',
             'nominal_dibayar' => $validated['nominal_pembayaran'],
             'saldo_akhir' => $saldo_akhir_sekarang,
+            'lampiran' => Storage::url($filePath),
             'nama' => 'Budi',
             'nip' => $nip,
         ]);
-
-        // Jika ada file bukti, proses upload file
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $fileName = time() . '_' . $file->getClientOriginalName(); // Nama asli file
-            $filePath = $file->storeAs('lampiran', $fileName, 'public');
-
-            $pembayaran->lampiran = $filePath;
-            $pembayaran->save();
-        }
 
         $pembayaran->keterangan = 'Pembayaran';
         $pembayaran->update();
