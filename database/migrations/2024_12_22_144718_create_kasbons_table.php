@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kasbon', function (Blueprint $table) {
             $table->id(); // Membuat kolom id (integer, auto-increment, primary key)
-            $table->string('nama', 50);
+            $table->string('nama', 50)->nullable();
             $table->string('nip', 20); // NIP dengan panjang maksimal 20 karakter
             $table->enum('status_kasbon', ['Lunas', 'Belum Lunas']); // Enum untuk status
             $table->enum('status_bayar', ['Diproses', 'Disetujui', 'Ditolak']); // Enum untuk status
@@ -26,6 +26,9 @@ return new class extends Migration
             $table->integer('saldo_akhir'); // Nominal diajukan
             $table->string('lampiran')->nullable();
             $table->timestamps(); // Menambahkan kolom created_at dan updated_at
+            $table->unsignedBigInteger('bulan_id')->nullable();
+
+            $table->foreign('bulan_id')->references('id')->on('bulans')->onDelete('cascade');
         });
     }
 

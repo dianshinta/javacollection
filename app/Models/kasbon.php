@@ -11,7 +11,7 @@ class kasbon extends Model
     protected $table = 'kasbon'; // Nama tabel
     public $timestamps = true; // Karena tabel memiliki kolom updated_at
     protected $primaryKey = 'id'; // Kolom nip sebagai primary key
-    
+
     // Kolom yang dapat diisi untuk proses update
     protected $fillable = [
         'nama',
@@ -33,4 +33,19 @@ class kasbon extends Model
         'status_kasbon' => 'string',
         'status_bayar' => 'string',
     ];
+
+    //fungsi save ke database
+    protected static function boot()
+    {
+        parent::boot();
+
+        //save kolom bulan_id
+        static::saving(function ($kasbon) {
+            //jika kolom tanggal_pengajuan sudah ada sebelum menjalankan logika tambahBulanBaru:
+            if ($kasbon->tanggal_pengajuan) {
+                $bulan = Bulan::tambahBulanBaru($kasbon->tanggal_pengajuan);
+                $kasbon->bulan_id = $bulan->id;
+            }
+        });
+    }
 }

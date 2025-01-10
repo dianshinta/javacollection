@@ -45,9 +45,13 @@ class EmployerSalary extends Model
     
     public function perizinan()
     {
-        return $this->belongsTo(perizinan::class, 'karyawan_nip', 'bulan_id');
+        return $this->belongsTo(perizinan::class, 'karyawan_nip', 'nip');
     }
-
+    
+    public function kasbon()
+    {
+        return $this->belongsTo(perizinan::class, 'karyawan_nip', 'nip');
+    }
     //Fungsi menghitung total gaji
     public function calculateTotalGaji()
     {
@@ -89,6 +93,13 @@ class EmployerSalary extends Model
             ->count();
     }
 
+    public static function calculateKasbon(string $user_nip, int $bulan_id): int
+    {
+        return kasbon::where('nip', $user_nip)
+            ->where('bulan_id', $bulan_id)
+            ->value('saldo_akhir') ?? 0; // Nilai default 0 jika tidak ditemukan
+    }
+
     protected static function boot()
     {
 
@@ -100,6 +111,7 @@ class EmployerSalary extends Model
             $employerSalary->hadir = self::calculateHadir($employerSalary->karyawan_nip, $employerSalary->bulan_id);
             $employerSalary->absen = self::calculateAbsen($employerSalary->karyawan_nip, $employerSalary->bulan_id);
             $employerSalary->izin = self::calculateIzin($employerSalary->karyawan_nip, $employerSalary->bulan_id);
+            $employerSalary->kasbon = self::calculateKasbon($employerSalary->karyawan_nip, $employerSalary->bulan_id);
 
             // Hitung denda dan total gaji
             $employerSalary->denda = $employerSalary->calculateDenda();

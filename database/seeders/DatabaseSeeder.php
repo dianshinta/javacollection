@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Presensi;
 use App\Models\Toko;
 use App\Models\Karyawan;
+use App\Models\kasbon;
 use App\Models\perizinan;
 
 class DatabaseSeeder extends Seeder
@@ -37,6 +38,9 @@ class DatabaseSeeder extends Seeder
             // Loop setiap hari dalam rentang tanggal
             $currentDate = $startDate;
             perizinan::factory(10)->create([
+                'nip' => $karyawan->nip,
+            ]);
+            kasbon::factory(10)->create([
                 'nip' => $karyawan->nip,
             ]);
             while ($currentDate <= $endDate) {

@@ -45,11 +45,11 @@ class perizinan extends Model
         parent::boot();
 
         //save kolom bulan_id
-        static::saving(function ($presensi) {
+        static::saving(function ($perizinan) {
             //jika kolom tanggal sudah ada sebelum menjalankan logika tambahBulanBaru:
-            if ($presensi->tanggal) {
-                $bulan = Bulan::tambahBulanBaru($presensi->tanggal);
-                $presensi->bulan_id = $bulan->id;
+            if ($perizinan->tanggal) {
+                $bulan = Bulan::tambahBulanBaru($perizinan->tanggal);
+                $perizinan->bulan_id = $bulan->id;
             }
         });
     }
