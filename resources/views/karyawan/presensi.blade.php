@@ -1,6 +1,85 @@
-@extends('layouts.sidebarkaryawan')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
+<head>
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    Presensi | JAVA COLLECTION
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <!-- CSS Files -->
+  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+  <link href="../assets/css/supervisor-perizinan.css" rel="stylesheet" />
+
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="">
+  <div class="wrapper ">
+    <div class="sidebar" data-color="white" data-active-color="danger">
+      <div class="logo">
+       
+        <span class="simple-text font-weight-bold">
+          JAVA COLLECTION
+        </span>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li>
+            <a href="{{route('karyawan.beranda')}}">
+              <i class="nc-icon nc-layout-11"></i>
+              <p>Beranda</p>
+            </a>
+          </li>
+          <li class="active">
+            <a href="{{route('karyawan.presensi')}}">
+              <i class="nc-icon nc-touch-id"></i>
+              <p>Presensi</p>
+            </a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#pengajuanDropdown">
+              <i class="nc-icon nc-single-copy-04"></i>
+              <p class="d-inline-block mr-5">Pengajuan</p>
+            </a>
+            <div class="collapse" id="pengajuanDropdown">
+              <ul class="nav" style="margin-left: 62px;">
+                <li>
+                  <a href="{{route('karyawan.perizinan')}}" ">
+                    <p>Perizinan</p>
+                  </a>
+                </li>
+                <li>
+                  <a href="{{route('karyawan.kasbon')}}">
+                    <p>Kasbon</p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          
+          <li>
+            <a href="{{route('karyawan.gaji')}}">
+              <i class="nc-icon nc-money-coins"></i>
+              <p>Gaji</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <div class="content">
         <div class="mb-4">
           <small class="text-muted d-block">Presensi</small>
           <h5 class="font-weight-bold">Presensi dulu, yuk!</h5>
@@ -19,12 +98,7 @@
                   <div class="d-flex align-items-center me-4">
                     <i class="nc-icon nc-pin-3 text-primary mr-2"></i>
                     <div>
-                      @if ($user && $user->karyawan && $user->karyawan->toko)
-                          <span>{{ $user->karyawan->toko->name }}</span>
-                      @else
-                          <span>-</span>
-                      @endif
-                      <!-- <span>Tanah Abang</span> -->
+                      <span>Tanah Abang</span>
                     </div>
                 </div>
             </div>          
@@ -293,5 +367,8 @@
   updateDateTime();
 
   </script>
+</body>
 
-@endsection
+</html>
+
+<!-- presensi.blade.php ->
