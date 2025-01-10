@@ -136,7 +136,7 @@ Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.s
 
 
 
-// COBA
+// Fitur reset password
 
 // Forgot Password
 Route::get('forgot-password', [ForgotPasswordController::class, 'create'])->middleware('guest')->name('password.request');
