@@ -7,10 +7,19 @@
             <h2>Lupa Kata Sandi</h2>
             <!-- Form Pengiriman Link Reset Password -->
             @if (session('status'))
-                <div style="text-color:red class="alert alert-success">
+                <div class="alert alert-success">
                     {{ session('status') }}
                 </div>
             @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
 
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
