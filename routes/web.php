@@ -14,6 +14,12 @@ use App\Http\Controllers\EmployerSalaryController;
 use App\Http\Controllers\EditKaryawanController;
 use App\Http\Controllers\AuthController;
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
+Route::post('forgot-password', [ForgotPasswordController::class, 'store'])->middleware('guest')->name('password.email');
+
+
 Route::get('/', function () {
     return view('auth.login');
 });
@@ -127,3 +133,23 @@ Route::put('/karyawan/{id}/update', [KaryawanController::class, 'update'])->name
 Route::get('/karyawan/create', [KaryawanController::class, 'create'])->name('karyawan.create');
 
 Route::post('/karyawan', [KaryawanController::class, 'store'])->name('karyawan.store');
+
+
+
+// COBA
+
+// Forgot Password
+Route::get('forgot-password', [ForgotPasswordController::class, 'create'])->middleware('guest')->name('password.request');
+
+Route::post('forgot-password', [ForgotPasswordController::class, 'store'])->middleware('guest')->name('password.email');
+
+
+// Reset Password
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'create'])
+    ->middleware('guest')
+    ->name('password.reset');
+
+Route::post('reset-password', [ResetPasswordController::class, 'store'])
+    ->middleware('guest')
+    ->name('password.update');
+
