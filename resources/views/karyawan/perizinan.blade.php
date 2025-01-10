@@ -197,7 +197,7 @@
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisCuti"
-                                                        value="Cuti">
+                                                        value="Cuti" {{ $izinTaken >=2 ? 'disabled' : '' }}>
                                                     <label class="form-check-label text-black" for="jenisCuti">Cuti</label>
                                                 </div>
                                                 <div class="form-check">

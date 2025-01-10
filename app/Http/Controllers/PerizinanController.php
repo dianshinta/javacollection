@@ -89,12 +89,21 @@ class PerizinanController extends Controller
     {
         $nip = Auth::user()->nip;
 
+        // Mendapatkan tanggal sekarang dan menghitung jumlah izin dalam sebulan
+        $currentMonth = \Carbon\Carbon::today()->month;
+        $currentYear = \Carbon\Carbon::today()->year;
+
+        $izinTaken = perizinan::where('nip', $nip)
+                    ->whereMonth('tanggal', $currentMonth)
+                    ->whereYear('tanggal', $currentYear)
+                    ->where('jenis', 'Cuti')
+                    ->count();
+
         // Mengambil data perizinan dari database (opsional, tambahkan jika diperlukan)
-        $perizinans = perizinan::all(); // Ambil semua data perizinan
         $perizinans = perizinan::where('nip', $nip)->orderBy('updated_at', 'desc')
                                 ->get();
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
-        return view('karyawan.perizinan', compact('perizinans'));
+        return view('karyawan.perizinan', compact('perizinans', 'izinTaken'));
     }
 
     public function destroy(Request $request)
