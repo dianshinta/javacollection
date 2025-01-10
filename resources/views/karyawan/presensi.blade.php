@@ -297,9 +297,9 @@
 
       let statusPresensi = (hours > batasJam || (hours === batasJam && minutes > batasMenit)) ? 'Terlambat' : 'Hadir';
 
-      if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
-        $('#btn-presensi').prop('disabled', true);
-      }
+      // if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
+      //   $('#btn-presensi').prop('disabled', true);
+      // }
 
       // Menambahkan statusPresensi ke data presensi saat submit
       $('#form-presensi').on('submit', function(event) {
@@ -315,8 +315,8 @@
                           status: statusPresensi, // Status yang dipilih
                           tanggal: today, // Format YYYY-MM-DD
                           waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).slice(0, 5), // Format HH:MM
-                          toko: "Toko A", // Ganti dengan toko yang sesuai
-                          nip: "5943" // NIP yang sesuai
+                          toko_id: 1, // Ganti dengan toko yang sesuai
+                          nip: "222212822" // NIP yang sesuai
                       },
                       success: function (response) {
                         sessionStorage.setItem('presensiStatus', 'success');

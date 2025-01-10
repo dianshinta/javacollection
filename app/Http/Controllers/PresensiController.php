@@ -11,7 +11,7 @@ class PresensiController extends Controller
     public function store(Request $request) {
         $request->validate([
             'status' => 'required',
-            'toko' => 'required|string',
+            'toko_id' => 'required',
             'nip' => 'required|string'
         ]);
     
@@ -24,7 +24,7 @@ class PresensiController extends Controller
             'status' => $request->status,
             'tanggal' => $tanggal,
             'waktu' => $waktu,
-            'toko' => $request->toko,
+            'toko_id' => $request->toko_id,
             'nip' => $request->nip
         ]);
     
@@ -35,7 +35,7 @@ class PresensiController extends Controller
 
     public function index() {
         // Ambil riwayat presensi. Anda bisa menambahkan kondisi jika perlu (misal berdasarkan NIP).
-        $riwayatPresensi = presensi::where('nip', '5943')->orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
+        $riwayatPresensi = presensi::where('nip', '222212822')->orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
 
         // Kirim data ke view 'karyawan.presensi'
         session()->flash('success', 'Presensi berhasil direkam!');
