@@ -28,11 +28,11 @@
     }
 
     .top-right-logout {
-      position: absolute;
-      top: 0px;
-      right: 15px;
-      z-index: 999;
-    }
+    position: fixed; /* Tetap terlihat saat scroll */
+    bottom: 20px; /* Atur jarak dari bawah */
+    left: 15px; /* Jarak dari sisi kiri */
+    z-index: 9999; /* Pastikan tetap terlihat */
+}
 
     .navbar-toggler-icon {
       background-color: white !important; /* Warna icon hamburger */
@@ -169,14 +169,30 @@
       </nav>
       
 
-      <div class="top-right-logout d-block d-lg-none">
-        <form action="{{ route('logout') }}" method="POST">
-          @csrf
-          <button type="submit" class="btn btn-danger">
+      <div class="top-right-logout d-block">
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-danger">
             <i class="nc-icon nc-button-power"></i> Logout
-          </button>
-        </form>
-      </div>
+        </button>
+    </form>
+</div>
+
+<script>
+    function clearSession(event) {
+        // Konfirmasi logout (opsional)
+        const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
+        if (!confirmLogout) {
+            event.preventDefault();
+            return;
+        }
+        
+        // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
+        sessionStorage.clear();
+        localStorage.removeItem('id'); // Contoh jika ada data user
+    }
+</script>
+
 
       <div class="content">
         @yield('content')

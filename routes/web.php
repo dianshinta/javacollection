@@ -43,6 +43,17 @@ Route::post('/logout', function () {
     return redirect('/login'); // Mengarahkan ke halaman login
 })->name('logout');
 
+Route::middleware(['web'])->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::middleware(['web'])->group(function () {
+    Route::get('/login', function () {
+        return view('auth.login');
+    });
+});
+
 // BAGIAN HALAMAN KARYAWAN
 Route::get('/karyawan/atur/', function () {
     return view('/karyawan/atur');

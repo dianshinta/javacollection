@@ -44,41 +44,57 @@ class AuthController extends Controller
 
     // Fungsi untuk login
     public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'nip' => ['required'],
-            'password' => ['required'],
-        ]);
-    
-        if (Auth::attempt($credentials)) {
-            // Ambil user yang sedang login
-            $user = Auth::user();
-    
-            // Debugging jika user null
-            if (!$user) {
-                return back()->withErrors([
-                    'login' => 'User tidak ditemukan meskipun kredensial valid.',
-                ]);
-            }
-    
-            //$request->session()->regenerate(); // Keamanan tambahan
-    
-            if ($user->jabatan === 'manajer') {
-                return redirect('manajer/beranda');
-            } elseif ($user->jabatan === 'karyawan') {
-                return redirect('karyawan/beranda');
-            } elseif ($user->jabatan === 'supervisor') {
-                return redirect('supervisor/beranda');
-            }
-    
-            // Default redirect jika jabatan tidak dikenali
-            return redirect('login');
+{
+    $credentials = $request->validate([
+        'nip' => ['required'],
+        'password' => ['required'],
+    ]);
+
+    if (Auth::attempt($credentials)) {
+        // Ambil user yang sedang login
+        $user = Auth::user();
+
+        // Debugging jika user null
+        if (!$user) {
+            return back()->withErrors([
+                'login' => 'User tidak ditemukan meskipun kredensial valid.',
+            ]);
         }
-    
-        // Jika login gagal
-        return back()->withErrors([
-            'nip' => 'NIP atau Kata Sandi salah.',
-        ]);
+
+        // Regenerasi session untuk keamanan tambahan
+        $request->session()->regenerate();
+
+        // Simpan data user ke session
+        $request->session()->put('id', $user->id);
+        $request->session()->put('jabatan', $user->jabatan);
+
+        // Redirect berdasarkan jabatan
+        if ($user->jabatan === 'manajer') {
+            return redirect('manajer/beranda');
+        } elseif ($user->jabatan === 'karyawan') {
+            return redirect('karyawan/beranda');
+        } elseif ($user->jabatan === 'supervisor') {
+            return redirect('supervisor/beranda');
+        }
+
+        // Default redirect jika jabatan tidak dikenali
+        return redirect('login');
     }
+
+    // Jika login gagal
+    return back()->withErrors([
+        'nip' => 'NIP atau Kata Sandi salah.',
+    ]);
+}
+
+//logout
+public function logout(Request $request)
+{
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login')->with('success', 'Anda berhasil logout.');
+}
     
     }

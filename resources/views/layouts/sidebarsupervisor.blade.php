@@ -9,6 +9,14 @@
   <title>
     Beranda | JAVA COLLECTION
   </title>
+  <style>
+     .top-right-logout {
+    position: fixed; /* Tetap terlihat saat scroll */
+    bottom: 20px; /* Atur jarak dari bawah */
+    left: 15px; /* Jarak dari sisi kiri */
+    z-index: 9999; /* Pastikan tetap terlihat */
+}
+  </style>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -89,14 +97,28 @@
           </li>
         </ul>
         <!-- Logout -->
-        <div class="mt-auto p-3">
-          <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-danger btn-block">
-              <i class="nc-icon nc-button-power"></i> Logout
-            </button>
-          </form>
-        </div>
+        <div class="top-right-logout d-block">
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-danger">
+            <i class="nc-icon nc-button-power"></i> Logout
+        </button>
+    </form>
+</div>
+        <script>
+    function clearSession(event) {
+        // Konfirmasi logout (opsional)
+        const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
+        if (!confirmLogout) {
+            event.preventDefault();
+            return;
+        }
+        
+        // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
+        sessionStorage.clear();
+        localStorage.removeItem('user_data'); // Contoh jika ada data user
+    }
+</script>
       </div> --}}
     </div>
 

@@ -21,11 +21,12 @@
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
     .top-right-logout {
-      position: absolute;
-      top: 0px;
-      right: 15px;
-      z-index: 999;
-    }
+    position: fixed; /* Tetap terlihat saat scroll */
+    bottom: 300px; /* Atur jarak dari bawah */
+    left: 70px; /* Jarak dari sisi kiri */
+    z-index: 9999; /* Pastikan tetap terlihat */
+}
+
 
     /* Change navbar background color to maroon */
     .navbar {
@@ -90,14 +91,7 @@
           </li>
         </ul>
 
-        <div class="mt-auto p-3">
-          <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-danger btn-block">
-              <i class="nc-icon nc-button-power"></i> Logout
-            </button>
-          </form>
-        </div>
+        
       </div>
     </div>    
 
@@ -131,7 +125,29 @@
           </ul>        
         </div>
       </nav>
+      <div class="top-right-logout d-block">
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-danger">
+            <i class="nc-icon nc-button-power"></i> Logout
+        </button>
+    </form>
+</div>
 
+<script>
+    function clearSession(event) {
+        // Konfirmasi logout (opsional)
+        const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
+        if (!confirmLogout) {
+            event.preventDefault();
+            return;
+        }
+        
+        // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
+        sessionStorage.clear();
+        localStorage.removeItem('id'); // Contoh jika ada data user
+    }
+</script>
       <div class="content">
         
         @yield('content')
