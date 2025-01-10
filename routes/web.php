@@ -54,51 +54,45 @@ Route::middleware(['web'])->group(function () {
 });
 
 // BAGIAN HALAMAN KARYAWAN
-Route::get('/karyawan/atur/', function () {
-    return view('/karyawan/atur');
+Route::middleware('auth')->group( function() {
+    Route::get('/karyawan/beranda/', function () {
+        return view('/karyawan/beranda');
+    })->name('karyawan.beranda');
+    
+    Route::post('/perizinan/store', [PerizinanController::class, 'store'])
+        ->name('perizinan.store');
+    
+    Route::post('/perizinan/update', [PerizinanController::class, 'update'])
+        ->name('perizinan.update');
+    
+    Route::post('/perizinan/delete', [PerizinanController::class, 'destroy'])
+        ->name('perizinan.delete');
+    
+    Route::get('/karyawan/perizinan', [PerizinanController::class, 'index'])
+        ->name('karyawan.perizinan');
+    
+    Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])
+        ->name('karyawan.presensi');
+    
+    Route::post('/presensi/store', [PresensiController::class, 'store'])
+        ->name('presensi.store');
+    
+    Route::get('/karyawan/kasbon/', [KaryawanKasbonController::class, 'index'])
+        ->name('karyawan.kasbon');
+    
+    Route::post('/kasbon/store/', [KaryawanKasbonController::class, 'save'])
+        ->name('kasbon.save');
+    
+    Route::get('/kasbon/limit/', [KaryawanKasbonController::class, 'getSisaLimit'])
+        ->name('kasbon.limit');
+    
+    Route::post('/kasbon/payment/', [KaryawanKasbonController::class, 'pay'])
+        ->name('kasbon.payment');
+    
+    Route::get('/karyawan/gaji/', function () {
+        return view('/karyawan/gaji');
+    })->name('karyawan.gaji');    
 });
-
-Route::get('/karyawan/lihat/', function () {
-    return view('/karyawan/lihat');
-});
-
-Route::get('/karyawan/beranda/', function () {
-    return view('/karyawan/beranda');
-})->name('karyawan.beranda');
-
-Route::post('/perizinan/store', [PerizinanController::class, 'store'])
-    ->name('perizinan.store');
-
-Route::post('/perizinan/update', [PerizinanController::class, 'update'])
-    ->name('perizinan.update');
-
-Route::post('/perizinan/delete', [PerizinanController::class, 'destroy'])
-    ->name('perizinan.delete');
-
-Route::get('/karyawan/perizinan', [PerizinanController::class, 'index'])
-    ->name('karyawan.perizinan');
-
-Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])
-    ->name('karyawan.presensi');
-
-Route::post('/presensi/store', [PresensiController::class, 'store'])
-    ->name('presensi.store');
-
-Route::get('/karyawan/kasbon/', [KaryawanKasbonController::class, 'index'])
-    ->name('karyawan.kasbon');
-
-Route::post('/kasbon/store/', [KaryawanKasbonController::class, 'save'])
-    ->name('kasbon.save');
-
-Route::get('/kasbon/limit/', [KaryawanKasbonController::class, 'getSisaLimit'])
-    ->name('kasbon.limit');
-
-Route::post('/kasbon/payment/', [KaryawanKasbonController::class, 'pay'])
-    ->name('kasbon.payment');
-
-Route::get('/karyawan/gaji/', function () {
-    return view('/karyawan/gaji');
-})->name('karyawan.gaji');
 
 // BAGIAN HALAMAN SUPERVISOR
 Route::middleware('auth')->group(function() {

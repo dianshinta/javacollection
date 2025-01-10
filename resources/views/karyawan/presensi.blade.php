@@ -111,13 +111,13 @@
                           <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
                             @csrf <!-- Token keamanan Laravel -->
 
-                            <input type="hidden" name="status" value="">
+                            <!-- <input type="hidden" name="status" value="">
                             <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
                             <input type="hidden" name="waktu" value="{{ date('H:i:s') }}">
-                            <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
+                            <input type="hidden" name="toko" value="Toko A"> Isi sesuai kebutuhan -->
                             <!-- <input type="hidden" name="nip" value="5943"> Isi sesuai kebutuhan -->
-                            <input type="hidden" name="redirect_to" value="karyawan.presensi">
-                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden, text-overflow: ellipsis;">
+                            <!-- <input type="hidden" name="redirect_to" value="karyawan.presensi"> -->
+                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden, text-overflow: ellipsis;" {{ $hasPresensiToday ? 'disabled' : ''}}>
                                 Presensi
                             </button>
                           </form>
@@ -277,14 +277,6 @@
 
     $(document).ready(function() {
       const today = new Date().toISOString().split('T')[0]; // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
-
-      // Cek apakah tombol harus dinonaktifkan (sudah klik presensi di menit ini)
-      const presensiDisabled = sessionStorage.getItem('presensiDisabled') === 'true';
-      const presensiDate = sessionStorage.getItem('presensiDate');
-
-      if (presensiDisabled && presensiDate === today) {
-          $('#btn-presensi').prop('disabled', true);
-      }
 
       // Logika presensi (terlambat atau hadir)
       const now = new Date();
