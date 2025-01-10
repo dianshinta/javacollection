@@ -96,19 +96,31 @@ Route::get('/supervisor/beranda/', function () {
     return view('/supervisor/beranda', [
         "title" => "Beranda"
     ]);
-})->name('supervisor.beranda');
+})->name('supervisor.beranda')->middleware('auth');
 
-Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'index'])->name('supervisor.perizinan');
+Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'index'])
+    ->name('supervisor.perizinan')
+    ->middleware('auth');
 
-Route::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])->name('perizinan.update-status');
+Route::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])
+    ->name('perizinan.update-status')
+    ->middleware('auth');
 
-Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'index'])->name('supervisor.pembayaran');
+Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'index'])
+    ->name('supervisor.pembayaran')
+    ->middleware('auth');
 
-Route::post('/kasbon/{id}/update', [supervisorPembayaranController::class, 'update'])->name('kasbon.update');
+Route::post('/kasbon/{id}/update', [supervisorPembayaranController::class, 'update'])
+    ->name('kasbon.update')
+    ->middleware('auth');
 
-Route::get('/supervisor/kasbon/', [SupervisorPengajuanController::class, 'index'])->name('supervisor.pengajuan');
+Route::get('/supervisor/kasbon/', [SupervisorPengajuanController::class, 'index'])
+    ->name('supervisor.pengajuan')
+    ->middleware('auth');
 
-Route::get('/supervisor/infokaryawan', [SupervisorController::class, 'infokaryawan'])->name('supervisor.infokaryawan');
+Route::get('/supervisor/infokaryawan', [SupervisorController::class, 'infokaryawan'])
+    ->name('supervisor.infokaryawan')
+    ->middleware('auth');
 
 // BAGIAN HALAMAN MANAJER
 Route::get('/manajer/beranda/', function () {
@@ -163,4 +175,3 @@ Route::get('reset-password/{token}', [ResetPasswordController::class, 'create'])
 Route::post('reset-password', [ResetPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.update');
-
