@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class karyawanKasbonController extends Controller
 {
     public function index() {
-        // $nip = Auth::user()->nip;
-        $nip = 1;
+        $nip = Auth::user()->nip;
+        // $nip = 1;
         $riwayatKasbon = kasbon::where('nip', $nip)->orderBy('created_at', 'desc')->get();
 
         // Kirim data ke view 'karyawan.kasbon'
@@ -29,7 +30,7 @@ class karyawanKasbonController extends Controller
         ]);
 
         // NIP pengguna, bisa disesuaikan dengan pengguna yang sedang login
-        $nip = 1;
+        $nip = Auth::user()->nip;
 
         // Ambil kasbon aktif terakhir
         $kasbonAktif = kasbon::where('nip', $nip)
@@ -64,7 +65,7 @@ class karyawanKasbonController extends Controller
             'nominal_diajukan' => $validated['nominal_diajukan'],
             'nominal_dibayar' => 0, // Belum ada pembayaran
             'saldo_akhir' => $sisa_limit, // Saldo akhir setelah pengajuan
-            'nama' => 'Budi',
+            'nama' => Auth::user()->name,
             'nip' => $nip, // NIP dari pengguna
         ]);
 
@@ -76,8 +77,8 @@ class karyawanKasbonController extends Controller
 
     public function getSisaLimit()
     {
-        // $nip = Auth::user()->nip;
-        $nip = 1;
+        $nip = Auth::user()->nip;
+        // $nip = 1;
 
         // Limit kasbon berdasarkan gaji pokok karyawan
         // $karyawan = Karyawan::where('nip', $nip)->first();
@@ -90,6 +91,7 @@ class karyawanKasbonController extends Controller
         // $limit_awal = $karyawan->gaji_pokok;
 
         $limit_awal = 2000000;
+        Log::info('Limit', ['limit_awal' => $limit_awal]);
 
         // Hitung total pengajuan dan total pembayaran
         $total_pengajuan = kasbon::where('nip', $nip)
@@ -109,8 +111,10 @@ class karyawanKasbonController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        $kasbonAktif->saldo_akhir = $saldo_akhir;
-        $kasbonAktif->update();
+        if ($kasbonAktif) {
+            $kasbonAktif->saldo_akhir = $saldo_akhir;
+            $kasbonAktif->update();
+        } 
 
         return response()->json([
             'limit_awal' => $limit_awal,
@@ -135,13 +139,12 @@ class karyawanKasbonController extends Controller
         }
 
         // Buat nama file acak
-        $randomFileName = Str::random(16) . '.' . pathinfo($validated['lampiran_nama'], PATHINFO_EXTENSION);
-
+        $fileName = time() . '_' . $validated['lampiran_nama'];
         // Simpan file di storage publik
-        $filePath = 'uploads/lampiran/' . $randomFileName;
+        $filePath = 'uploads/lampiran/' . $fileName;
         Storage::disk('public')->put($filePath, $decodedFile);
 
-        $nip = 1;
+        $nip = Auth::user()->nip;
 
         // Ambil data kasbon terkait nip
         $kasbonAktif = kasbon::where('nip', $nip)
@@ -182,7 +185,7 @@ class karyawanKasbonController extends Controller
             'nominal_dibayar' => $validated['nominal_pembayaran'],
             'saldo_akhir' => $saldo_akhir_sekarang,
             'lampiran' => Storage::url($filePath),
-            'nama' => 'Budi',
+            'nama' => Auth::user()->name,
             'nip' => $nip,
         ]);
 
