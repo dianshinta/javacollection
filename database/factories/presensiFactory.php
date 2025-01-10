@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\User;
+use App\Models\Toko;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\presensi>
@@ -20,24 +20,11 @@ class presensiFactory extends Factory
         $statusKehadiran = ['hadir', 'terlambat', 'tidak hadir'];
         $toko = ['A', 'B', 'C', 'D'];
         return [
-            //
-            // $table->id();
-            // $table->enum('status', ['Hadir', 'Terlambat', 'Tidak Hadir']);
-            // $table->date('tanggal');
-            // $table->time('waktu');
-            // $table->string('toko', 50);
-            // $table->string('nip', 20); 
-            // $table->foreign('nip')->references('nip')->on('users')->onDelete('cascade');//menghubungkan nip dari DB kehadiran ke users
-
-            // 'kasbon' => fake()->numberBetween(0, 1700000),
-            // 'kehadiran' => fake()->numberBetween(26, 31),
-            // 'izin' => fake()->numberBetween(0,2)
-
-            'nip' => User::inRandomOrder()->value('nip'),
+            //'nip' => User::inRandomOrder()->value('nip'),
             'status' => fake()->randomElement($statusKehadiran),
             'tanggal' => fake()->dateTimeBetween('2025-01-01', '2025-05-31')->format('Y-m-d'),
-            'waktu' => fake()->dateTimeBetween('2025-01-01 07:00:00', '2025-01-01 10:00:00')->format('H:i:s'),
-            'toko' => fake()->randomElement($toko),
+            'waktu' => fake()->time('H:i:s', '10:00:00'),
+            'toko_id' => Toko::inRandomOrder()->value('id') ?: Toko::factory()->create()->id, // Ambil atau buat data toko
         ];
     }
 }

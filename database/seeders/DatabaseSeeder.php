@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\User;
 use App\Models\Presensi;
-use App\Models\EmployerSalary;
+use App\Models\Toko;
+use App\Models\Karyawan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,52 +15,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(ChartSeeder::class);
-        $this->call(TokoSeeder::class);
-        $this->call(UserSeeder::class);
-        $this->call(CabangSupervisorSeeder::class);
-        $this->call(KehadiranSeeder::class);
-        // \App\Models\User::factory(10)->create();
+        // $this->call(ChartSeeder::class);
+        // $this->call(TokoSeeder::class);
+        // $this->call(kar$karyawanSeeder::class);
+        // $this->call(CabangSupervisorSeeder::class);
+        // $this->call(KehadiranSeeder::class);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Buat data Toko
+        Toko::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Buat 10 data pengguna
+        $karyawans = Karyawan::factory(10)->create();
 
+        // Tentukan rentang tanggal untuk presensi
+        $startDate = '2025-01-01';
+        $endDate = '2025-05-31';
 
-
-        //seeders gaji jalankan di terminal pakai : php artisan db:seed
-        // \App\Models\EmployerSalary::factory(20)->create(); 
-
-        // \App\Models\User::factory(5)->create(); 
-        // \App\Models\EmployerSalary::factory(5)->create([
-        //     'user_nip' => function () {
-        //         return \App\Models\User::inRandomOrder()->first()->nip;
-        //     },
-        // ]);
-
-        // Membuat 10 data User
-        $users = User::factory(10)->create();
-
-        // Membuat 500 data Presensi dengan nip dari data User
-        $users->each(function ($user) {
-            Presensi::factory(200)->create([
-                'nip' => function () {
-                    return User::inRandomOrder()->first()->nip; // Nip diambil dari User
-                },
-            ]);
-        });
-
-        // Membuat data EmployerSalary dengan nip dari semua User
-        $users->each(function ($user) {
-            EmployerSalary::factory()->create([
-                'user_nip' => $user->nip
-            ]);
+        // Loop setiap pengguna
+        $karyawans->each(function ($karyawan) use ($startDate, $endDate) {
+            // Loop setiap hari dalam rentang tanggal
+            $currentDate = $startDate;
+            while ($currentDate <= $endDate) {
+                // Buat presensi untuk setiap hari
+                Presensi::factory()->create([
+                    'nip' => $karyawan->nip, // Sesuaikan nip dengan pengguna
+                    'tanggal' => $currentDate, // Tanggal presensi
+                ]);
+                // Pindah ke hari berikutnya
+                $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+            }
         });
     }
 }

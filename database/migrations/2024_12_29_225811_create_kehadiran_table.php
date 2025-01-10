@@ -18,11 +18,11 @@ class CreateKehadiranTable extends Migration
             $table->enum('status', ['Hadir', 'Terlambat', 'Tidak Hadir']);
             $table->date('tanggal');
             $table->time('waktu');
-            $table->unsignedBigInteger('toko_id');
+            $table->unsignedBigInteger('toko_id')->nullable();
             $table->string('nip');
             $table->unsignedBigInteger('bulan_id')->nullable();
 
-            $table->foreign('nip')->references('nip')->on('users')->onDelete('cascade'); //menghubungkan nip dari DB kehadiran ke users
+            $table->foreign('nip')->references('nip')->on('karyawans')->onDelete('cascade'); //menghubungkan nip dari DB kehadiran ke users
             $table->foreign('bulan_id')->references('id')->on('bulans')->onDelete('cascade'); //menghubungkan nip dari DB kehadiran ke users
             $table->foreign('toko_id')->references('id')->on('toko')->onDelete('cascade');
         });

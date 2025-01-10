@@ -13,22 +13,22 @@ return new class extends Migration
     {
         Schema::create('employer_salaries', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->string('user_nip'); // Foreign key
-            $table->string('nama');
-            $table->string('jabatan');
-            $table->integer('hadir');
-            $table->integer('absen');
-            $table->integer('izin');
-            $table->integer('gaji_pokok');
-            $table->integer('kasbon');
-            $table->integer('denda')->default(0);
-            $table->integer('total_gaji')->default(0);
+            $table->string('karyawan_nip'); // Foreign key
             $table->unsignedBigInteger('bulan_id');
+            $table->string('nama')->nullable();
+            $table->string('jabatan')->nullable();
+            $table->integer('hadir')->default(0)->nullable();
+            $table->integer('absen')->default(0)->nullable();
+            $table->integer('izin')->default(0)->nullable();
+            $table->integer('gaji_pokok')->default(0)->nullable();
+            $table->integer('kasbon')->default(0)->nullable();
+            $table->integer('denda')->default(0)->nullable();
+            $table->integer('total_gaji')->default(0)->nullable();
             $table->timestamps();
 
-            $table->foreign('user_nip')->references('nip')->on('users')->onDelete('cascade');
+            $table->foreign('karyawan_nip')->references('nip')->on('karyawans')->onDelete('cascade');
             $table->foreign('bulan_id')->references('id')->on('bulans');
-            $table->unique(['user_nip', 'bulan_id']); // Tambahkan constraint unik, karena yang bikin unik dari tabel ini adalah user_nip dan bulan_id
+            $table->unique(['karyawan_nip', 'bulan_id']); // Tambahkan constraint unik, karena yang bikin unik dari tabel ini adalah user_nip dan bulan_id
         });
     }
 

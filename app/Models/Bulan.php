@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\EmployerSalary;
 
 class Bulan extends Model
 {
@@ -13,9 +14,10 @@ class Bulan extends Model
 
     protected $fillable = ['bulan', 'tahun'];
 
+    //menghubungkan dengan model Employer Salaries melalui tabel pivot
     public function employerSalaries()
     {
-        return $this->hasMany(EmployerSalary::class, 'bulan_id');
+        return $this->belongsTo(EmployerSalary::class, 'user_nip', 'bulan_id');
     }
 
     public function kehadiran()

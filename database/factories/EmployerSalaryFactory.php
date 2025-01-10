@@ -20,19 +20,8 @@ class EmployerSalaryFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_nip' => User::factory(),
             'kasbon' => fake()->numberBetween(0, 1700000),
             'izin' => fake()->numberBetween(0, 2)
-            // $table->id(); // Primary key
-            // $table->integer('nip')->unique();
-            // $table->string('nama');
-            // $table->string('jabatan');
-            // $table->integer('gaji_pokok');
-            // $table->integer('kasbon');  
-            // $table->integer('denda')->default(0); // Denda
-            // $table->integer('kehadiran'); // count kehadiran
-            // $table->integer('total_gaji')->nullable(); // Gaji akhir setelah perhitungan
-            // $table->timestamps();
         ];
     }
 }

@@ -23,6 +23,7 @@ class CreateKaryawansTable extends Migration
             $table->string('no_rek');
             $table->decimal('kasbon', 15, 2)->default(0);
             $table->timestamps();
+            $table->integer('gaji_pokok');
 
             // Foreign key ke tabel toko (jika ada)
             $table->foreign('toko_id')->references('id')->on('toko')->onDelete('cascade');

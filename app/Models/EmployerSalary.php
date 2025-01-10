@@ -19,22 +19,28 @@ class EmployerSalary extends Model
     // protected $guarded = ['name']; // nandain kolom mana aja yang gabisa diisi secara manual, selain dari kolom dalam array boleh
     protected $guarded = ['id', 'created_at', 'updated_at', 'total_gaji', 'denda', 'absen'];
 
-    //menghubungkan dengan model user
-    public function karyawan(): BelongsTo
+    // //menghubungkan dengan model user
+    // public function karyawan()
+    // {
+    //     return $this->belongsTo(User::class, 'user_nip', 'nip');
+    // }
+
+    //menghubungkan dengan model karyawan
+    public function karyawan()
     {
-        return $this->belongsTo(User::class, 'user_nip', 'nip');
+        return $this->belongsTo(Karyawan::class, 'karyawan_nip', 'id');
     }
 
     //menghubungkan dengan model presensi
     public function kehadiran()
     {
-        return $this->hasMany(Presensi::class, 'nip', 'user_nip');
+        return $this->belongsTo(presensi::class, 'karyawan_nip', 'nip');
     }
 
-    //menghubungkan dengan model Bulan
-    public function bulan(): BelongsTo
+    //menghubungkan dengan model Bulan 
+    public function bulans()
     {
-        return $this->belongsTo(Bulan::class, 'bulan_id', 'id');
+        return $this->belongsTo(Bulan::class, 'karyawan_nip', 'bulan_id');
     }
 
     //Fungsi menghitung total gaji
@@ -52,53 +58,40 @@ class EmployerSalary extends Model
         return $denda;
     }
 
-    //fungsi untuk menentukan bulan_id.
-    public static function tentukanBulanId(string $userNip): int
+    // Menghitung kehadiran dari tabel kehadiran berdasarkan status 'hadir' dan 'terlambat'
+    public static function calculateHadir(string $user_nip, int $bulan_id): int
     {
-        // Ambil data bulan dari tabel `Presensi` yang relevan dengan `user_nip`
-        $bulanTerbaru = Presensi::where('nip', $userNip)
-            ->orderBy('tanggal', 'desc') // Urutkan berdasarkan tanggal terbaru
-            ->selectRaw('MONTH(tanggal) as bulan, YEAR(tanggal) as tahun')
-            ->first();
-
-        // Jika tidak ada data presensi, gunakan bulan saat ini
-        if (!$bulanTerbaru) {
-            $currentDate = now();
-            $bulan = $currentDate->month;
-            $tahun = $currentDate->year;
-        } else {
-            $bulan = $bulanTerbaru->bulan;
-            $tahun = $bulanTerbaru->tahun;
-        }
-
-        // Tambahkan atau gunakan bulan yang sudah ada di tabel `bulans`
-        $bulanObj = Bulan::tambahBulanBaru("$tahun-$bulan-01");
-
-        return $bulanObj->id;
+        return presensi::where('nip', $user_nip)
+            ->where('bulan_id', $bulan_id)
+            ->whereIn('status', ['Hadir', 'Terlambat'])
+            ->count();
     }
+
+    // Menghitung absen dari tabel kehadiran berdasarkan status 'tidak hadir'
+    public static function calculateAbsen(string $user_nip, int $bulan_id): int
+    {
+        return presensi::where('nip', $user_nip)
+            ->where('bulan_id', $bulan_id)
+            ->where('status', 'Tidak Hadir')
+            ->count();
+    }
+
 
     protected static function boot()
     {
+
         parent::boot();
 
         // Event `saving` akan dipanggil sebelum data disimpan (baik create atau update)
         static::saving(function ($employerSalary) {
-            $employerSalary->nama = $employerSalary->karyawan->name; //mendefinisikan nama dari tabel user menggunakan fungsi karyawan
-            $employerSalary->jabatan = $employerSalary->karyawan->jabatan;  //mendefinisikan jabatan dari tabel user menggunakan fungsi karyawan
-            $employerSalary->gaji_pokok = $employerSalary->karyawan->gaji_pokok;  //mendefinisikan gaji pokok dari tabel user menggunakan fungsi karyawan
+            // Hitung kehadiran dan absen berdasarkan user_nip dan bulan_id
+            $employerSalary->hadir = self::calculateHadir($employerSalary->karyawan_nip, $employerSalary->bulan_id);
+            $employerSalary->absen = self::calculateAbsen($employerSalary->karyawan_nip, $employerSalary->bulan_id);
 
-
-            // Tentukan bulan_id berdasarkan data presensi atau bulan terbaru
-            $employerSalary->bulan_id = self::tentukanBulanId($employerSalary->user_nip); //sepertinya ini hubungan many to many jadi butuh tabel pivot
-
-            // Hitung kehadiran dan absen untuk bulan_id
-            $employerSalary->hadir = Presensi::hadir($employerSalary->user_nip, $employerSalary->bulan_id);
-            $employerSalary->absen = Presensi::absen($employerSalary->user_nip, $employerSalary->bulan_id);
-
-
-
+            // Hitung denda dan total gaji
+            $employerSalary->gaji_pokok = $employerSalary->karyawan->gaji_pokok;
             $employerSalary->denda = $employerSalary->calculateDenda();
-            $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();;
+            $employerSalary->total_gaji = $employerSalary->calculateTotalGaji();
         });
     }
 }

@@ -33,26 +33,7 @@ class Presensi extends Model
     public $incrementing = true; // Pastikan auto-increment diaktifkan
     protected $keyType = 'int'; // Pastikan tipe data id adalah integer    
     protected $fillable = ['status', 'tanggal', 'waktu', 'toko_id', 'nip'];
-
-    //fungsi ngitung kehadiran
-    public static function hadir(string $nip, int $bulanId): int
-    {
-        return self::where('nip', $nip)
-            ->where('bulan_id', $bulanId)
-            ->whereIn('status', ['Hadir', 'Terlambat'])
-            ->count();
-    }
-
-    //fungsi ngitung absen
-    public static function absen(string $nip, int $bulanId): int
-    {
-        return self::where('nip', $nip)
-            ->where('bulan_id', $bulanId)
-            ->where('status', 'Tidak Hadir')
-            ->count();
-    }
-
-
+    
     //fungsi save ke database
     protected static function boot()
     {
