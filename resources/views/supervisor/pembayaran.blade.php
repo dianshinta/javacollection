@@ -182,7 +182,7 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-5 label-bold">Bukti Pembayaran:</div>
-                            <a href="#" target="_blank" class="btn btn-sm btn-light ml-3" id="modal-lampiran">
+                            <a href="#" target="_blank" class="btn btn-sm btn-light ml-3 mt-1" id="modal-lampiran">
                                 Preview </a>
                         </div>
                         <div class="container mt-5 text-center">

@@ -315,8 +315,10 @@ Coded by www.creative-tim.com
                                                         <td>{{ $riwayat->keterangan }}</td>
                                                         <td class="text-right">
                                                             <div class="button-container">
-                                                                <button type="button" class="custom-button" data-toggle="modal" data-target="#lampiranModal">
-                                                                    Lihat
+                                                                <button type="button" class="custom-button">
+                                                                    <a href="#" target="_blank" class="text-decoration-none text-dark" 
+                                                                    id="modal-lampiran" data-lampiran="{{ asset($riwayat->lampiran) }}">
+                                                                        Lihat</a>
                                                                 </button>
                                                             </div>
                                                         </td>
@@ -571,6 +573,17 @@ Coded by www.creative-tim.com
                     };
                     reader.readAsDataURL(buktiBayar);
                 });
+
+                const button = document.querySelector('.custom-button a');
+                const lampiran = button.getAttribute('data-lampiran');
+
+                // Cek apakah file ada (apakah uploadedFile tersedia atau data-lampiran ada)
+                if (lampiran) {
+                    const modalLampiran = document.getElementById('modal-lampiran');
+                    modalLampiran.href = lampiran; // Set href dengan URL file yang ada
+                } else {
+                    alert('Lampiran tidak ditemukan!');
+                }
             });
         </script>
     </div>
