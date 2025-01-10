@@ -178,8 +178,8 @@
                             <div class="modal-body">
                                 <form id="formPerizinan" action="{{ route('perizinan.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
-                                    <input type="hidden" name="nama" value="Putu Dian Shinta Prativi"> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nip" value={{ Auth::user()->nip }}> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nama" value={{ Auth::user()->name }}> <!-- Isi sesuai kebutuhan -->
                                     <div class="row mb-2">
                                         <div class="col-5 label-bold">Tanggal:</div>
                                         <div class="col-7 bg-gray">
@@ -250,8 +250,8 @@
                             <div class="modal-body">
                                 <form id="formUpdatePerizinan" action="{{ route('perizinan.update') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="nip" value="123456"> <!-- Isi sesuai kebutuhan -->
-                                    <input type="hidden" name="nama" value="Putu Dian Shinta Prativi"> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nip" value={{ Auth::user()->nip }}> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nama" value={{ Auth::user()->name }}> <!-- Isi sesuai kebutuhan -->
                                     <div class="row mb-2">
                                         <div class="col-5 label-bold">Tanggal:</div>
                                         <div class="col-7 bg-gray">
@@ -696,7 +696,7 @@
                         // Ketika tombol Lihat Lampiran diklik, buka file di tab baru
                         $(document).on('click', '#btn-fileNameUpdate', function (event) {
                             event.preventDefault();
-                            const fileUrl = "/" + lampiran; // Ambil URL file dari data-file
+                            const fileUrl = "/storage/" + lampiran; // Ambil URL file dari data-file
                             window.open(fileUrl, '_blank'); // Buka file di tab baru
                         });
 

@@ -98,7 +98,7 @@
                   <div class="d-flex align-items-center me-4">
                     <i class="nc-icon nc-pin-3 text-primary mr-2"></i>
                     <div>
-                      <span>Cab. Tanah Abang</span>
+                      <span>Tanah Abang</span>
                     </div>
                 </div>
             </div>          
@@ -115,7 +115,7 @@
                             <input type="hidden" name="tanggal" value="{{ date('Y-m-d') }}">
                             <input type="hidden" name="waktu" value="{{ date('H:i:s') }}">
                             <input type="hidden" name="toko" value="Toko A"> <!-- Isi sesuai kebutuhan -->
-                            <input type="hidden" name="nip" value="5943"> <!-- Isi sesuai kebutuhan -->
+                            <!-- <input type="hidden" name="nip" value="5943"> Isi sesuai kebutuhan -->
                             <input type="hidden" name="redirect_to" value="karyawan.presensi">
                             <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden, text-overflow: ellipsis;">
                                 Presensi
@@ -316,7 +316,7 @@
                           tanggal: today, // Format YYYY-MM-DD
                           waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).slice(0, 5), // Format HH:MM
                           toko_id: 1, // Ganti dengan toko yang sesuai
-                          nip: "222212822" // NIP yang sesuai
+                          // nip: "222212822" // NIP yang sesuai
                       },
                       success: function (response) {
                         sessionStorage.setItem('presensiStatus', 'success');

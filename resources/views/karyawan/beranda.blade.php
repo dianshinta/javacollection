@@ -1,6 +1,8 @@
 @extends('layouts.sidebarkaryawan')
 
 @section('content')
+
+
 <div class="mb-4">
           <small class="text-muted d-block">Beranda</small>
           <h5 class="font-weight-bold">Selamat datang!</h5>
@@ -9,8 +11,8 @@
           <div class="d-flex align-items-center mr-2">
             <i class="nc-icon nc-circle-10 text-primary mr-2"></i>          
             <div>
-              <span  style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">Putu Dian Shinta Prativi</span>
-              <small class="text-muted d-block">222212822</small>
+              <span  style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ Auth::user()->name }}</span>
+              <small class="text-muted d-block">{{ Auth::user()->nip }}</small>
             </div>
           </div>
           

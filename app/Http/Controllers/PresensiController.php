@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\presensi;
 
@@ -9,10 +10,12 @@ class PresensiController extends Controller
 {
     //
     public function store(Request $request) {
+        $nip = Auth::user()->nip;
+
         $request->validate([
             'status' => 'required',
             'toko_id' => 'required',
-            'nip' => 'required|string'
+            // 'nip' => 'required|string'
         ]);
     
         // Ambil current waktu dan tanggal
@@ -25,7 +28,7 @@ class PresensiController extends Controller
             'tanggal' => $tanggal,
             'waktu' => $waktu,
             'toko_id' => $request->toko_id,
-            'nip' => $request->nip
+            'nip' => $nip
         ]);
     
         session()->flash('success', 'Presensi berhasil direkam!');
@@ -34,8 +37,10 @@ class PresensiController extends Controller
     }    
 
     public function index() {
+        $nip = Auth::user()->nip;
+
         // Ambil riwayat presensi. Anda bisa menambahkan kondisi jika perlu (misal berdasarkan NIP).
-        $riwayatPresensi = presensi::where('nip', '222212822')->orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
+        $riwayatPresensi = presensi::where('nip', $nip)->orderBy('tanggal', 'desc')->orderBy('waktu', 'desc')->get();
 
         // Kirim data ke view 'karyawan.presensi'
         session()->flash('success', 'Presensi berhasil direkam!');
