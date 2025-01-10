@@ -15,7 +15,7 @@
         }
 
         body {
-            background-color: #fdecea;
+            background-color: #fff2f2;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -125,6 +125,7 @@
 .radio-group input[type="radio"] {
     margin-right: 5px; /* Jarak kecil antara radio button dan teks */
 }
+
 
 /* Media query untuk layar dengan lebar maksimum 768px (tablet dan ponsel) */
 @media (max-width: 768px) {

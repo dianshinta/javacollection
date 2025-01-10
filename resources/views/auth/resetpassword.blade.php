@@ -7,7 +7,7 @@
             <h2>Lupa Kata Sandi</h2>
             <!-- Form Pengiriman Link Reset Password -->
             @if (session('status'))
-                <div class="alert alert-success">
+                <div style="text-color:red class="alert alert-success">
                     {{ session('status') }}
                 </div>
             @endif
