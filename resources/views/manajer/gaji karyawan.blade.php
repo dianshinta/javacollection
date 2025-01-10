@@ -79,10 +79,12 @@
                         <!-- Pencarian -->
                         <form method="GET" action="" class="d-flex">
                             <div class="input-group search-bar">
-                                <input type="text" class="form-control search-input" name="search" id="searchBar" placeholder="Cari Karyawan.." value="{{ $search ?? '' }}">
-                                <button type="submit" class="search-btn">
-                                    <i class="bi bi-search"></i>
-                                </button>
+                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan..">
+                                <span>
+                                    <button type="submit" class="input-group-text">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </span>
                             </div>
                         </form>
     
