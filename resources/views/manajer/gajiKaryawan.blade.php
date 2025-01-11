@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -167,17 +168,19 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>NIP</th>
                                     <th>NAMA</th>
-                                    <th>JABATAN</th>
+                                    <th>TOTAL GAJI</th>
+                                    <th>BULAN</th>
+                                    <th>STATUS</th>
                                 </tr>
                             </thead>
                             @foreach ($datas as $data)
-                            <tbody class="gaji-row" data-id="{{ $data['karyawan_nip'] }}">
-                                <tr>
-                                    <td> {{ $data['karyawan_nip'] }}</td> 
+                            <tbody >
+                                <tr class="gaji-row" data-id="{{ $data['id'] }}" >
                                     <td>{{ Str::limit($data->karyawan->nama, 20) }}</td>
-                                    <td>{{ $data->karyawan->jabatan }}</td>
+                                    <td> {{ $data['total_gaji'] }}</td>
+                                    <td> {{ $data['bulan_id'] }}</td>
+                                    <td>{{ $data['status'] }}</td>
                                 </tr>
                             </tbody>   
                             @endforeach
@@ -228,12 +231,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <p class="tanggal">    Tanggal : 
-                                    @isset($data->created_at)
-                                        {{ $data->created_at->format('j F Y') }}
-                                    @else
-                                        ""
-                                    @endisset</p>
+                                <p class="tanggal">    Tanggal: <span id="modalBulan"> </span> </p>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -275,21 +273,13 @@
                                 </div>    
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn success sendSalary">
+                                <button type="button" class="btn success sendSalary">  
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 20">
                                         <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518z"/>
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                         <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11m0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12"/>
                                     </svg>
-                                    Kirim
-                                </button>
-                                <button type="button" class="btn edit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 20">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                    </svg>
-                                    Edit
-                                </button>
+                                    Kirim Gaji
                             </div>
                         </div>
                     </div>
@@ -384,10 +374,10 @@
     <script>
         $(document).ready(function () {
             $('.gaji-row').click(function () {
-                const nip = $(this).data('id');
+                const id = $(this).data('id');
 
                 // Cari data yang cocok dengan NIP tersebut
-                const data = @json($datas).find(item => item.karyawan_nip == nip);
+                const data = @json($datas).find(item => item.id == id);
        
             
             // Isi data ke dalam modal
@@ -402,6 +392,7 @@
                 $('#modalDenda').text(data.denda);
                 $('#modalKasbon').text(data.kasbon);
                 $('#modalTotal').text(data.total_gaji);
+                $('#modalBulan').text(data.bulan_id);
 
                 // Tampilkan modal
                 $('#gajiModal').modal('show');
@@ -421,10 +412,40 @@
 
             // Tombol "Yakin" di modal konfirmasi
             $('#btnYakin').click(function () {
-                alert('Data berhasil dikirim!'); // Eksekusi aksi pengiriman
-                $('#confirmModal').modal('hide'); // Tutup modal konfirmasi
-                $('#gajiModal').modal('hide'); // Tutup modal utama
+                const rowId = $(this).data('id'); // Ambil row ID dari elemen terdekat
+                const karyawan_nip = $('#modalNip').text(); // Ambil NIP dari modal
+                const bulan_id = $('#modalBulan').text(); // Ambil bulan ID dari modal
+                const row = $(`.gaji-row[data-id="${rowId}"]`); // Ambil elemen baris berdasarkan row ID
+            $.ajax({
+                url: '/manajer/gaji/kirim/' + karyawan_nip, // Endpoint dengan NIP
+                type: 'POST', // Metode HTTP POST
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Kirim CSRF token
+                },
+                data: {
+                    action: 'updateStatus',
+                    bulan_id: bulan_id, // Kirim bulan_id sebagai bagian dari data
+                    row_id: row.data('id'), // Kirimkan ID baris sebagai parameter
+                },
+                success: function (response) {
+                    // Tanggapan sukses dari server
+                    console.log('Status berhasil diperbarui');
+                    if (response.status) {
+                    // Ambil elemen kolom terakhir dan perbarui dengan status dari server
+                        row.find('td:last-child').text(response.status);
+                    } else {
+                        console.error('Status tidak ditemukan');
+                    }
+                    $('#confirmModal').modal('hide'); // Tutup modal konfirmasi
+                    $('#gajiModal').modal('hide'); // Tutup modal utama
+
+                },
+                error: function (xhr, status, error) {
+                    // Penanganan kesalahan jika terjadi
+                    console.error('Terjadi kesalahan:', error);
+                }
             });
+        });
 
             // Tombol "Batal" di modal konfirmasi
             $('#btnBatal').click(function () {

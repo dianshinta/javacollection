@@ -59,40 +59,40 @@ Route::middleware(['auth', 'role:karyawan'])->group( function() {
             "title" => "Beranda"
         ]);
     })->name('karyawan.beranda');
-    
+
     Route::post('/perizinan/store', [PerizinanController::class, 'store'])
         ->name('perizinan.store');
-    
+
     Route::post('/perizinan/update', [PerizinanController::class, 'update'])
         ->name('perizinan.update');
-    
+
     Route::post('/perizinan/delete', [PerizinanController::class, 'destroy'])
         ->name('perizinan.delete');
-    
+
     Route::get('/karyawan/perizinan', [PerizinanController::class, 'index'])
         ->name('karyawan.perizinan');
-    
+
     Route::get('/karyawan/presensi/', [PresensiController::class, 'index'])
         ->name('karyawan.presensi');
-    
+
     Route::post('/presensi/store', [PresensiController::class, 'store'])
         ->name('presensi.store');
-    
+
     Route::get('/karyawan/kasbon/', [KaryawanKasbonController::class, 'index'])
         ->name('karyawan.kasbon');
-    
+
     Route::post('/kasbon/store/', [KaryawanKasbonController::class, 'save'])
         ->name('kasbon.save');
-    
+
     Route::get('/kasbon/limit/', [KaryawanKasbonController::class, 'getSisaLimit'])
         ->name('kasbon.limit');
-    
+
     Route::post('/kasbon/payment/', [KaryawanKasbonController::class, 'pay'])
         ->name('kasbon.payment');
-    
+
     Route::get('/karyawan/gaji/', function () {
         return view('/karyawan/gaji');
-    })->name('karyawan.gaji');    
+    })->name('karyawan.gaji');
 });
 
 // BAGIAN HALAMAN SUPERVISOR
@@ -102,24 +102,24 @@ Route::middleware(['auth', 'role:supervisor'])->group(function() {
             "title" => "Beranda"
         ]);
     })->name('supervisor.beranda');
-    
+
     Route::get('/supervisor/perizinan/', [supervisorPerizinanController::class, 'index'])
         ->name('supervisor.perizinan');
-    
+
     Route::post('/perizinan/update-status', [supervisorPerizinanController::class, 'updateStatus'])
         ->name('perizinan.update-status');
-    
+
     Route::get('/supervisor/pembayaran/', [supervisorPembayaranController::class, 'index'])
         ->name('supervisor.pembayaran');
-    
+
     Route::post('/kasbon/{id}/update', [supervisorPembayaranController::class, 'update'])
         ->name('kasbon.update');
-    
+
     Route::get('/supervisor/kasbon/', [SupervisorPengajuanController::class, 'index'])
         ->name('supervisor.pengajuan');
-    
+
     Route::get('/supervisor/infokaryawan', [SupervisorController::class, 'infokaryawan'])
-        ->name('supervisor.infokaryawan'); 
+        ->name('supervisor.infokaryawan');
 });
 
 // BAGIAN HALAMAN MANAJER
