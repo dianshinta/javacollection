@@ -3,17 +3,22 @@
 @section('content')
 
 @php
-// Mendapatkan nip dari user yang sedang login
-$nip = Auth::user()->nip;
-// Mendapatkan tanggal hari ini
-$today = \Carbon\Carbon::now()->toDateString();
-// Mengecek apakah sudah ada presensi hari ini
-$hasPresensiToday = \App\Models\Presensi::where('nip', $nip)
-  ->whereDate('tanggal', $today)
-  ->exists();
-// Mengambil data user yang sedang login dan relasi karyawan dan toko
-$user = auth()->user(); // Mengambil user yang sedang login
-$user = $user->load('karyawan.toko'); // Mengambil relasi karyawan dan toko
+  // Mendapatkan nip dari user yang sedang login
+  $nip = Auth::user()->nip;
+  // Mendapatkan tanggal hari ini
+  $today = \Carbon\Carbon::now()->toDateString();
+  // Mengecek apakah sudah ada presensi hari ini
+  $hasPresensiToday = \App\Models\Presensi::where('nip', $nip)
+    ->whereDate('tanggal', $today)
+    ->exists();
+  // Mengambil data user yang sedang login dan relasi karyawan dan toko
+  $user = auth()->user(); // Mengambil user yang sedang login
+  $user = $user->load('karyawan.toko'); // Mengambil relasi karyawan dan toko
+
+  $hasPermissionToday = DB::table('perizinan')
+                            ->where('nip', $nip)
+                            ->whereDate('tanggal', $today)
+                            ->exists(); // Mengecek apakah ada data perizinan untuk tanggal hari ini
 @endphp
 
 <div class="mb-4">
@@ -61,7 +66,7 @@ $user = $user->load('karyawan.toko'); // Mengambil relasi karyawan dan toko
             <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
               @csrf <!-- Token keamanan Laravel -->
               <button id="btn-presensi" type="submit" class="btn btn-success"
-                style="font-size: 1rem; color: black; padding: 0.5em;" @if($hasPresensiToday) disabled @endif>
+                style="font-size: 1rem; color: black; padding: 0.5em;" @if($hasPresensiToday || $hasPermissionToday) disabled @endif>
                 Presensi
               </button>
             </form>

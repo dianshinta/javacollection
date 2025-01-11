@@ -270,7 +270,7 @@
                             <input type="hidden" name="toko" value="Toko A"> Isi sesuai kebutuhan -->
                             <!-- <input type="hidden" name="nip" value="5943"> Isi sesuai kebutuhan -->
                             <!-- <input type="hidden" name="redirect_to" value="karyawan.presensi"> -->
-                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden, text-overflow: ellipsis;" {{ $hasPresensiToday ? 'disabled' : ''}}>
+                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden; text-overflow: ellipsis;" {{ $hasPresensiToday || $hasPermissionToday? 'disabled' : ''}}>
                                 Presensi
                             </button>
                           </form>

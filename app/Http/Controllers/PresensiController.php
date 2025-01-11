@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\presensi;
+use Carbon\Carbon;
 
 class PresensiController extends Controller
 {
@@ -51,11 +53,13 @@ class PresensiController extends Controller
         $user = auth()->user(); // Mengambil user yang sedang login
         $user = $user->load('karyawan.toko'); // Mengambil relasi karyawan dan toko
         
+        $hasPermissionToday = DB::table('perizinan')
+                            ->where('nip', $nip)
+                            ->whereDate('tanggal', $today)
+                            ->exists(); // Mengecek apakah ada data perizinan untuk tanggal hari ini
+
         // Kirim data ke view 'karyawan.presensi'
         session()->flash('success', 'Presensi berhasil direkam!');
-        return view( 'karyawan.presensi', compact('riwayatPresensi', 'hasPresensiToday', 'user'));
-    }
-
-
-
+        return view( 'karyawan.presensi', compact('riwayatPresensi', 'hasPresensiToday', 'user', 'hasPermissionToday'));
+    }    
 }
