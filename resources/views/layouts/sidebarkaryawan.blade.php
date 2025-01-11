@@ -104,7 +104,7 @@
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="active">
+          <li class="{{ request()->is('karyawan/beranda') ? 'active' : '' }}">
             <a href="{{route('karyawan.beranda')}}">
               <i class="nc-icon nc-layout-11"></i>
               <p>Beranda</p>
@@ -136,7 +136,7 @@
               </ul>
             </div>
           </li>
-          <li>
+          <li class="{{ request()->is('karyawan/gaji') ? 'active' : '' }}">
             <a href="{{route('karyawan.gaji')}}">
               <i class="nc-icon nc-money-coins"></i>
               <p>Gaji</p>
@@ -264,10 +264,6 @@
       });
     });
   </script>
-  
-
-
-
 </body>
 
 </html>

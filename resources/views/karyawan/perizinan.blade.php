@@ -24,62 +24,165 @@
     <link href="../assets/css/supervisor-perizinan.css" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
+    <style>
+    .top-right-logout {
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      z-index: 999;
+    }
+  
+    .navbar {
+      background-color: #fff2f2 !important;
+      margin-bottom: 0;
+      /* Pink color */
+    }
+  
+    .navbar-toggler-icon {
+      background-color: transparent !important;
+      /* Warna icon hamburger */
+    }
+  
+    .navbar-nav .nav-item.active .nav-link {
+      color: #500606 !important;
+      /* Warna teks menu yang aktif */
+    }
+  
+    .navbar-nav .nav-item .nav-link:hover {
+      color: lightgray !important;
+      /* Warna teks menu saat hover */
+    }
+  
+    /* Navbar text color */
+    .navbar-nav .nav-item .nav-link {
+      color: grey !important;
+      /* Set text color to  */
+    }
+  
+    /* Change hamburger icon color when it’s clicked (active state) */
+    .navbar-toggler.collapsed .navbar-toggler-icon {
+      background-color: transparent !important;
+      /* Change color to maroon when collapsed */
+    }
+  
+    /* .navbar-collapse {
+        display: none !important;
+      }
+  
+      .navbar-collapse.show {
+        display: block !important;
+      } */
+  
+    .dropdown-menu {
+      display: none;
+      /* Hide dropdown by default */
+    }
+  
+    .dropdown-menu.show {
+      display: block;
+      /* Show dropdown when active */
+    }
+  </style>
 </head>
 
 <body class="">
-    <div class="wrapper ">
-        <div class="sidebar" data-color="white" data-active-color="danger">
-            <div class="logo">
-
-                <span class="simple-text font-weight-bold">
-                    JAVA COLLECTION
-                </span>
-            </div>
-            <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li>
-                        <a href="{{route('karyawan.beranda')}}">
-                            <i class="nc-icon nc-layout-11"></i>
-                            <p>Beranda</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{route('karyawan.presensi')}}">
-                            <i class="nc-icon nc-touch-id"></i>
-                            <p>Presensi</p>
-                        </a>
-                    </li>
-                    <li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false"
-                            data-target="#pengajuanDropdown">
-                            <i class="nc-icon nc-single-copy-04"></i>
-                            <p class="d-inline-block mr-5">Pengajuan</p>
-                        </a>
-                        <div class="collapse" id="pengajuanDropdown">
-                            <ul class="nav" style="margin-left: 62px;">
-                                <li class=" active">
-                                    <a href="{{route('karyawan.perizinan')}}" ">
-                    <p>Perizinan</p>
-                  </a>
+<div class="wrapper ">
+    <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
+        <div class="logo">
+            <span class="simple-text font-weight-bold">
+                JAVA COLLECTION
+            </span>
+        </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="">
+                    <a href="{{route('karyawan.beranda')}}">
+                        <i class="nc-icon nc-layout-11"></i>
+                        <p>Beranda</p>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{route('karyawan.presensi')}}">
+                        <i class="nc-icon nc-touch-id"></i>
+                        <p>Presensi</p>
+                    </a>
+                </li>
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false"
+                        data-target="#pengajuanDropdown">
+                        <i class="nc-icon nc-single-copy-04"></i>
+                        <p class="d-inline-block mr-5">Pengajuan</p>
+                    </a>
+                    <div class="collapse" id="pengajuanDropdown">
+                        <ul class="nav" style="margin-left: 62px;">
+                            <li class="active">
+                                <a href="{{route('karyawan.perizinan')}}">
+                                    <p>Perizinan</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{route('karyawan.kasbon')}}">
+                                    <p>Kasbon</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li>
-                  <a href="{{route('karyawan.kasbon')}}">
-                                        <p>Kasbon</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li>
-                        <a href="{{route('karyawan.gaji')}}">
-                            <i class="nc-icon nc-money-coins"></i>
-                            <p>Gaji</p>
-                        </a>
-                    </li>
-                </ul>
+                    <a href="{{route('karyawan.gaji')}}">
+                        <i class="nc-icon nc-money-coins"></i>
+                        <p>Gaji</p>
+                    </a>
+                </li>
+            </ul>
+            <div class="mt-auto p-3">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-block">
+                        <i class="nc-icon nc-button-power"></i> Logout
+                    </button>
+                </form>
             </div>
         </div>
+    </div>
+    
+    <!-- Navbar for mobile -->
+    <div class="top-right-logout d-block d-lg-none">
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger">
+                <i class="nc-icon nc-button-power"></i> Logout
+            </button>
+        </form>
+    </div>
+    <!-- Tombol Hamburger -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navbar Collapse -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item {{ request()->is('karyawan/beranda') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('karyawan.beranda') }}">Beranda</a>
+                </li>
+                <li class="nav-item {{ request()->is('karyawan/presensi') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('karyawan.presensi') }}">Presensi</a>
+                </li>
+                <li class="nav-item {{ request()->is('karyawan/perizinan') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('karyawan.perizinan') }}">Perizinan</a>
+                </li>
+                <li class="nav-item {{ request()->is('karyawan/kasbon') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('karyawan.kasbon') }}">Kasbon</a>
+                </li>
+                <li class="nav-item {{ request()->is('karyawan/gaji') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('karyawan.gaji') }}">Gaji</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     
         <div class="main-panel">
             <div class="content">
@@ -197,7 +300,7 @@
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisCuti"
-                                                        value="Cuti" {{ $izinTaken >=2 ? 'disabled' : '' }}>
+                                                        value="Cuti" {{ $izinTaken >= 2 ? 'disabled' : '' }}>
                                                     <label class="form-check-label text-black" for="jenisCuti">Cuti</label>
                                                 </div>
                                                 <div class="form-check">
