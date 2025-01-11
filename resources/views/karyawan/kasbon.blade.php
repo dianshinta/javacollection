@@ -204,7 +204,7 @@ Coded by www.creative-tim.com
         </nav>
 
         <!-- Modal Box for Pengajuan Kasbon -->
-        <div class="modal fade" id="pengajuanModal" tabindex="-1" role="dialog" aria-labelledby="pengajuanModalLabel" aria-hidden="true">
+        <div class="modal fade" id="pengajuanModal" tabindex="-1" role="dialog" aria-labelledby="pengajuanModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -242,7 +242,7 @@ Coded by www.creative-tim.com
         </div>  
         
         <!-- Modal Box for Pembayaran Kasbon -->
-        <div class="modal fade" id="pembayaranModal" tabindex="-1" role="dialog" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
+        <div class="modal fade" id="pembayaranModal" tabindex="-1" role="dialog" aria-labelledby="pembayaranModalLabel" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -317,7 +317,6 @@ Coded by www.creative-tim.com
                 </div>
             </div>
         </div>
-        
 
         <div class="main-panel">
             <div class="content">
@@ -683,6 +682,11 @@ Coded by www.creative-tim.com
                 } else {
                     alert('Lampiran tidak ditemukan!');
                 }
+            });
+
+            // Close modal by clicking the close button only
+            $('.close').on('click', function() {
+                $(this).closest('.modal').modal('hide');
             });
         </script>
     </div>
