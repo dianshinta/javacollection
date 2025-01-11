@@ -126,7 +126,6 @@
                     </div>
                   </div>
                   <div class="card-footer ">
-                    <hr>
                   </div>
                 </div>
             </div>

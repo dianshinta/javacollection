@@ -51,14 +51,14 @@
         </div>
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
+            <div class="card card-stats mb-4">
               <div class="card-body ">
                 <div class="row">
                   <div class="col-12 d-flex justify-content-start align-items-center">
-                    <span id="time-display" class="mr-3 font-weight-bold" style="font-size:1.5rem;">00.00</span>
+                    <span id="time-display" class="mr-2 font-weight-bold" style="font-size:1.5rem;">00.00</span>
                     <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
                       @csrf <!-- Token keamanan Laravel -->
-                      <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.65em"
+                      <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.5em;"
                         @if($hasPresensiToday) disabled @endif>
                         Presensi
                       </button>
@@ -67,7 +67,6 @@
                 </div>
               </div>
               <div class="card-footer ">
-                <hr>
               </div>
             </div>
           </div>

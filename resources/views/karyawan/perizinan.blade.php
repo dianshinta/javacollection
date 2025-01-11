@@ -682,6 +682,10 @@
                         const status = row.getAttribute("data-status");
                         const lampiran = row.getAttribute("data-file");
 
+                        if (status != 'Diproses') {
+                            return;
+                        }
+                        
                         // Isi data di dalam modal
                         document.querySelector("#formUpdatePerizinan #tanggal").value = tanggal; // Set tanggal
                         document.querySelectorAll(`#formUpdatePerizinan input[name="jenis"][value="${jenis}"]`).forEach((radio) => {
@@ -718,14 +722,6 @@
                         const modal = new bootstrap.Modal(document.getElementById("updatePerizinanModal"));
                         modal.show();
 
-                        if (status != 'Diproses') {
-                            document.querySelector("#formUpdatePerizinan #tanggal").disabled = true;
-                            document.querySelectorAll(`input[name="jenis"]`).forEach((radio) => {
-                                radio.disabled = true;
-                            });
-                            document.querySelector("#formUpdatePerizinan #keterangan").disabled = true; // Set keterangan
-                            document.getElementById('deletePerizinan').disabled = true;
-                        }
                         // Ketika tombol Ubah pada modal perizinan diklik
                         $(document).off('click', '#changePerizinan').on('click', '#changePerizinan', function () {
                             // Validasi form: cek apakah semua field yang required sudah diisi
