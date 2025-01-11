@@ -46,7 +46,7 @@
     }
   
     .navbar-nav .nav-item .nav-link:hover {
-      color: lightgray !important;
+      color: lightgrey !important;
       /* Warna teks menu saat hover */
     }
   
@@ -83,7 +83,13 @@
     .dropdown-item {
         background-color: #fff2f2; /* Ubah background */
         border-radius: 5px; /* Opsional */
+        transition: color 0.3s ease; /* Durasi transisi */
     }
+
+    .dropdown-item:hover {
+      color: lightgrey;
+    }
+
 
     </style>
 
@@ -177,7 +183,7 @@
                   <i class="nc-icon nc-button-power"></i> Logout
               </button>
           </form>
-      </div>
+        </div>
       <!-- Tombol Hamburger -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -198,35 +204,35 @@
 
                 <!-- Karyawan -->
                 <li class="nav-item dropdown {{ ($title === 'Perizinan' || $title === 'Informasi') ? 'active' : '' }}">
-                    <a class="nav-link dropdown-toggle" href="#" id="karyawanDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="nc-icon nc-single-02"></i> Karyawan
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="karyawanDropdown">
-                        <a class="dropdown-item {{ $title === 'Perizinan' ? 'active' : '' }}" href="{{ route('supervisor.perizinan') }}">
-                            Perizinan
-                        </a>
-                        <a class="dropdown-item {{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}" href="{{ route('supervisor.infokaryawan') }}">
-                            Informasi Karyawan
-                        </a>
-                    </div>
-                </li>
+                  <a class="nav-link dropdown-toggle" href="#" id="karyawanDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="nc-icon nc-single-02"></i> Karyawan
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="karyawanDropdown">
+                      <a style="background-color: #fff2f2" class="dropdown-item {{ $title === 'Perizinan' ? 'active' : '' }}" href="{{ route('supervisor.perizinan') }}">
+                          Perizinan
+                      </a>
+                      <a style="background-color: #fff2f2" class="dropdown-item {{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}" href="{{ route('supervisor.infokaryawan') }}">
+                          Informasi Karyawan
+                      </a>
+                  </div>
+              </li>
 
-                <!-- Kasbon -->
-                <li class="nav-item dropdown {{ ($title === 'Pengajuan' || $title === 'Pembayaran') ? 'active' : '' }}">
-                    <a class="nav-link dropdown-toggle" href="#" id="kasbonDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="nc-icon nc-money-coins"></i> Kasbon
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="kasbonDropdown">
-                        <a class="dropdown-item {{ $title === 'Pengajuan' ? 'active' : '' }}" href="{{ route('supervisor.pengajuan') }}">
-                            Pengajuan
-                        </a>
-                        <a class="dropdown-item {{ $title === 'Pembayaran' ? 'active' : '' }}" href="{{ route('supervisor.pembayaran') }}">
-                            Pembayaran
-                        </a>
-                    </div>
-                </li>
-            </ul>
-          </div>
+              <!-- Kasbon -->
+              <li class="nav-item dropdown {{ ($title === 'Pengajuan' || $title === 'Pembayaran') ? 'active' : '' }}">
+                  <a class="nav-link dropdown-toggle" href="#" id="kasbonDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="nc-icon nc-money-coins"></i> Kasbon
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="kasbonDropdown">
+                      <a style="background-color: #fff2f2"  class="dropdown-item {{ $title === 'Pengajuan' ? 'active' : '' }}" href="{{ route('supervisor.pengajuan') }}">
+                          Pengajuan
+                      </a>
+                      <a style="background-color: #fff2f2" class="dropdown-item {{ $title === 'Pembayaran' ? 'active' : '' }}" href="{{ route('supervisor.pembayaran') }}">
+                          Pembayaran
+                      </a>
+                  </div>
+              </li>
+          </ul>
+        </div>
       </nav>
         
         <!-- Content -->

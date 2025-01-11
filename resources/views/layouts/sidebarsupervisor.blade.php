@@ -83,6 +83,11 @@
     .dropdown-item {
         background-color: #fff2f2; /* Ubah background */
         border-radius: 5px; /* Opsional */
+        transition: color 0.3s ease; /* Durasi transisi */
+    }
+
+    .dropdown-item:hover {
+      color: lightgrey;
     }
   </style>
 </head>

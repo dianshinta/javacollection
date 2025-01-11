@@ -25,20 +25,225 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    .top-right-logout {
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      z-index: 999;
+    }
+
+    .navbar {
+      background-color: #fff2f2 !important;
+      margin-bottom: 0;
+      /* Pink color */
+    }
+  
+    .navbar-toggler-icon {
+      background-color: transparent !important;
+      /* Warna icon hamburger */
+    }
+  
+    .navbar-nav .nav-item.active .nav-link {
+      color: #500606 !important;
+      /* Warna teks menu yang aktif */
+    }
+  
+    .navbar-nav .nav-item .nav-link:hover {
+      color: lightgray !important;
+      /* Warna teks menu saat hover */
+    }
+  
+    /* Navbar text color */
+    .navbar-nav .nav-item .nav-link {
+      color: grey !important;
+      /* Set text color to  */
+    }
+  
+    /* Change hamburger icon color when it’s clicked (active state) */
+    .navbar-toggler.collapsed .navbar-toggler-icon {
+      background-color: transparent !important;
+      /* Change color to maroon when collapsed */
+    }
+  
+    /* .navbar-collapse {
+        display: none !important;
+      }
+  
+      .navbar-collapse.show {
+        display: block !important;
+      } */
+  
+    .dropdown-menu {
+      display: none;
+      /* Hide dropdown by default */
+    }
+  
+    .dropdown-menu.show {
+      display: block;
+      /* Show dropdown when active */
+    }
+
+    .dropdown-item {
+        background-color: #fff2f2; /* Ubah background */
+        border-radius: 5px; /* Opsional */
+        transition: color 0.3s ease; /* Durasi transisi */
+    }
+
+    .dropdown-item:hover {
+      color: lightgrey;
+    }
+
+    .dropdown-item.pembayaran {
+        background-color: #fff2f2 !important; /* Warna pink */
+        color: grey; /* Opsional, warna teks */
+    }
+
+
+    </style>
+
 </head>
 
 <body class="">
     <div class="wrapper ">
-        <div class="sidebar" data-color="white" data-active-color="danger">
+        <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
             <div class="logo">
                 <span class="simple-text font-weight-bold">
                 JAVA COLLECTION
                 </span>
             </div>
-            <!-- Menu -->
-            @include('supervisor.menu')
-            <!-- END MENU -->
-        </div>
+            
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <!-- Beranda -->
+                    <li class="{{ ($title === 'Beranda') ? 'active' : '' }}">
+                        <a href="{{route('supervisor.beranda')}}">
+                        <i class="nc-icon nc-layout-11"></i>
+                        <p>Beranda</p>
+                        </a>
+                    </li>
+                    <!-- Karyawan -->
+                    <li class="dropdown {{($title === 'Perizinan' || $title === "Informasi") ? 'active' : '' }}">
+                        <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#karyawanDropdown">
+                            <i class="nc-icon nc-single-02"></i>
+                        <p class="d-inline-block mr-5">Karyawan</p>
+                        </a>
+                        <div class="collapse" id="karyawanDropdown">
+                            <ul class="nav" style="margin-left: 62px;">
+                                <!-- Sub menu perizinan -->
+                                <li class="{{($title === 'Perizinan') ? 'active' : '' }}">
+                                    <a href="{{route('supervisor.perizinan')}}">
+                                        <p>Perizinan</p>
+                                    </a>
+                                </li>
+                                <!-- Sub menu informasi -->
+                                <li class="{{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}">
+                                    <a href="{{ route('supervisor.infokaryawan') }}">
+                                        <p>Informasi Karyawan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- Kasbon -->
+                    <li class="dropdown {{($title === 'Pengajuan' || $title === "Pembayaran") ? 'active' : '' }}">
+                        <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#kasbonDropdown">
+                        <i class="nc-icon nc-money-coins"></i>
+                        <p class="d-inline-block mr-5">Kasbon</p>
+                        </a>
+                        <div class="collapse" id="kasbonDropdown">
+                            <ul class="nav" style="margin-left: 62px;">
+                                <!-- Sub menu pengajuan -->
+                                <li class="{{($title === 'Pengajuan') ? 'active' : '' }}">
+                                    <a href="{{route('supervisor.pengajuan')}}">
+                                        <p>Pengajuan</p>
+                                    </a>
+                                </li>
+                                <!-- Sub menu pembayaran -->
+                                <li>
+                                    <li class="{{($title === 'Pembayaran') ? 'active' : '' }}">
+                                        <a href="{{route('supervisor.pembayaran')}}">
+                                            <p>Pembayaran</p>
+                                        </a>
+                                    </li>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <!-- Logout -->
+                <div class="mt-auto p-3">
+                    <form action="{{ route('logout') }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-danger btn-block">
+                        <i class="nc-icon nc-button-power"></i> Logout
+                      </button>
+                    </form>
+                </div>
+            </div>
+              <!-- END MENU -->
+          </div>
+  
+          <!-- Navbar for mobile -->
+          <div class="top-right-logout d-block d-lg-none">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    <i class="nc-icon nc-button-power"></i> Logout
+                </button>
+            </form>
+          </div>
+        <!-- Tombol Hamburger -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+  
+            <!-- Navbar Collapse -->
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                  <!-- Beranda -->
+                  <li class="nav-item {{ request()->is('supervisor/beranda') ? 'active' : '' }}">
+                      <a class="nav-link" href="{{ route('supervisor.beranda') }}">
+                          <i class="nc-icon nc-layout-11"></i> Beranda
+                      </a>
+                  </li>
+  
+                  <!-- Karyawan -->
+                    <li class="nav-item dropdown {{ ($title === 'Perizinan' || $title === 'Informasi') ? 'active' : '' }}">
+                        <a class="nav-link dropdown-toggle" href="#" id="karyawanDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="nc-icon nc-single-02"></i> Karyawan
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="karyawanDropdown">
+                            <a style="background-color: #fff2f2" class="dropdown-item {{ $title === 'Perizinan' ? 'active' : '' }}" href="{{ route('supervisor.perizinan') }}">
+                                Perizinan
+                            </a>
+                            <a style="background-color: #fff2f2" class="dropdown-item {{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}" href="{{ route('supervisor.infokaryawan') }}">
+                                Informasi Karyawan
+                            </a>
+                        </div>
+                    </li>
+
+                    <!-- Kasbon -->
+                    <li class="nav-item dropdown {{ ($title === 'Pengajuan' || $title === 'Pembayaran') ? 'active' : '' }}">
+                        <a class="nav-link dropdown-toggle" href="#" id="kasbonDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="nc-icon nc-money-coins"></i> Kasbon
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="kasbonDropdown">
+                            <a style="background-color: #fff2f2"  class="dropdown-item {{ $title === 'Pengajuan' ? 'active' : '' }}" href="{{ route('supervisor.pengajuan') }}">
+                                Pengajuan
+                            </a>
+                            <a style="background-color: #fff2f2" class="dropdown-item {{ $title === 'Pembayaran' ? 'active' : '' }}" href="{{ route('supervisor.pembayaran') }}">
+                                Pembayaran
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            </nav>
 
         <!-- Content -->
         <div class="main-panel">
