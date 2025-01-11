@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('denda')->default(0)->nullable();
             $table->integer('total_gaji')->default(0)->nullable();
             $table->timestamps();
+            $table->enum('status', ['Telah Dikirim', 'Belum Dikirim'])->default('Belum Dikirim');
 
             $table->foreign('karyawan_nip')->references('nip')->on('karyawans')->onDelete('cascade');
             $table->foreign('bulan_id')->references('id')->on('bulans');
