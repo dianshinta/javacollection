@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Beranda | JAVA COLLECTION
+    {{ $title }} | JAVA COLLECTION
   </title>
   <style>
     .top-right-logout {
