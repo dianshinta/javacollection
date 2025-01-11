@@ -61,6 +61,6 @@ class PresensiController extends Controller
 
         // Kirim data ke view 'karyawan.presensi'
         session()->flash('success', 'Presensi berhasil direkam!');
-        return view( 'karyawan.presensi', compact('riwayatPresensi', 'hasPresensiToday', 'user', 'hasPermissionToday'));
+        return view( 'karyawan.presensi', compact('riwayatPresensi', 'hasPresensiToday', 'user', 'hasPermissionToday'))->with('title', 'Presensi');
     }    
 }

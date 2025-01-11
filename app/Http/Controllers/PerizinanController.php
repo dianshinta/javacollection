@@ -124,7 +124,7 @@ class PerizinanController extends Controller
         $perizinans = perizinan::where('nip', $nip)->orderBy('updated_at', 'desc')
                                 ->get();
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
-        return view('karyawan.perizinan', compact('perizinans', 'izinTaken', 'existingDates'));
+        return view('karyawan.perizinan', compact('perizinans', 'izinTaken', 'existingDates'))->with('title', 'Perizinan');
     }
 
     public function destroy(Request $request)

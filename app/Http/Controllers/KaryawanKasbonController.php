@@ -17,7 +17,7 @@ class karyawanKasbonController extends Controller
         $riwayatKasbon = kasbon::where('nip', $nip)->orderBy('created_at', 'desc')->get();
 
         // Kirim data ke view 'karyawan.kasbon'
-        return view('karyawan.kasbon', compact('riwayatKasbon'));
+        return view('karyawan.kasbon', compact('riwayatKasbon'))->with('title', 'Kasbon');
     }
 
     public function save(Request $request)

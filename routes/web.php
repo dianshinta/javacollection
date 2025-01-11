@@ -56,7 +56,9 @@ Route::middleware(['web'])->group(function () {
 // BAGIAN HALAMAN KARYAWAN
 Route::middleware('auth')->group( function() {
     Route::get('/karyawan/beranda/', function () {
-        return view('/karyawan/beranda');
+        return view('/karyawan/beranda', [
+            "title" => "Beranda"
+        ]);
     })->name('karyawan.beranda');
     
     Route::post('/perizinan/store', [PerizinanController::class, 'store'])
