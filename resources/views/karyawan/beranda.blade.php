@@ -3,130 +3,133 @@
 @section('content')
 
 @php
-  // Mendapatkan nip dari user yang sedang login
-  $nip = Auth::user()->nip;
-  // Mendapatkan tanggal hari ini
-  $today = \Carbon\Carbon::now()->toDateString();
-  // Mengecek apakah sudah ada presensi hari ini
-  $hasPresensiToday = \App\Models\Presensi::where('nip', $nip)
-                                          ->whereDate('tanggal', $today)
-                                          ->exists();
-  // Mengambil data user yang sedang login dan relasi karyawan dan toko
-  $user = auth()->user(); // Mengambil user yang sedang login
-  $user = $user->load('karyawan.toko'); // Mengambil relasi karyawan dan toko
+// Mendapatkan nip dari user yang sedang login
+$nip = Auth::user()->nip;
+// Mendapatkan tanggal hari ini
+$today = \Carbon\Carbon::now()->toDateString();
+// Mengecek apakah sudah ada presensi hari ini
+$hasPresensiToday = \App\Models\Presensi::where('nip', $nip)
+  ->whereDate('tanggal', $today)
+  ->exists();
+// Mengambil data user yang sedang login dan relasi karyawan dan toko
+$user = auth()->user(); // Mengambil user yang sedang login
+$user = $user->load('karyawan.toko'); // Mengambil relasi karyawan dan toko
 @endphp
 
 <div class="mb-4">
-          <small class="text-muted d-block">Beranda</small>
-          <h5 class="font-weight-bold">Selamat datang!</h5>
-        </div>
-        <div class="d-flex justify-content-start align-items-center gap-4 mb-4">
-          <div class="d-flex align-items-center mr-2">
-            <i class="nc-icon nc-circle-10 text-primary mr-2"></i>          
-            <div>
-              <span  style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ Auth::user()->name }}</span>
-              <small class="text-muted d-block">{{ Auth::user()->nip }}</small>
-            </div>
-          </div>
-          
-          <div class="d-flex align-items-center mr-2">
-            <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
-            <div>
-              <span>{{ \Carbon\Carbon::now()->translatedFormat('l') }}</span> <!-- Nama Hari -->
-              <small class="text-muted d-block">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</small> <!-- Tanggal -->
-            </div>
-          </div>
-          
-          <div class="d-flex align-items-center ml-1">
-            <i class="nc-icon nc-pin-3 text-primary mr-1"></i>
-            <div>
-              @if ($user && $user->karyawan && $user->karyawan->toko)
-                  <span style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ $user->karyawan->toko->name }}</span>
-              @else
-                  <span>-</span>
-              @endif
-              <!-- <span >Tanah Abang</span> -->
-            </div>
-          </div>
-        </div>
+  <small class="text-muted d-block">Beranda</small>
+  <h5 class="font-weight-bold">Selamat datang!</h5>
+</div>
+<div class="d-flex justify-content-start align-items-center gap-4 mb-4">
+  <div class="d-flex align-items-center mr-2">
+    <i class="nc-icon nc-circle-10 text-primary mr-2"></i>
+    <div>
+      <span
+        style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ Auth::user()->name }}</span>
+      <small class="text-muted d-block">{{ Auth::user()->nip }}</small>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center mr-2">
+    <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
+    <div>
+      <span>{{ \Carbon\Carbon::now()->translatedFormat('l') }}</span> <!-- Nama Hari -->
+      <small class="text-muted d-block">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</small> <!-- Tanggal -->
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center ml-1">
+    <i class="nc-icon nc-pin-3 text-primary mr-1"></i>
+    <div>
+      @if ($user && $user->karyawan && $user->karyawan->toko)
+      <span
+      style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ $user->karyawan->toko->name }}</span>
+    @else
+      <span>-</span>
+    @endif
+      <!-- <span >Tanah Abang</span> -->
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card card-stats mb-4">
+      <div class="card-body ">
         <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats mb-4">
-              <div class="card-body ">
-                <div class="row">
-                  <div class="col-12 d-flex justify-content-start align-items-center">
-                    <span id="time-display" class="mr-2 font-weight-bold" style="font-size:1.5rem;">00.00</span>
-                    <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
-                      @csrf <!-- Token keamanan Laravel -->
-                      <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.5em;"
-                        @if($hasPresensiToday) disabled @endif>
-                        Presensi
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer ">
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-8">
-            <div class="card card-chart">
-              <div class="card-header">
-                <h5 class="card-title">
-                    Kehadiran<br>
-                    Karyawan
-                </h5>
-                <p class="card-category">Bulanan</p>
-              </div>
-              <div class="card-body">
-                <canvas id="barChart"></canvas>
-              </div>
-              <div class="card-footer ">
-                <div class="legend">
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
-                  </div>
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
-                  </div>
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
-                  </div>
-                  <div class="legend-list">
-                    <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="col-12 d-flex justify-content-start align-items-center">
+            <span id="time-display" class="mr-2 font-weight-bold" style="font-size:1.5rem;">00.00</span>
+            <form action="{{ route('presensi.store') }}" method="POST" id="form-presensi">
+              @csrf <!-- Token keamanan Laravel -->
+              <button id="btn-presensi" type="submit" class="btn btn-success"
+                style="font-size: 1rem; color: black; padding: 0.5em;" @if($hasPresensiToday) disabled @endif>
+                Presensi
+              </button>
+            </form>
           </div>
         </div>
       </div>
-      <footer class="footer footer-black  footer-white ">
-        <div class="container-fluid">
-          <div class="row">
-            <nav class="footer-nav">
-              <ul>
-                <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-                <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-                <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-              </ul>
-            </nav>
-            <div class="credits ml-auto">
-              <span class="copyright">
-                © <script>
-                  document.write(new Date().getFullYear())
-                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
-              </span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <div class="card-footer ">
+      </div>
     </div>
   </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="card card-chart">
+      <div class="card-header">
+        <h5 class="card-title">
+          Kehadiran<br>
+          Karyawan
+        </h5>
+        <p class="card-category">Bulanan</p>
+      </div>
+      <div class="card-body">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="card-footer ">
+        <div class="legend">
+          <div class="legend-list">
+            <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
+          </div>
+          <div class="legend-list">
+            <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
+          </div>
+          <div class="legend-list">
+            <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
+          </div>
+          <div class="legend-list">
+            <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<footer class="footer footer-black  footer-white ">
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="footer-nav">
+        <ul>
+          <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+          <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+          <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+        </ul>
+      </nav>
+      <div class="credits ml-auto">
+        <span class="copyright">
+          ©
+          <script>
+            document.write(new Date().getFullYear())
+          </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+</div>
+</div>
   <!--   Core JS Files   -->
   <script src="../assets/js/core/jquery.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>

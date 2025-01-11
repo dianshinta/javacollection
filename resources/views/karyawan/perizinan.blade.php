@@ -86,104 +86,104 @@
 </head>
 
 <body class="">
-<div class="wrapper ">
-    <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
-        <div class="logo">
-            <span class="simple-text font-weight-bold">
-                JAVA COLLECTION
-            </span>
-        </div>
-        <div class="sidebar-wrapper">
-            <ul class="nav">
-                <li class="">
-                    <a href="{{route('karyawan.beranda')}}">
-                        <i class="nc-icon nc-layout-11"></i>
-                        <p>Beranda</p>
-                    </a>
-                </li>
-                <li class="">
-                    <a href="{{route('karyawan.presensi')}}">
-                        <i class="nc-icon nc-touch-id"></i>
-                        <p>Presensi</p>
-                    </a>
-                </li>
-                <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false"
-                        data-target="#pengajuanDropdown">
-                        <i class="nc-icon nc-single-copy-04"></i>
-                        <p class="d-inline-block mr-5">Pengajuan</p>
-                    </a>
-                    <div class="collapse" id="pengajuanDropdown">
-                        <ul class="nav" style="margin-left: 62px;">
-                            <li class="active">
-                                <a href="{{route('karyawan.perizinan')}}">
-                                    <p>Perizinan</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('karyawan.kasbon')}}">
-                                    <p>Kasbon</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="{{route('karyawan.gaji')}}">
-                        <i class="nc-icon nc-money-coins"></i>
-                        <p>Gaji</p>
-                    </a>
-                </li>
-            </ul>
-            <div class="mt-auto p-3">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-danger btn-block">
-                        <i class="nc-icon nc-button-power"></i> Logout
-                    </button>
-                </form>
+    <div class="wrapper ">
+        <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
+            <div class="logo">
+                <span class="simple-text font-weight-bold">
+                    JAVA COLLECTION
+                </span>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li class="">
+                        <a href="{{route('karyawan.beranda')}}">
+                            <i class="nc-icon nc-layout-11"></i>
+                            <p>Beranda</p>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{{route('karyawan.presensi')}}">
+                            <i class="nc-icon nc-touch-id"></i>
+                            <p>Presensi</p>
+                        </a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false"
+                            data-target="#pengajuanDropdown">
+                            <i class="nc-icon nc-single-copy-04"></i>
+                            <p class="d-inline-block mr-5">Pengajuan</p>
+                        </a>
+                        <div class="collapse" id="pengajuanDropdown">
+                            <ul class="nav" style="margin-left: 62px;">
+                                <li class="active">
+                                    <a href="{{route('karyawan.perizinan')}}">
+                                        <p>Perizinan</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('karyawan.kasbon')}}">
+                                        <p>Kasbon</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="{{route('karyawan.gaji')}}">
+                            <i class="nc-icon nc-money-coins"></i>
+                            <p>Gaji</p>
+                        </a>
+                    </li>
+                </ul>
+                <div class="mt-auto p-3">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-block">
+                            <i class="nc-icon nc-button-power"></i> Logout
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Navbar for mobile -->
-    <div class="top-right-logout d-block d-lg-none">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-danger">
-                <i class="nc-icon nc-button-power"></i> Logout
-            </button>
-        </form>
-    </div>
-    <!-- Tombol Hamburger -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    
-        <!-- Navbar Collapse -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item {{ request()->is('karyawan/beranda') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('karyawan.beranda') }}">Beranda</a>
-                </li>
-                <li class="nav-item {{ request()->is('karyawan/presensi') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('karyawan.presensi') }}">Presensi</a>
-                </li>
-                <li class="nav-item {{ request()->is('karyawan/perizinan') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('karyawan.perizinan') }}">Perizinan</a>
-                </li>
-                <li class="nav-item {{ request()->is('karyawan/kasbon') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('karyawan.kasbon') }}">Kasbon</a>
-                </li>
-                <li class="nav-item {{ request()->is('karyawan/gaji') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('karyawan.gaji') }}">Gaji</a>
-                </li>
-            </ul>
+
+        <!-- Navbar for mobile -->
+        <div class="top-right-logout d-block d-lg-none">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    <i class="nc-icon nc-button-power"></i> Logout
+                </button>
+            </form>
         </div>
-    </nav>
-    
+        <!-- Tombol Hamburger -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item {{ request()->is('karyawan/beranda') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('karyawan.beranda') }}">Beranda</a>
+                    </li>
+                    <li class="nav-item {{ request()->is('karyawan/presensi') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('karyawan.presensi') }}">Presensi</a>
+                    </li>
+                    <li class="nav-item {{ request()->is('karyawan/perizinan') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('karyawan.perizinan') }}">Perizinan</a>
+                    </li>
+                    <li class="nav-item {{ request()->is('karyawan/kasbon') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('karyawan.kasbon') }}">Kasbon</a>
+                    </li>
+                    <li class="nav-item {{ request()->is('karyawan/gaji') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('karyawan.gaji') }}">Gaji</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
         <div class="main-panel">
             <div class="content">
                 <div class="mb-4">
@@ -230,34 +230,33 @@
                                                 </tr>
                                             @else
                                                 @foreach($perizinans as $index => $perizinan)
-                                                <tr style="cursor: pointer;"
-                                                    onmouseover="this.style.backgroundColor='#E8E8E8';"
-                                                    onmouseout="this.style.backgroundColor='white';"
-                                                    data-id="{{ $perizinan->id }}"
-                                                    data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->format('Y-m-d') }}"
-                                                    data-jenis="{{ $perizinan->jenis }}"
-                                                    data-keterangan="{{ $perizinan->keterangan }}"
-                                                    data-status="{{ $perizinan->status }}"
-                                                    data-file="{{ $perizinan->lampiran }}"
-                                                >
-                                                    <td>
-                                                        {{ $index + 1 }}
-                                                    </td>
-                                                    <td>
-                                                        {{ \Carbon\Carbon::parse($perizinan->tanggal)->translatedFormat('j F Y') }}
-                                                    </td>
-                                                    <td>
-                                                        {{ ucfirst($perizinan->jenis) }}
-                                                    </td>
-                                                    <td>
-                                                        {{ $perizinan->keterangan }}
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge {{ $perizinan->status == 'Diproses' ? 'bg-warning' : ($perizinan->status == 'Ditolak' ? 'bg-danger' : 'bg-success') }}">
-                                                            {{ ucfirst($perizinan->status) }}
-                                                        </span>
-                                                    </td>
-                                                </tr>
+                                                    <tr style="cursor: pointer;" onmouseover="this.style.backgroundColor='#E8E8E8';"
+                                                        onmouseout="this.style.backgroundColor='white';"
+                                                        data-id="{{ $perizinan->id }}"
+                                                        data-tanggal="{{ \Carbon\Carbon::parse($perizinan->tanggal)->format('Y-m-d') }}"
+                                                        data-jenis="{{ $perizinan->jenis }}"
+                                                        data-keterangan="{{ $perizinan->keterangan }}"
+                                                        data-status="{{ $perizinan->status }}"
+                                                        data-file="{{ $perizinan->lampiran }}">
+                                                        <td>
+                                                            {{ $index + 1 }}
+                                                        </td>
+                                                        <td>
+                                                            {{ \Carbon\Carbon::parse($perizinan->tanggal)->translatedFormat('j F Y') }}
+                                                        </td>
+                                                        <td>
+                                                            {{ ucfirst($perizinan->jenis) }}
+                                                        </td>
+                                                        <td>
+                                                            {{ $perizinan->keterangan }}
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="badge {{ $perizinan->status == 'Diproses' ? 'bg-warning' : ($perizinan->status == 'Ditolak' ? 'bg-danger' : 'bg-success') }}">
+                                                                {{ ucfirst($perizinan->status) }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
                                             @endif
                                         </tbody>
@@ -269,7 +268,8 @@
                 </div>
 
                 <!-- Perizinan Modal -->
-                <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true" data-backdrop="static">
+                <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel"
+                    aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -281,8 +281,10 @@
                             <div class="modal-body">
                                 <form id="formPerizinan" action="{{ route('perizinan.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="nip" value={{ Auth::user()->nip }}> <!-- Isi sesuai kebutuhan -->
-                                    <input type="hidden" name="nama" value={{ Auth::user()->name }}> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nip" value={{ Auth::user()->nip }}>
+                                    <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nama" value={{ Auth::user()->name }}>
+                                    <!-- Isi sesuai kebutuhan -->
                                     <div class="row mb-2">
                                         <div class="col-5 label-bold">Tanggal:</div>
                                         <div class="col-7 bg-gray">
@@ -294,9 +296,10 @@
                                         <div class="col-7">
                                             <div class="container">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisSakit"
-                                                        value="Sakit" required>
-                                                    <label class="form-check-label text-black" for="jenisSakit">Sakit</label>
+                                                    <input class="form-check-input" type="radio" name="jenis"
+                                                        id="jenisSakit" value="Sakit" required>
+                                                    <label class="form-check-label text-black"
+                                                        for="jenisSakit">Sakit</label>
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisCuti"
@@ -306,7 +309,8 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisLain"
                                                         value="Lainnya">
-                                                    <label class="form-check-label text-black" for="jenisLain">Lainnya</label>
+                                                    <label class="form-check-label text-black"
+                                                        for="jenisLain">Lainnya</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -322,8 +326,8 @@
                                         <div class="col-5 label-bold">Bukti:</div>
                                         <div class="col-7">
                                             <div class="button-container">
-                                                <button id="btn-tambah" type="button" class="custom-button" data-toggle="modal"
-                                                    data-target="#buktiModal">
+                                                <button id="btn-tambah" type="button" class="custom-button"
+                                                    data-toggle="modal" data-target="#buktiModal">
                                                     Tambah
                                                 </button>
                                             </div>
@@ -339,9 +343,10 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Update Perizinan Modal -->
-                <div class="modal fade" id="updatePerizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true" data-backdrop="static">
+                <div class="modal fade" id="updatePerizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel"
+                    aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -353,8 +358,10 @@
                             <div class="modal-body">
                                 <form id="formUpdatePerizinan" action="{{ route('perizinan.update') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="nip" value={{ Auth::user()->nip }}> <!-- Isi sesuai kebutuhan -->
-                                    <input type="hidden" name="nama" value={{ Auth::user()->name }}> <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nip" value={{ Auth::user()->nip }}>
+                                    <!-- Isi sesuai kebutuhan -->
+                                    <input type="hidden" name="nama" value={{ Auth::user()->name }}>
+                                    <!-- Isi sesuai kebutuhan -->
                                     <div class="row mb-2">
                                         <div class="col-5 label-bold">Tanggal:</div>
                                         <div class="col-7 bg-gray">
@@ -366,9 +373,10 @@
                                         <div class="col-7">
                                             <div class="container">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="radio" name="jenis" id="jenisSakit"
-                                                        value="Sakit" required>
-                                                    <label class="form-check-label text-black" for="jenisSakit">Sakit</label>
+                                                    <input class="form-check-input" type="radio" name="jenis"
+                                                        id="jenisSakit" value="Sakit" required>
+                                                    <label class="form-check-label text-black"
+                                                        for="jenisSakit">Sakit</label>
                                                 </div>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisCuti"
@@ -378,7 +386,8 @@
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="jenis" id="jenisLain"
                                                         value="Lainnya">
-                                                    <label class="form-check-label text-black" for="jenisLain">Lainnya</label>
+                                                    <label class="form-check-label text-black"
+                                                        for="jenisLain">Lainnya</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -394,8 +403,8 @@
                                         <div class="col-5 label-bold">Bukti:</div>
                                         <div class="col-7">
                                             <div class="button-container">
-                                                <button id="btn-tambahUpdate" type="button" class="custom-button" data-toggle="modal"
-                                                    data-target="#buktiModalUpdate">
+                                                <button id="btn-tambahUpdate" type="button" class="custom-button"
+                                                    data-toggle="modal" data-target="#buktiModalUpdate">
                                                     Tambah
                                                 </button>
                                             </div>
@@ -404,7 +413,8 @@
                                     <div class="modal-footer mt-5 text-center justify-content-center">
                                         <div class="btn-group-custom justify-content-center">
                                             <button type="button" class="btn btn-save" id="changePerizinan">Ubah</button>
-                                            <button type="button" class="btn btn-danger" id="deletePerizinan">Hapus Izin</button>
+                                            <button type="button" class="btn btn-danger" id="deletePerizinan">Hapus
+                                                Izin</button>
                                         </div>
                                     </div>
                                 </form>
@@ -424,7 +434,8 @@
                                 <p>Ajukan izin ini?</p>
                                 <div class="text-center">
                                     <button type="button" class="btn btn-success" id="btnYakin">Ya, ajukan</button>
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnBatal">Batal</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"
+                                        id="btnBatal">Batal</button>
                                 </div>
                             </div>
                         </div>
@@ -432,8 +443,8 @@
                 </div>
 
                 <!-- Modal Konfirmasi Update -->
-                <div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog" aria-labelledby="confirmUpdateModalLabel"
-                    aria-hidden="true" data-backdrop="static">
+                <div class="modal fade" id="confirmUpdateModal" tabindex="-1" role="dialog"
+                    aria-labelledby="confirmUpdateModalLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -442,7 +453,8 @@
                                 <p>Ubah izin ini?</p>
                                 <div class="text-center">
                                     <button type="button" class="btn btn-success" id="btnYakinUpdate">Ya, ubah</button>
-                                    <button type="button" class="btn btn-danger close" data-dismiss="modal" id="btnBatal">Batal</button>
+                                    <button type="button" class="btn btn-danger close" data-dismiss="modal"
+                                        id="btnBatal">Batal</button>
                                 </div>
                             </div>
                         </div>
@@ -450,8 +462,8 @@
                 </div>
 
                 <!-- Modal Konfirmasi Delete-->
-                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel"
-                    aria-hidden="true" data-backdrop="static">
+                <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog"
+                    aria-labelledby="confirmDeleteModalLabel" aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -460,7 +472,8 @@
                                 <p>Hapus izin ini?</p>
                                 <div class="text-center">
                                     <button type="button" class="btn btn-success" id="btnYakinDelete">Ya, hapus</button>
-                                    <button type="button" class="btn btn-danger close" data-dismiss="modal" id="btnBatal">Batal</button>
+                                    <button type="button" class="btn btn-danger close" data-dismiss="modal"
+                                        id="btnBatal">Batal</button>
                                 </div>
                             </div>
                         </div>
@@ -468,14 +481,16 @@
                 </div>
 
                 <!-- Modal Box for Tambah Bukti -->
-                <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" data-backdrop="static">
+                <div class="modal fade" id="buktiModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
+                    aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <form class="lampiran-body" enctype="multipart/form-data">
                                     <!-- Field untuk Upload File -->
                                     <div class="form-group">
-                                        <label for="fileUpload" class="form-label font-weight-bold">Unggah File Bukti Izin</label>
+                                        <label for="fileUpload" class="form-label font-weight-bold">Unggah File Bukti
+                                            Izin</label>
                                         <div class="input-group">
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="fileUpload" name="lampiran"
@@ -494,7 +509,8 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" id="btn-batalLampiran" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-secondary" id="btn-batalLampiran"
+                                    data-dismiss="modal">Batal</button>
                                 <button type="button" class="btn btn-success" id="btn-saveLampiran">Simpan</button>
                             </div>
                         </div>
@@ -502,19 +518,22 @@
                 </div>
 
                 <!-- Modal Box for Tambah Bukti Update -->
-                <div class="modal fade" id="buktiModalUpdate" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" data-backdrop="static">
+                <div class="modal fade" id="buktiModalUpdate" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel"
+                    aria-hidden="true" data-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <form class="lampiran-body" enctype="multipart/form-data">
                                     <!-- Field untuk Upload File -->
                                     <div class="form-group">
-                                        <label for="fileUploadUpdate" class="form-label font-weight-bold">Unggah File Bukti Izin</label>
+                                        <label for="fileUploadUpdate" class="form-label font-weight-bold">Unggah File Bukti
+                                            Izin</label>
                                         <div class="input-group">
                                             <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="fileUploadUpdate" name="lampiran"
-                                                    accept="image/*, .pdf, .doc, .docx">
-                                                <label class="custom-file-label" for="fileUploadUpdate">Pilih file...</label>
+                                                <input type="file" class="custom-file-input" id="fileUploadUpdate"
+                                                    name="lampiran" accept="image/*, .pdf, .doc, .docx">
+                                                <label class="custom-file-label" for="fileUploadUpdate">Pilih
+                                                    file...</label>
                                             </div>
                                         </div>
                                         <small class="form-text text-muted mt-1">
@@ -524,35 +543,35 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" id="btn-batalLampiranUpdate" data-dismiss="modal">Batal</button>
+                                <button type="button" class="btn btn-secondary" id="btn-batalLampiranUpdate"
+                                    data-dismiss="modal">Batal</button>
                                 <button type="button" class="btn btn-success" id="btn-saveLampiranUpdate">Simpan</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <footer class="footer footer-black  footer-white ">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <nav class="footer-nav">
-                                <ul>
-                                    <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
-                                    <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
-                                    <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
-                                </ul>
-                            </nav>
-                            <div class="credits ml-auto">
-                                <span class="copyright">
-                                    ©
-                                    <script>
-                                        document.write(new Date().getFullYear())
-                                    </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
-                                </span>
-                            </div>
+            </div>
+            <footer class="footer footer-black  footer-white mt-auto">
+                <div class="container-fluid">
+                    <div class="row">
+                        <nav class="footer-nav">
+                            <ul>
+                                <li><a href="https://www.creative-tim.com" target="_blank">Creative Tim</a></li>
+                                <li><a href="https://www.creative-tim.com/blog" target="_blank">Blog</a></li>
+                                <li><a href="https://www.creative-tim.com/license" target="_blank">Licenses</a></li>
+                            </ul>
+                        </nav>
+                        <div class="credits ml-auto">
+                            <span class="copyright">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+                            </span>
                         </div>
                     </div>
-                </footer>
-            </div>
+                </div>
+            </footer>
         </div>
         <!--   Core JS Files   -->
         <script src="../assets/js/core/jquery.min.js"></script>
@@ -586,7 +605,7 @@
                 var existingDates = @json($existingDates);
 
                 // Mengatur input tanggal
-                $('#tanggal').on('input', function() {
+                $('#tanggal').on('input', function () {
                     var selectedDate = $(this).val();
 
                     // Jika tanggal yang dipilih ada dalam daftar tanggal yang sudah digunakan
@@ -620,13 +639,13 @@
                         // Pastikan tombol hanya muncul jika file diunggah
                         $('#btn-fileName').remove(); // Menghapus tombol lama (jika ada)
                         $('#btn-tambah').before(`
-                            <button id="btn-fileName" class="btn btn-info mt-2" disabled>${fileName}</button>
-                        `);
-                        
+                                <button id="btn-fileName" class="btn btn-info mt-2" disabled>${fileName}</button>
+                            `);
+
                         $('#buktiModal').modal('hide');
                     }
                 });
-                
+
                 $('#btn-batalLampiran').on('click', function () {
                     $('#buktiModal').modal('hide');
                     $('.custom-file-label').text('Pilih file...');
@@ -704,7 +723,7 @@
                 $('#btnYakin').on('click', function () {
                     // Mengambil data dari form perizinan
                     var formData = new FormData($('#formPerizinan')[0]);
-                    if(uploadedFile) {
+                    if (uploadedFile) {
                         formData.append('lampiran', uploadedFile);
                     }
 
@@ -751,11 +770,11 @@
                             const fileNameUpdate = this.files[0]?.name || 'Tidak ada file yang dipilih';
                             $(this).next('.custom-file-label').text(fileNameUpdate);
 
-                            uploadedFile = this.files[0];        
+                            uploadedFile = this.files[0];
                         });
 
                         // Saat tombol "Simpan Lampiran" diklik
-                        $(document).on('click', '#btn-saveLampiranUpdate',function () {
+                        $(document).on('click', '#btn-saveLampiranUpdate', function () {
                             if (!uploadedFile) {
                                 Swal.fire({
                                     icon: 'warning',
@@ -766,17 +785,17 @@
                                 const fileNameUpdate = uploadedFile.name;
                                 $('#buktiModalUpdate').modal('hide');
                                 $('#btn-tambahUpdate').text('Ganti File');  // Ganti teks tombol dengan nama file
-                        
+
                                 // Pastikan tombol hanya muncul jika file diunggah
                                 $('#btn-fileNameUpdate').remove(); // Menghapus tombol lama (jika ada)
                                 $('#btn-tambahUpdate').before(`
-                                    <button id="btn-fileNameUpdate" class="btn btn-info mt-2" disabled>${fileNameUpdate}</button>
-                                `); 
+                                        <button id="btn-fileNameUpdate" class="btn btn-info mt-2" disabled>${fileNameUpdate}</button>
+                                    `);
                             }
                         });
 
                         $(document).off('click', '#btn-fileNameUpdate');
-                        
+
                         // Ambil data dari atribut data-*
                         const id = row.getAttribute("data-id");
                         const tanggal = row.getAttribute("data-tanggal");
@@ -788,7 +807,7 @@
                         if (status != 'Diproses') {
                             return;
                         }
-                        
+
                         // Isi data di dalam modal
                         document.querySelector("#formUpdatePerizinan #tanggal").value = tanggal; // Set tanggal
                         document.querySelectorAll(`#formUpdatePerizinan input[name="jenis"][value="${jenis}"]`).forEach((radio) => {
@@ -922,8 +941,8 @@
                                             showConfirmButton: false,
                                             timer: 1500,
                                             willClose: () => {
-                                            // Reload halaman setelah SweetAlert tertutup
-                                            location.reload();
+                                                // Reload halaman setelah SweetAlert tertutup
+                                                location.reload();
                                             }
                                         });
                                         $('#confirmUpdateModal').modal('hide');
@@ -955,7 +974,7 @@
                         $(document).on('click', '#deletePerizinan', function () {
                             $('#confirmDeleteModal').modal('show');
                         });
-                        
+
                         $(document).on('click', '#btnYakinDelete', function () {
                             const formData = new FormData();
                             formData.append("id", id);  // ID untuk mengidentifikasi perizinan yang akan diupdate
@@ -1000,50 +1019,50 @@
                                     console.error("Error:", error);
                                     alert("Terjadi kesalahan. Coba lagi.");
                                 });
-                            });
-                        }); 
+                        });
                     });
+                });
 
 
-            // Tambahkan event listener untuk memanage tombol setelah modal ditutup
-            $('#perizinanModal').on('hidden.bs.modal', function () {
-                // Hapus semua pesan validasi
-                $('#formPerizinan').find('.is-invalid').removeClass('is-invalid');
-                $('#formPerizinan').find('.invalid-feedback').remove();
-                $('#jenisError').remove(); // Hapus pesan validasi khusus radio button
+                // Tambahkan event listener untuk memanage tombol setelah modal ditutup
+                $('#perizinanModal').on('hidden.bs.modal', function () {
+                    // Hapus semua pesan validasi
+                    $('#formPerizinan').find('.is-invalid').removeClass('is-invalid');
+                    $('#formPerizinan').find('.invalid-feedback').remove();
+                    $('#jenisError').remove(); // Hapus pesan validasi khusus radio button
 
-                // Reset input form
-                $('#formPerizinan')[0].reset();
+                    // Reset input form
+                    $('#formPerizinan')[0].reset();
 
-                uploadedFile = null;
+                    uploadedFile = null;
 
-                $('.custom-file-label').text('Pilih file...');
+                    $('.custom-file-label').text('Pilih file...');
 
-                $('#btn-fileName').remove(); // Sembunyikan tombol file
-                $('#btn-tambah').text('Tambah'); // Kembalikan teks tombol
-                $('#btn-fileNameUpdate').remove(); // Sembunyikan tombol file
-                $('#btn-tambahUpdate').text('Tambah'); // Kembalikan teks tombol
+                    $('#btn-fileName').remove(); // Sembunyikan tombol file
+                    $('#btn-tambah').text('Tambah'); // Kembalikan teks tombol
+                    $('#btn-fileNameUpdate').remove(); // Sembunyikan tombol file
+                    $('#btn-tambahUpdate').text('Tambah'); // Kembalikan teks tombol
+                });
             });
-        });
 
-        // Menutup modal bukti
-        $('#buktiModal').on('hidden.bs.modal', function () {
-            // Mengecek apakah modal perizinan masih terbuka
-            if ($('#perizinanModal').hasClass('show')) {
-                // Kembalikan overflow pada body dan html ke normal
-                $('#perizinanModal').css('overflow', 'auto');
-            }
-        });
+            // Menutup modal bukti
+            $('#buktiModal').on('hidden.bs.modal', function () {
+                // Mengecek apakah modal perizinan masih terbuka
+                if ($('#perizinanModal').hasClass('show')) {
+                    // Kembalikan overflow pada body dan html ke normal
+                    $('#perizinanModal').css('overflow', 'auto');
+                }
+            });
 
-        // Menutup modal bukti update
-        $('#buktiModalUpdate').on('hidden.bs.modal', function () {
-            // Mengecek apakah modal perizinan masih terbuka
-            if ($('#updatePerizinanModal').hasClass('show')) {
-                // Kembalikan overflow pada body dan html ke normal
-                $('#updatePerizinanModal').css('overflow', 'auto');
-            }
-        });
+            // Menutup modal bukti update
+            $('#buktiModalUpdate').on('hidden.bs.modal', function () {
+                // Mengecek apakah modal perizinan masih terbuka
+                if ($('#updatePerizinanModal').hasClass('show')) {
+                    // Kembalikan overflow pada body dan html ke normal
+                    $('#updatePerizinanModal').css('overflow', 'auto');
+                }
+            });
 
         </script>
-</body>
+    </body>
 </html>
