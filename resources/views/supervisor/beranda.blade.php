@@ -80,6 +80,11 @@
       /* Show dropdown when active */
     }
 
+    .dropdown-item {
+        background-color: #fff2f2; /* Ubah background */
+        border-radius: 5px; /* Opsional */
+    }
+
     </style>
 
 </head>
@@ -181,26 +186,48 @@
           </button>
 
           <!-- Navbar Collapse -->
+          <!-- Navbar Collapse -->
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <!-- Beranda -->
                 <li class="nav-item {{ request()->is('supervisor/beranda') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('supervisor.beranda') }}">Beranda</a>
+                    <a class="nav-link" href="{{ route('supervisor.beranda') }}">
+                        <i class="nc-icon nc-layout-11"></i> Beranda
+                    </a>
                 </li>
-                <li class="nav-item {{ request()->is('supervisor/perizinan') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('supervisor.perizinan') }}">Perizinan</a>
+
+                <!-- Karyawan -->
+                <li class="nav-item dropdown {{ ($title === 'Perizinan' || $title === 'Informasi') ? 'active' : '' }}">
+                    <a class="nav-link dropdown-toggle" href="#" id="karyawanDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="nc-icon nc-single-02"></i> Karyawan
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="karyawanDropdown">
+                        <a class="dropdown-item {{ $title === 'Perizinan' ? 'active' : '' }}" href="{{ route('supervisor.perizinan') }}">
+                            Perizinan
+                        </a>
+                        <a class="dropdown-item {{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}" href="{{ route('supervisor.infokaryawan') }}">
+                            Informasi Karyawan
+                        </a>
+                    </div>
                 </li>
-                <li class="nav-item {{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('supervisor.infokaryawan') }}">Informasi Karyawan</a>
-                </li>
-                <li class="nav-item {{ request()->is('supervisor/pengajuan') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('supervisor.pengajuan') }}">Pengajuan</a>
-                </li>
-                <li class="nav-item {{ request()->is('supervisor/pembayaran') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('supervisor.pembayaran') }}">Pembayaran</a>
+
+                <!-- Kasbon -->
+                <li class="nav-item dropdown {{ ($title === 'Pengajuan' || $title === 'Pembayaran') ? 'active' : '' }}">
+                    <a class="nav-link dropdown-toggle" href="#" id="kasbonDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="nc-icon nc-money-coins"></i> Kasbon
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="kasbonDropdown">
+                        <a class="dropdown-item {{ $title === 'Pengajuan' ? 'active' : '' }}" href="{{ route('supervisor.pengajuan') }}">
+                            Pengajuan
+                        </a>
+                        <a class="dropdown-item {{ $title === 'Pembayaran' ? 'active' : '' }}" href="{{ route('supervisor.pembayaran') }}">
+                            Pembayaran
+                        </a>
+                    </div>
                 </li>
             </ul>
-        </div>
-    </nav>
+          </div>
+      </nav>
         
         <!-- Content -->
         <div class="main-panel">
