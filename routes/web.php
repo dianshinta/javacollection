@@ -53,7 +53,7 @@ Route::middleware(['web'])->group(function () {
 });
 
 // BAGIAN HALAMAN KARYAWAN
-Route::middleware(['auth', 'role:karyawan'])->group( function() {
+Route::middleware(['auth', 'role:karyawan'])->group(function () {
     Route::get('/karyawan/beranda/', function () {
         return view('/karyawan/beranda', [
             "title" => "Beranda"
@@ -96,7 +96,7 @@ Route::middleware(['auth', 'role:karyawan'])->group( function() {
 });
 
 // BAGIAN HALAMAN SUPERVISOR
-Route::middleware(['auth', 'role:supervisor'])->group(function() {
+Route::middleware(['auth', 'role:supervisor'])->group(function () {
     Route::get('/supervisor/beranda/', function () {
         return view('/supervisor/beranda', [
             "title" => "Beranda"
@@ -123,48 +123,52 @@ Route::middleware(['auth', 'role:supervisor'])->group(function() {
 });
 
 // BAGIAN HALAMAN MANAJER
-Route::middleware(['auth', 'role:manajer'])->group(function() {
+Route::middleware(['auth', 'role:manajer'])->group(function () {
     Route::get('/manajer/beranda/', function () {
         return view('/manajer/beranda', [
             "title" => "Beranda"
         ]);
     })->name('manager.beranda');
-    
+
     Route::get('/manajer/gaji', [EmployerSalaryController::class, 'index'])
         ->name('manajer.gaji');
-    
+
+    // mengupdate status pengiriman gaji
+    Route::post('/manajer/gaji/kirim/{karyawan_nip}', [EmployerSalaryController::class, 'updateStatus'])->name('manajer.gaji.kirim');
+
+
     //Mengambil data untuk ditampilkan ke grafik
     Route::get('/api/chart-data', [AttendanceController::class, 'getChartData']);
-    
+
     //Mengambil data pilihan untuk ditampilkan pada grafik
     Route::get('/api/index-data', [AttendanceController::class, 'index']);
-    
+
     // Menampilkan halaman edit karyawan manajer
     Route::get('/manajer/editkaryawan', function () {
         return view('manajer.editkaryawan');
     })->name('manajer.editkaryawan');
-    
+
     Route::get('/karyawan', [KaryawanController::class, 'karyawans'])
         ->name('manajer.editkaryawan');
-    
+
     Route::post('/karyawan/save', [KaryawanController::class, 'save'])
         ->name('karyawan.save');
-    
+
     Route::delete('/karyawan/{id}/delete', [KaryawanController::class, 'delete'])
         ->name('karyawan.delete');
-    
+
     // Menampilkan halaman edit karyawan
     Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])
         ->name('karyawan.edit');
-    
+
     // Route untuk update data karyawan
     Route::put('/karyawan/{id}/update', [KaryawanController::class, 'update'])
         ->name('karyawan.update');
-    
+
     // Route untuk menambah karyawan
     Route::get('/karyawan/create', [KaryawanController::class, 'create'])
         ->name('karyawan.create');
-    
+
     Route::post('/karyawan', [KaryawanController::class, 'store'])
         ->name('karyawan.store');
 });
