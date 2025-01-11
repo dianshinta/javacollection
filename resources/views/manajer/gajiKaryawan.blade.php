@@ -21,44 +21,119 @@
     <link href="../assets/demo/demo.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" >
-  <!-- Alert -->
+    <!-- Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .top-right-logout {
+          position: absolute;
+          top: 8px;
+          right: 15px;
+          z-index: 999;
+        }
+    
+        /* Change navbar background color to maroon */
+        .navbar {
+          background-color: #fff2f2 !important; 
+        }
+    
+        /* Active link color */
+        .navbar-nav .nav-item.active .nav-link {
+          color: #500606 !important; /* Change active link color to red */
+        }
+    
+        /* Hover link color */
+        .navbar-nav .nav-item .nav-link:hover {
+          color: #c8cbcf !important; /* Change hover link color to light gray */
+        }
+    
+        /* Optional: ensure navbar text is white when not active */
+        .navbar-nav .nav-item .nav-link {
+          color: grey !important;
+        }
+    
+        /* Set the color of the hamburger bars (three lines) to white */
+        .navbar-toggler-icon {
+          background-color: transparent !important; /* Set the bars (lines) to white */
+        }
+    
+        /* Change hamburger icon color when it’s clicked (active state) */
+        .navbar-toggler.collapsed .navbar-toggler-icon {
+          background-color: transparent !important; /* Change color to maroon when collapsed */
+        }
+    
+        </style>
 </head>
 <body>
-    <div class="wrapper m-auto">
-        {{-- navbar --}}
-        <div class="sidebar" data-color="white" data-active-color="danger">
-            <div class="logo">
-              <span class="simple-text font-weight-bold">
-                JAVA COLLECTION
-              </span>
-            </div>
-            <div class="sidebar-wrapper">
-              <ul class="nav">
-                <li>
-                  <a href="{{route('manager.beranda')}}">
-                    <i class="nc-icon nc-layout-11"></i>
-                    <p>Beranda</p>
-                  </a>
-                </li>
-                <li class="active">
-                  <a href="{{route('manajer.gaji')}}">
-                    <i class="nc-icon nc-money-coins"></i>
-                    <p>Gaji</p>
-                  </a>
+    <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
+        <div class="logo">
+            <span class="simple-text font-weight-bold">
+            JAVA COLLECTION
+            </span>
+        </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="{{ request()->is('manajer/beranda') ? 'active' : '' }}">
+                    <a href="{{route('manager.beranda')}}">
+                        <i class="nc-icon nc-layout-11"></i>
+                        <p>Beranda</p>
+                    </a>
                 </li>
                 <li>
-                <a href="{{ route('manajer.editkaryawan') }}">
-                    <i class="nc-icon nc-single-02"></i>
-                    <p>Karyawan</p>
-                  </a>
+                    <a href="{{route('manajer.gaji')}}">
+                        <i class="nc-icon nc-money-coins"></i>
+                        <p>Gaji</p>
+                    </a>
                 </li>
-              </ul>
+                <li class="{{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
+                    <a href="{{ route('manajer.editkaryawan') }}">
+                        <i class="nc-icon nc-single-02"></i>
+                        <p>Karyawan</p>
+                    </a>
+                </li>
+            </ul>
+  
+            <div class="mt-auto p-3">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-block">
+                        <i class="nc-icon nc-button-power"></i> Logout
+                    </button>
+                </form>
             </div>
         </div>
+    </div>
     
         <!-- Content -->
         <div class="main-panel">
+            <!-- Navbar for mobile view -->
+            <!-- Navbar for mobile view -->
+            <div class="top-right-logout d-block d-lg-none">
+                <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    <i class="nc-icon nc-button-power"></i> Logout
+                </button>
+                </form>
+            </div>
+                    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item {{ request()->is('manajer/beranda') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('manager.beranda') }}">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('manajer.gaji') }}">Gaji</a>
+                    </li>
+                    <li class="nav-item {{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">Karyawan</a>
+                    </li>
+                </ul>        
+                </div>
+            </nav>
             <div class="content">
                 <div class="mb-4">
                     <small class="text-muted d-block">Gaji</small>

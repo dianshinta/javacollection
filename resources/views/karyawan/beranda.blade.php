@@ -26,7 +26,7 @@
   <h5 class="font-weight-bold">Selamat datang!</h5>
 </div>
 <div class="d-flex justify-content-start align-items-center gap-4 mb-4">
-  <div class="d-flex align-items-center mr-2">
+  <div class="d-flex align-items-center mr-5">
     <i class="nc-icon nc-circle-10 text-primary mr-2"></i>
     <div>
       <span
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="d-flex align-items-center mr-2">
+  <div class="d-flex align-items-center mr-5">
     <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
     <div>
       <span>{{ \Carbon\Carbon::now()->translatedFormat('l') }}</span> <!-- Nama Hari -->
