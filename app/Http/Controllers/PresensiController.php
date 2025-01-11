@@ -56,6 +56,7 @@ class PresensiController extends Controller
         $hasPermissionToday = DB::table('perizinan')
                             ->where('nip', $nip)
                             ->whereDate('tanggal', $today)
+                            ->where('status', 'Disetujui')
                             ->exists(); // Mengecek apakah ada data perizinan untuk tanggal hari ini
 
         // Kirim data ke view 'karyawan.presensi'
