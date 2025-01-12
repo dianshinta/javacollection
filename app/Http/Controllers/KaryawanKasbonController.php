@@ -16,7 +16,9 @@ class karyawanKasbonController extends Controller
     public function index() {
         $nip = Auth::user()->nip;
         // $nip = 1;
-        $riwayatKasbon = kasbon::where('nip', $nip)->orderBy('created_at', 'desc')->get();
+        $riwayatKasbon = kasbon::where('nip', $nip)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate(20);
 
         // Kirim data ke view 'karyawan.kasbon'
         return view('karyawan.kasbon', compact('riwayatKasbon'))->with('title', 'Kasbon');
