@@ -188,9 +188,9 @@
                             <tbody >
                                 <tr class="gaji-row" data-id="{{ $data['id'] }}" >
                                     <td>{{ Str::limit($data->karyawan->nama, 20) }}</td>
-                                    <td> {{ $data['total_gaji'] }}</td>
-                                    <td> {{ $data->bulans->bulan_tahun }}</td>
-                                    <td>{{ $data['status'] }}</td>
+                                    <td> {{ $data['total_gaji'] ?? 'Bulan tidak tersedia' }}</td>
+                                    <td data-bulan-id="{{ $data['bulan_id'] }}"> {{ $data->bulans->bulan_tahun ?? 'Bulan tidak tersedia' }} </td>
+                                    <td>{{ $data['status'] ?? 'Bulan tidak tersedia' }}</td>
                                 </tr>
                             </tbody>   
                             @endforeach
@@ -241,7 +241,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <p class="tanggal">    Bulan : <span id="modalBulanView"> </span> </p>
+                                <p class="tanggal">    Bulan : <span id="modalBulanView"> </span> <span id="modalBulan" hidden> </span> </p>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
