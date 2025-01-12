@@ -6,38 +6,57 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Toko;
 use App\Models\presensi;
+use App\Models\CabangSupervisor;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
     public function index(Request $request)
-    {   
-        $attendances = presensi::with(['toko:id,name'])
-            ->get(['toko_id'])
-            ->unique('toko_id')
-            ->values(); // Untuk mereset indeks setelah penghapusan duplikasi
+    {
+        $user = auth()->user();
 
-        $result = $attendances->map(function ($attendance) {
-            return [
-                'toko_id' => $attendance->toko_id,
-                'nama' => $attendance->toko->name, // Ambil nama toko
-            ];
-        });
+        // Pastikan $result diinisialisasi
+        $result = [];
 
-        /*$user = $request->user();
+        if ($user->jabatan === 'manajer') {
+            $attendances = presensi::with(['toko:id,name'])
+                ->get(['toko_id'])
+                ->unique('toko_id')
+                ->values(); // Untuk mereset indeks setelah penghapusan duplikasi
 
-        if ($user->role === 'manager') {
-            $attendances = presensi::with(['user', 'branch'])->get();
-        } elseif ($user->role === 'supervisor') {
-            $attendances = presensi::with(['user', 'branch'])
-                ->whereIn('branch_id', $user->supervisedBranches->pluck('id'))
+            $result = $attendances->map(function ($attendance) {
+                return [
+                    'toko_id' => $attendance->toko_id,
+                    'nama' => $attendance->toko->name, // Ambil nama toko
+                ];
+            });
+        } elseif ($user->jabatan === 'supervisor') {
+            $attendances = CabangSupervisor::where('nip', $user->nip)
+                ->with('toko') // Memuat relasi toko
                 ->get();
-        } else {
+
+            // Transformasi data untuk memasukkan nama cabang
+            $result = $attendances->map(function ($attendance) {
+                return [
+                    'toko_id' => $attendance->toko_id,
+                    'nama' => $attendance->toko ? $attendance->toko->name : null, // Nama cabang dari tabel `Toko`
+                ];
+            });
+        } elseif ($user->jabatan === 'karyawan') {
             $attendances = presensi::with(['user', 'branch'])
                 ->where('user_id', $user->id)
                 ->get();
-        }*/
 
+            $result = $attendances->map(function ($attendance) {
+                return [
+                    'user_id' => $attendance->user_id,
+                    'branch_id' => $attendance->branch_id,
+                    'tanggal' => $attendance->tanggal,
+                ];
+            });
+        }
+
+        // Return JSON response
         return response()->json($result);
     }
 

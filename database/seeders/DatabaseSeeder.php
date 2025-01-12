@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(ChartSeeder::class);
         // $this->call(TokoSeeder::class);
         // $this->call(kar$karyawanSeeder::class);
-        // $this->call(CabangSupervisorSeeder::class);
+        $this->call(CabangSupervisorSeeder::class);
         // $this->call(KehadiranSeeder::class);
 
         // Buat data Toko

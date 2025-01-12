@@ -136,13 +136,6 @@ Route::middleware(['auth', 'role:manajer'])->group(function () {
     // mengupdate status pengiriman gaji
     Route::post('/manajer/gaji/kirim/{karyawan_nip}', [EmployerSalaryController::class, 'updateStatus'])->name('manajer.gaji.kirim');
 
-
-    //Mengambil data untuk ditampilkan ke grafik
-    Route::get('/api/chart-data', [AttendanceController::class, 'getChartData']);
-
-    //Mengambil data pilihan untuk ditampilkan pada grafik
-    Route::get('/api/index-data', [AttendanceController::class, 'index']);
-
     // Menampilkan halaman edit karyawan manajer
     Route::get('/manajer/editkaryawan', function () {
         return view('manajer.editkaryawan');
@@ -190,3 +183,9 @@ Route::get('reset-password/{token}', [ResetPasswordController::class, 'create'])
 Route::post('reset-password', [ResetPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.update');
+
+//Mengambil data untuk ditampilkan ke grafik
+Route::get('/api/chart-data', [AttendanceController::class, 'getChartData']);
+
+//Mengambil data pilihan untuk ditampilkan pada grafik
+Route::get('/api/index-data', [AttendanceController::class, 'index']);
