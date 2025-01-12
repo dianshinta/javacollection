@@ -26,13 +26,13 @@ class SupervisorPengajuanController extends Controller
             })
             ->orderBy('updated_at', 'desc') 
             ->orderBy('created_at', 'desc')
-            ->paginate(2); 
+            ->paginate(20); 
         } else {
             // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
             $pengajuan = kasbon::where('keterangan', 'Pengajuan') 
                                 ->orderBy('updated_at', 'desc') 
                                 ->orderBy('created_at', 'desc')
-                                ->paginate(2);
+                                ->paginate(20);
         }
 
         // Kirim data ke view

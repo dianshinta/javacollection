@@ -25,12 +25,12 @@ class supervisorPerizinanController extends Controller
             })
             ->orderBy('updated_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
             ->orderBy('created_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-            ->paginate(2);
+            ->paginate(20);
         } else {
             // Ambil data perizinan dari database
             $perizinan = Perizinan::orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
             -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-            ->paginate(2);
+            ->paginate(20);
         }
         
         // Kirim data ke view
