@@ -16,7 +16,7 @@ class CreateKaryawansTable extends Migration
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->enum('gender', ['L', 'P']);
-            $table->unsignedBigInteger('toko_id');
+            $table->string('toko_id');
             $table->text('alamat');
             $table->string('no_telp', 15);
             $table->string('bank');

@@ -55,8 +55,7 @@ class AuthController extends Controller
                     'no_telp' => null,
                     'bank' => null,
                     'no_rek' => null,
-                    'kasbon' => 0,
-                    'gaji_pokok' => 0,
+                    'gaji_pokok' => null,
                 ]);
             }
         }

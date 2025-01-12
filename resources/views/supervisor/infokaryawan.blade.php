@@ -15,7 +15,7 @@
                             <tr>
                                 <th>NIP</th>
                                 <th>Nama</th>
-                                <th>Jabatan</th>
+                                <th>Toko</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -24,7 +24,7 @@
                                 <tr>
                                     <td>{{ $karyawan->nip }}</td>
                                     <td>{{ $karyawan->nama }}</td>
-                                    <td>{{ $karyawan->jabatan }}</td>
+                                    <td>{{ $karyawan->toko_id }}</td>
                                     <td>
                                         <!-- Button to open modal with employee details -->
                                         <button class="btn btn-info" data-toggle="modal" data-target="#viewModal{{ $karyawan->id }}">View</button>
@@ -48,12 +48,12 @@
                                                     <li><strong>Tempat Lahir:</strong> {{ $karyawan->tempat_lahir }}</li>
                                                     <li><strong>Tanggal Lahir:</strong> {{ $karyawan->tanggal_lahir }}</li>
                                                     <li><strong>Gender:</strong> {{ $karyawan->gender }}</li>
-                                                    <li><strong>Toko ID:</strong> {{ $karyawan->toko_id }}</li>
+                                                    <li><strong>Toko:</strong> {{ $karyawan->toko_id }}</li>
                                                     <li><strong>Alamat:</strong> {{ $karyawan->alamat }}</li>
                                                     <li><strong>No Telepon:</strong> {{ $karyawan->no_telp }}</li>
                                                     <li><strong>Bank:</strong> {{ $karyawan->bank }}</li>
                                                     <li><strong>No Rekening:</strong> {{ $karyawan->no_rek }}</li>
-                                                    <li><strong>Kasbon:</strong> {{ $karyawan->kasbon }}</li>
+                                                    <li><strong>Gaji Pokok:</strong> {{ $karyawan->gaji_pokok }}</li>
                                                 </ul>
                                             </div>
                                             <div class="modal-footer">

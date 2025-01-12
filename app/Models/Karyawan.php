@@ -23,7 +23,6 @@ class Karyawan extends Model
         'no_telp',
         'bank',
         'no_rek',
-        'kasbon',
         'gaji_pokok',
     ];
 

@@ -19,7 +19,7 @@
                             <tr>
                                 <th>NIP</th>
                                 <th>Nama</th>
-                                <th>Jabatan</th>
+                                <th>Toko</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -28,7 +28,7 @@
                                 <tr>
                                     <td>{{ $karyawan->nip }}</td>
                                     <td>{{ $karyawan->nama }}</td>
-                                    <td>{{ $karyawan->jabatan }}</td>
+                                    <td>{{ $karyawan->toko_id }}</td>
                                     <td>
                                         <!-- Button to open modal with employee details -->
                                         <button class="btn btn-info" data-toggle="modal" data-target="#viewModal{{ $karyawan->id }}">View</button>
@@ -86,8 +86,11 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="toko_id">Toko ID</label>
-                                                        <input type="text" class="form-control" id="toko_id" name="toko_id" value="{{ $karyawan->toko_id }}" required>
+                                                        <label for="toko_id">Toko</label>
+                                                        <select class="form-control" id="toko_id" name="toko_id" required>
+                                                        <option value="Tanah Abang" {{ $karyawan->toko_id == 'Tanah Abang' ? 'selected' : '' }}>Tanah Abang</option>
+                                                        <option value="Thamrin City" {{ $karyawan->toko_id == 'Thamrin City' ? 'selected' : '' }}>Thamrin City</option>
+                                                        </select>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="alamat">Alamat</label>
@@ -106,8 +109,8 @@
                                                         <input type="text" class="form-control" id="no_rek" name="no_rek" value="{{ $karyawan->no_rek }}" required>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="kasbon">Kasbon</label>
-                                                        <input type="number" class="form-control" id="kasbon" name="kasbon" value="{{ $karyawan->kasbon }}" required>
+                                                        <label for="gaji_pokok">Gaji Pokok</label>
+                                                        <input type="number" class="form-control" id="gaji_pokok" name="gaji_pokok" value="{{ $karyawan->gaji_pokok }}" required>
                                                     </div>
     
                                                     <div class="modal-footer">
