@@ -17,10 +17,13 @@
                 <label for="nama">Nama</label>
                 <input type="text" class="form-control" id="nama" name="nama" required>
             </div>
-            <div class="form-group">
-                <label for="jabatan">Jabatan</label>
-                <input type="text" class="form-control" id="jabatan" name="jabatan" required>
-            </div>
+            <label for="jabatan">Jabatan</label>
+            <div class="radio-group">
+        <label>
+            <input type="radio" id="karyawan" name="jabatan" value="karyawan" required>
+            Karyawan
+        </label>
+    </div>
             <div class="form-group">
                 <label for="tempat_lahir">Tempat Lahir</label>
                 <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required>
@@ -37,8 +40,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="toko_id">Toko ID</label>
-                <input type="text" class="form-control" id="toko_id" name="toko_id" required>
+                <label for="toko_id">Toko</label>
+                <select class="form-control" id="toko_id" name="toko_id" required>
+                    <option value="Tanah Abang">Tanah Abang</option>
+                    <option value="Thamrin City">Thamrin City</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="alamat">Alamat</label>
@@ -57,8 +63,8 @@
                 <input type="text" class="form-control" id="no_rek" name="no_rek" required>
             </div>
             <div class="form-group">
-                <label for="kasbon">Kasbon</label>
-                <input type="number" class="form-control" id="kasbon" name="kasbon" required>
+                <label for="gaji_pokok">Gaji Pokok</label>
+                <input type="number" class="form-control" id="gaji_pokok" name="gaji_pokok" required>
             </div>
     
             <button type="submit" class="btn btn-primary">Simpan</button>

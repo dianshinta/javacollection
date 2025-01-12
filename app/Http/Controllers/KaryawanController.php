@@ -131,6 +131,16 @@ class KaryawanController extends Controller
         return view('manajer.create')->with('title', 'Karyawan'); // Pastikan file view bernama create.blade.php
     }
 
+    public function search(Request $request)
+{
+    $query = $request->get('q');
+    $karyawans = Karyawan::where('nama', 'LIKE', "%$query%")->get();
+
+    return response()->json($karyawans);
+}
+
+
+
 }
 
 

@@ -10,9 +10,14 @@
     <div class="col-md-12">
         <div class="mb-3">
             <a href="{{ route('karyawan.create') }}" class="btn btn-success">Tambah Karyawan</a>
+           
         </div>
         <div class="card ">
             <div class="card-body">
+                 <!-- Kolom Pencarian -->
+                 <div class="mb-3">
+                    <input type="text" id="search" class="form-control" placeholder="Cari nama karyawan...">
+                </div>
                 <div class="table-responsive">
                     <table class="table text-center">
                         <thead>
@@ -134,4 +139,52 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('search');
+        const tableBody = document.getElementById('karyawan-table-body');
+
+        searchInput.addEventListener('keyup', function () {
+            const query = this.value;
+
+            if (query.length > 0) {
+                fetch(`{{ url('karyawan/search') }}?q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        tableBody.innerHTML = '';
+
+                        if (data.length > 0) {
+                            data.forEach(karyawan => {
+                                tableBody.innerHTML += `
+                                    <tr>
+                                        <td>${karyawan.nip}</td>
+                                        <td>${karyawan.nama}</td>
+                                        <td>${karyawan.toko_id}</td>
+                                        <td>
+                                            <button class="btn btn-info" data-toggle="modal" data-target="#viewModal${karyawan.id}">View</button>
+                                            <form action="/karyawan/${karyawan.id}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+                        } else {
+                            tableBody.innerHTML = `
+                                <tr>
+                                    <td colspan="4" class="text-center">Tidak ada data karyawan ditemukan.</td>
+                                </tr>
+                            `;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                location.reload();
+            }
+        });
+    });
+</script>
 @endsection

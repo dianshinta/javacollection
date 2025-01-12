@@ -171,6 +171,9 @@ Route::middleware(['auth', 'role:manajer'])->group(function () {
 
     Route::post('/karyawan', [KaryawanController::class, 'store'])
         ->name('karyawan.store');
+    
+    Route::get('karyawan/search', [KaryawanController::class, 'search'])->name('karyawan.search');
+
 });
 
 // Fitur reset password
