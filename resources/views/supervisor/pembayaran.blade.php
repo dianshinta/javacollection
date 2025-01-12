@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
@@ -25,7 +24,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <!-- CSS for Mobile Phone -->
   <style>
     .top-right-logout {
       position: absolute;
@@ -51,7 +50,7 @@
     }
   
     .navbar-nav .nav-item .nav-link:hover {
-      color: lightgray !important;
+      color: lightgrey !important;
       /* Warna teks menu saat hover */
     }
   
@@ -94,27 +93,20 @@
     .dropdown-item:hover {
       color: lightgrey;
     }
-
-    .dropdown-item.pembayaran {
-        background-color: #fff2f2 !important; /* Warna pink */
-        color: grey; /* Opsional, warna teks */
-    }
-
-
-    </style>
-
+  </style>
 </head>
-
 <body class="">
     <div class="wrapper ">
+        <!-- Head Role -->
         <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
             <div class="logo">
                 <span class="simple-text font-weight-bold">
                 JAVA COLLECTION
                 </span>
             </div>
-            
-            <div class="sidebar-wrapper">
+            <!-- MENU -->
+            @include('supervisor.menu')
+            {{-- <div class="sidebar-wrapper">
                 <ul class="nav">
                     <!-- Beranda -->
                     <li class="{{ ($title === 'Beranda') ? 'active' : '' }}">
@@ -181,27 +173,27 @@
                       </button>
                     </form>
                 </div>
-            </div>
-              <!-- END MENU -->
-          </div>
+            </div> --}}
+            <!-- END MENU -->
+        </div>
   
-          <!-- Navbar for mobile -->
-          <div class="top-right-logout d-block d-lg-none">
+        <!-- Navbar for mobile -->
+        <div class="top-right-logout d-block d-lg-none">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-danger">
                     <i class="nc-icon nc-button-power"></i> Logout
                 </button>
             </form>
-          </div>
+        </div>  
+
         <!-- Tombol Hamburger -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-  
-            <!-- Navbar Collapse -->
+
             <!-- Navbar Collapse -->
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
@@ -243,7 +235,7 @@
                     </li>
                 </ul>
             </div>
-            </nav>
+        </nav>
 
         <!-- Content -->
         <div class="main-panel">

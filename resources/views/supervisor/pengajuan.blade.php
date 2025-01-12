@@ -20,7 +20,7 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+    <!-- CSS for Mobile Phone -->
     <style>
         .top-right-logout {
           position: absolute;
@@ -28,7 +28,7 @@
           right: 15px;
           z-index: 999;
         }
-    
+  
         .navbar {
           background-color: #fff2f2 !important;
           margin-bottom: 0;
@@ -79,116 +79,49 @@
           display: block;
           /* Show dropdown when active */
         }
-    
+  
         .dropdown-item {
             background-color: #fff2f2; /* Ubah background */
             border-radius: 5px; /* Opsional */
             transition: color 0.3s ease; /* Durasi transisi */
         }
-    
+  
         .dropdown-item:hover {
           color: lightgrey;
         }
     </style>
-
 </head>
 <body class="">
     <div class="wrapper ">
+        <!-- Head Role -->
         <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
-              <div class="logo">
+            <div class="logo">
                 <span class="simple-text font-weight-bold">
                 JAVA COLLECTION
                 </span>
             </div>
             
-            <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <!-- Beranda -->
-                    <li class="{{ ($title === 'Beranda') ? 'active' : '' }}">
-                        <a href="{{route('supervisor.beranda')}}">
-                        <i class="nc-icon nc-layout-11"></i>
-                        <p>Beranda</p>
-                        </a>
-                    </li>
-                    <!-- Karyawan -->
-                    <li class="dropdown {{($title === 'Perizinan' || $title === "Informasi") ? 'active' : '' }}">
-                        <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#karyawanDropdown">
-                            <i class="nc-icon nc-single-02"></i>
-                        <p class="d-inline-block mr-5">Karyawan</p>
-                        </a>
-                        <div class="collapse" id="karyawanDropdown">
-                            <ul class="nav" style="margin-left: 62px;">
-                                <!-- Sub menu perizinan -->
-                                <li class="{{($title === 'Perizinan') ? 'active' : '' }}">
-                                    <a href="{{route('supervisor.perizinan')}}">
-                                        <p>Perizinan</p>
-                                    </a>
-                                </li>
-                                <!-- Sub menu informasi -->
-                                <li class="{{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}">
-                                    <a href="{{ route('supervisor.infokaryawan') }}">
-                                        <p>Informasi Karyawan</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <!-- Kasbon -->
-                    <li class="dropdown {{($title === 'Pengajuan' || $title === "Pembayaran") ? 'active' : '' }}">
-                        <a href="#" class="dropdown-toggle" data-toggle="collapse" aria-expanded="false" data-target="#kasbonDropdown">
-                        <i class="nc-icon nc-money-coins"></i>
-                        <p class="d-inline-block mr-5">Kasbon</p>
-                        </a>
-                        <div class="collapse" id="kasbonDropdown">
-                            <ul class="nav" style="margin-left: 62px;">
-                                <!-- Sub menu pengajuan -->
-                                <li class="{{($title === 'Pengajuan') ? 'active' : '' }}">
-                                    <a href="{{route('supervisor.pengajuan')}}">
-                                        <p>Pengajuan</p>
-                                    </a>
-                                </li>
-                                <!-- Sub menu pembayaran -->
-                                <li>
-                                    <li class="{{($title === 'Pembayaran') ? 'active' : '' }}">
-                                        <a href="{{route('supervisor.pembayaran')}}">
-                                            <p>Pembayaran</p>
-                                        </a>
-                                    </li>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-                <!-- Logout -->
-                <div class="mt-auto p-3">
-                    <form action="{{ route('logout') }}" method="POST">
-                      @csrf
-                      <button type="submit" class="btn btn-danger btn-block">
-                        <i class="nc-icon nc-button-power"></i> Logout
-                      </button>
-                    </form>
-                </div>
-            </div>
-              <!-- END MENU -->
-          </div>
+            <!--  MENU -->  
+            @include('supervisor.menu')
+            <!-- END MENU -->
+        </div>
   
-          <!-- Navbar for mobile -->
-          <div class="top-right-logout d-block d-lg-none">
+        <!-- Navbar for mobile -->
+        <div class="top-right-logout d-block d-lg-none">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-danger">
                     <i class="nc-icon nc-button-power"></i> Logout
                 </button>
             </form>
-          </div>
+        </div>
+          
         <!-- Tombol Hamburger -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-  
-            <!-- Navbar Collapse -->
             <!-- Navbar Collapse -->
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
@@ -228,10 +161,11 @@
                         </a>
                     </div>
                 </li>
-            </ul>
-          </div>
+              </ul>
+            </div>
         </nav>
 
+        <!-- Content -->
         <div class="main-panel">
             <div class="content">
                 <div class="mb-4">
@@ -344,6 +278,7 @@
             </div>
 
         </div>
+        <!-- End Content -->
     </div>
 
     <!--   Core JS Files   -->
