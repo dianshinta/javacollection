@@ -188,14 +188,26 @@
                             <tbody >
                                 <tr class="gaji-row" data-id="{{ $data['id'] }}" >
                                     <td>{{ Str::limit($data->karyawan->nama, 20) }}</td>
-                                    <td> {{ $data['total_gaji'] ?? 'Bulan tidak tersedia' }}</td>
+                                    <td> {{ 'Rp ' . number_format($data['total_gaji'], 0, ',', '.') }}</td>
                                     <td data-bulan-id="{{ $data['bulan_id'] }}"> {{ $data->bulans->bulan_tahun ?? 'Bulan tidak tersedia' }} </td>
-                                    <td>{{ $data['status'] ?? 'Bulan tidak tersedia' }}</td>
+                                    <td> <!-- Status Pengiriman Gaji -->
+                                        @if ($data->status === 'Telah Dikirim')
+                                            <span class="badge bg-success">Telah Dikirim</span>
+                                        @else
+                                            <span class="badge bg-warning">Belum Dikirim</span>
+                                        @endif
+                                    </td>
                                 </tr>
                             </tbody>   
                             @endforeach
                         </table>
-                    </div>
+                        </div>
+                          <!-- Tambahkan pagination -->
+                          <div class="d-flex justify-content-center">
+                            <nav>
+                                {{ $datas->links('pagination::bootstrap-4') }}
+                            </nav>
+                        </div>
                 </div>
             
                 <!-- Modal Box for Atur Bonus -->
@@ -386,9 +398,12 @@
             $('.gaji-row').click(function () {
                 const id = $(this).data('id');
 
-                // Cari data yang cocok dengan NIP tersebut
-                const data = @json($datas).find(item => item.id == id);
-       
+                // Mendeklarasikan data JSON sebagai variabel
+                const allData = @json($datas->items());
+
+                // Cari data berdasarkan id
+                const data = allData.find(item => item.id == id);
+                    
             
             // Isi data ke dalam modal
             if (data) {

@@ -10,6 +10,7 @@ use App\Models\Kasbon;
 use App\Models\Bulan;
 use Illuminate\Support\Facades\Log;
 
+
 class EmployerSalaryController extends Controller
 {
     /**
@@ -18,8 +19,18 @@ class EmployerSalaryController extends Controller
     public function index()
     {
         $this->updateInEmployerSalaries();
+        
+        //return view('/manajer/gajiKaryawan', ["title" => "Gaji", 'datas' => EmployerSalary::all()]);
 
-        return view('/manajer/gajiKaryawan', ["title" => "Gaji", 'datas' => EmployerSalary::all()]);
+        // Query data pembayaran dengan filter berdasarkan input pencarian
+        $datas =  EmployerSalary::query()
+            ->paginate(20);
+
+        // Kirim data ke view dengan header untuk mencegah caching
+        return response()->view('/manajer/gajiKaryawan', [
+            "title" => "Gaji",
+            'datas' => $datas
+        ]);
     }
 
     /**
