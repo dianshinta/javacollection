@@ -56,6 +56,7 @@ class AuthController extends Controller
                     'bank' => null,
                     'no_rek' => null,
                     'kasbon' => 0,
+                    'gaji_pokok' => 0,
                 ]);
             }
         }
@@ -110,7 +111,7 @@ class AuthController extends Controller
             'nip' => 'NIP atau Kata Sandi salah.',
         ]);
     }
-    
+
     //logout
     public function logout(Request $request)
     {
