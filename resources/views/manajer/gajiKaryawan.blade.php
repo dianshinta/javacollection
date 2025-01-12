@@ -189,7 +189,7 @@
                                 <tr class="gaji-row" data-id="{{ $data['id'] }}" >
                                     <td>{{ Str::limit($data->karyawan->nama, 20) }}</td>
                                     <td> {{ $data['total_gaji'] }}</td>
-                                    <td> {{ $data['bulan_id'] }}</td>
+                                    <td> {{ $data->bulans->bulan_tahun }}</td>
                                     <td>{{ $data['status'] }}</td>
                                 </tr>
                             </tbody>   
@@ -241,7 +241,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <p class="tanggal">    Tanggal: <span id="modalBulan"> </span> </p>
+                                <p class="tanggal">    Bulan : <span id="modalBulanView"> </span> </p>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -403,6 +403,7 @@
                 $('#modalKasbon').text(data.kasbon);
                 $('#modalTotal').text(data.total_gaji);
                 $('#modalBulan').text(data.bulan_id);
+                $('#modalBulanView').text(data.bulans ? data.bulans.bulan_tahun : 'Bulan tidak ditemukan');
 
                 // Tampilkan modal
                 $('#gajiModal').modal('show');
