@@ -302,14 +302,14 @@
             </div>
 
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-8" style="flex: 0 0 100%; max-width: 100%;">
                 <div class="card card-chart">
                   <div class="card-header">
                     <h5 class="card-title">
                       Kehadiran<br>
                       Karyawan
                     </h5>
-                    <p class="card-category">Bulanan</p>
+                    <p class="card-category" id="currentYear"></p>
                   </div>
                   <div class="card-body">
                     <canvas id="barChart"></canvas>
@@ -320,13 +320,10 @@
                         <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
                       </div>
                       <div class="legend-list">
-                        <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
-                      </div>
-                      <div class="legend-list">
                         <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
                       </div>
                       <div class="legend-list">
-                        <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+                        <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tidak Hadir
                       </div>
                     </div>
                   </div>
@@ -365,7 +362,8 @@
               <script src="../assets/js/plugins/presensi.js"></script>
               <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
               <!-- <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>Paper Dashboard DEMO methods, don't include it in your project! -->
-              <script type="module" src="../assets/js/dashboard-manajer.js"></script>
+              <script src="../assets/demo/demo-employee.js"></script>
+              <script src="../assets/js/dashboard-employee.js"></script>
 
               <script>
                 $(document).ready(function() {

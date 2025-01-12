@@ -43,15 +43,12 @@ class AttendanceController extends Controller
                 ];
             });
         } elseif ($user->jabatan === 'karyawan') {
-            $attendances = presensi::with(['user', 'branch'])
-                ->where('user_id', $user->id)
-                ->get();
+            $attendances = presensi::where('nip', $user->nip)->get();
 
             $result = $attendances->map(function ($attendance) {
                 return [
-                    'user_id' => $attendance->user_id,
-                    'branch_id' => $attendance->branch_id,
                     'tanggal' => $attendance->tanggal,
+                    'status' => $attendance->status,
                 ];
             });
         }
