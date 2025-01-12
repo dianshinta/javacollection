@@ -344,6 +344,21 @@ Coded by www.creative-tim.com
             </div>
         </div>
 
+        <script>
+            function clearSession(event) {
+                // Konfirmasi logout (opsional)
+                const confirmLogout = confirm("Apakah Anda yakin ingin logout?");
+                if (!confirmLogout) {
+                    event.preventDefault();
+                    return;
+                }
+                
+                // Hapus data di localStorage atau sessionStorage (jika digunakan di client-side)
+                sessionStorage.clear();
+                localStorage.removeItem('id'); // Contoh jika ada data user
+            }
+        </script>
+
         <div class="main-panel">
             <div class="content">
                 <div class="mb-4">
