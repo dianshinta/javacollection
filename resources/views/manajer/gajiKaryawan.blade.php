@@ -79,7 +79,7 @@
                         <p>Beranda</p>
                     </a>
                 </li>
-                <li>
+                <li class ="active">
                     <a href="{{route('manajer.gaji')}}">
                         <i class="nc-icon nc-money-coins"></i>
                         <p>Gaji</p>
@@ -119,22 +119,32 @@
                     
             <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                  <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                  <ul class="navbar-nav">
                     <li class="nav-item {{ request()->is('manajer/beranda') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('manager.beranda') }}">Beranda</a>
+                      <a class="nav-link" href="{{ route('manager.beranda') }}">
+                        <i class="nc-icon nc-layout-11"></i>
+                        <p>Beranda</p>
+                      </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('manajer.gaji') }}">Gaji</a>
+                    <li class="nav-item {{ request()->is('manajer/gaji') ? 'active' : '' }}">
+                      <a class="nav-link" href="{{ route('manajer.gaji') }}">
+                        <i class="nc-icon nc-money-coins"></i>
+                        <p>Gaji</p>
+                      </a>
                     </li>
                     <li class="nav-item {{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">Karyawan</a>
+                      <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">
+                        <i class="nc-icon nc-single-02"></i>
+                        <p>Karyawan</p>
+                      </a>
                     </li>
-                </ul>        
+                  </ul>
                 </div>
-            </nav>
+              </nav>
+              
             <div class="content">
                 <div class="mb-4">
                     <small class="text-muted d-block">Gaji</small>

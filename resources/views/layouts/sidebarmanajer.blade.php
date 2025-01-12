@@ -124,17 +124,26 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item {{ request()->is('manajer/beranda') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('manager.beranda') }}">Beranda</a>
+              <a class="nav-link" href="{{ route('manager.beranda') }}">
+                <i class="nc-icon nc-layout-11"></i>
+                <p>Beranda</p>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('manajer.gaji') }}">Gaji</a>
+              <a class="nav-link" href="{{ route('manajer.gaji') }}">
+                <i class="nc-icon nc-money-coins"></i>
+                <p>Gaji</p>
+              </a>
             </li>
             <li class="nav-item {{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">Karyawan</a>
+              <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">
+                <i class="nc-icon nc-single-02"></i>
+                <p>Karyawan</p>
+              </a>
             </li>
-          </ul>        
+          </ul>
         </div>
-      </nav>
+      </nav>      
 
   <script>
       function clearSession(event) {
