@@ -263,7 +263,7 @@
             </div>        
 
             <!-- Modal -->
-            <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
+            <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -332,11 +332,10 @@
             </div>
 
             <!-- Modal Konfirmasi -->
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p id="confirmMessage"></p> <!--Text confirm-->
@@ -502,6 +501,11 @@
                     });
                 });
             }
+
+            // Close modal by clicking the close button only
+            $('.close').on('click', function() {
+                $(this).closest('.modal').modal('hide');
+            });
         });
     </script>
 </body>

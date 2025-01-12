@@ -346,11 +346,11 @@
             </div>        
 
             <!-- Modal -->
-            <div class="modal fade" id="pembayaranModal" tabindex="-1" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
+            <div class="modal fade" id="pembayaranModal" tabindex="-1" aria-labelledby="pembayaranModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>    
                     </div>
@@ -398,16 +398,15 @@
             </div>
 
             <!-- Modal Konfirmasi -->
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-header"> 
                     </div>
                     <div class="modal-body">
                         <p id="confirmMessage"></p>  <!--Text confirm-->
                         <div class="text-center">
-                            <button type="button" class="btn btn-success" id="btnYakin">Yakin</button>
+                            <button type="button" class="btn btn-success" id="btnYakin">Ya, Terima</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btnBatal">Batal</button>
                         </div>
                     </div>
@@ -508,7 +507,7 @@
                 // nip = modalNip.textContent.trim();
                 id = pembayaranModal.getAttribute('data-id');
                 actionToPerform = 'terima';
-                confirmMessage.textContent = 'Apakah Anda yakin ingin menerima pembayaran ini?';
+                confirmMessage.textContent = 'Terima pembayaran ini?';
                 confirmModal.show();
             });
 
@@ -517,7 +516,7 @@
                 // nip = modalNip.textContent.trim();
                 id = pembayaranModal.getAttribute('data-id');
                 actionToPerform = 'tolak';
-                confirmMessage.textContent = 'Apakah Anda yakin ingin menolak pembayaran ini?';
+                confirmMessage.textContent = 'Tolak pembayaran ini?';
                 confirmModal.show();
             });
 
@@ -619,6 +618,11 @@
                         });
                     });
             }
+
+            // Close modal by clicking the close button only
+            $('.close').on('click', function() {
+                $(this).closest('.modal').modal('hide');
+            });
         });
     </script>
 </body>
