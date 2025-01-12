@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Http\Controllers\EmployerSalaryController;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class EmployerSalary extends Model
 {
@@ -42,12 +43,12 @@ class EmployerSalary extends Model
     {
         return $this->belongsTo(Bulan::class, 'bulan_id', 'id');
     }
-    
+
     public function perizinan()
     {
         return $this->belongsTo(perizinan::class, 'karyawan_nip', 'nip');
     }
-    
+
     public function kasbon()
     {
         return $this->belongsTo(perizinan::class, 'karyawan_nip', 'nip');
@@ -79,12 +80,28 @@ class EmployerSalary extends Model
     // Menghitung absen dari tabel kehadiran berdasarkan status 'tidak hadir'
     public static function calculateAbsen(string $user_nip, int $bulan_id): int
     {
-        return presensi::where('nip', $user_nip)
-            ->where('bulan_id', $bulan_id)
-            ->where('status', 'Tidak Hadir')
-            ->count();
+        // Ambil jumlah hari dalam bulan dari tabel `bulans`
+        $bulan = Bulan::find($bulan_id);
+        if (!$bulan) {
+            throw new \Exception("Bulan dengan ID $bulan_id tidak ditemukan.");
+        }
+
+        $tanggal = Carbon::createFromDate($bulan->tahun, $bulan->bulan, 1);
+        $hariDalamBulan = $tanggal->daysInMonth;
+
+        // Hitung kehadiran
+        $hadir = self::calculateHadir($user_nip, $bulan_id);
+
+        // Hitung izin
+        $izin = self::calculateIzin($user_nip, $bulan_id);
+
+        // Hitung absen menggunakan rumus
+        $absen = $hariDalamBulan - $hadir + $izin;
+
+        return max($absen, 0); // Pastikan absen tidak negatif
     }
-    
+
+
     public static function calculateIzin(string $user_nip, int $bulan_id): int
     {
         return perizinan::where('nip', $user_nip)
