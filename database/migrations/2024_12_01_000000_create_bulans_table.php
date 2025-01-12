@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('bulan'); // Bulan dalam format angka (1-12)
             $table->integer('tahun'); // Tahun
-            $table->timestamps(); // Untuk menyimpan kapan bulan ini ditambahkan
+            $table->string('bulan_tahun')->nullable(); // Tanggal untuk pengurutan berdasarkan bulan dan tahun
+            $table->timestamps(); // Menyimpan kapan data ini ditambahkan
         });
     }
 

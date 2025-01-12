@@ -40,7 +40,7 @@ class EmployerSalary extends Model
     //menghubungkan dengan model Bulan 
     public function bulans()
     {
-        return $this->belongsTo(Bulan::class, 'karyawan_nip', 'bulan_id');
+        return $this->belongsTo(Bulan::class, 'bulan_id', 'id');
     }
     
     public function perizinan()

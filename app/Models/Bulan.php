@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\EmployerSalary;
+use Carbon\Carbon;
 
 class Bulan extends Model
 {
@@ -42,8 +43,11 @@ class Bulan extends Model
         $bulan = $date->month;
         $tahun = $date->year;
 
-        // Cek apakah bulan dan tahun sudah ada
-        return self::firstOrCreate(['bulan' => $bulan, 'tahun' => $tahun]);
+        // Tambahkan data baru dengan bulan_tahun dalam format "Januari 2025"
+        return self::firstOrCreate(
+            ['bulan' => $bulan, 'tahun' => $tahun],
+            ['bulan_tahun' => $date->translatedFormat('F Y')] // Format nama bulan dan tahun
+        );
     }
 
     //Fungsi Membaca dan Menambahkan Bulan dari Tabel Lain Secara Otomatis
@@ -66,5 +70,13 @@ class Bulan extends Model
                 self::tambahBulanBaru($date);
             }
         }
+    }
+
+    // Event saving untuk memastikan bulan_tahun terisi dalam format yang benar
+    protected static function booted()
+    {
+        static::saving(function ($bulan) {
+            $bulan->bulan_tahun = Carbon::createFromDate($bulan->tahun, $bulan->bulan, 1)->translatedFormat('F Y');
+        });
     }
 }
