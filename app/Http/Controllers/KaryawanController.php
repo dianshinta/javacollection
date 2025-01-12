@@ -128,7 +128,7 @@ class KaryawanController extends Controller
 
     public function create()
     {
-        return view('manajer.create'); // Pastikan file view bernama create.blade.php
+        return view('manajer.create')->with('title', 'Karyawan'); // Pastikan file view bernama create.blade.php
     }
 
 }
