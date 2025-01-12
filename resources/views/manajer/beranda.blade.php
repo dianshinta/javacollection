@@ -110,3 +110,6 @@
                     <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tidak Hadir
                   </div>
               @endsection
+
+<script type="module" src="{{ asset('../assets/js/dashboard-manajer.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>

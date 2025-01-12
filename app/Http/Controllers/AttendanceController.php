@@ -56,7 +56,7 @@ class AttendanceController extends Controller
 
         // Filter data mingguan untuk barChart
         $weeklyData = Presensi::where('toko_id', $toko)
-            ->whereDate('tanggal', '>=', Carbon::now()->subDays(7)->toDateString()) // Tanggal minimal
+            ->whereDate('tanggal', '>=', $now->subDays(7)->toDateString()) // Tanggal minimal
             ->whereDate('tanggal', '<=', Carbon::now()->toDateString()) // Tanggal maksimal
             ->orderBy('tanggal', 'asc')
             ->get(['nip', 'toko_id', 'status', 'tanggal']);
@@ -67,9 +67,24 @@ class AttendanceController extends Controller
             ->whereMonth('tanggal', $now->month) // Bulan ini
             ->get(['nip', 'toko_id', 'status', 'tanggal']);
 
+        // Output JSON sesuai format yang diinginkan
         return response()->json([
-            'weeklyData' => $weeklyData,
-            'monthlyData' => $monthlyData,
+            'weeklyData' => $weeklyData->map(function ($item) {
+                return [
+                    'nip' => $item->nip,
+                    'toko_id' => $item->toko_id,
+                    'status' => $item->status,
+                    'tanggal' => $item->tanggal, // Format tanggal
+                ];
+            }),
+            'monthlyData' => $monthlyData->map(function ($item) {
+                return [
+                    'nip' => $item->nip,
+                    'toko_id' => $item->toko_id,
+                    'status' => $item->status,
+                    'tanggal' => $item->tanggal, // Format tanggal
+                ];
+            }),
         ]);
     }
 }
