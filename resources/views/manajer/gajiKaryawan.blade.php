@@ -439,45 +439,79 @@
             // Tombol "Yakin" di modal konfirmasi
             $('#btnYakin').click(function () {
                 const rowId = $(this).data('id'); // Ambil row ID dari elemen terdekat
-                const karyawan_nip = $('#modalNip').text(); // Ambil NIP dari modal
-                const bulan_id = $('#modalBulan').text(); // Ambil bulan ID dari modal
+                const karyawanNip = $('#modalNip').text(); // Ambil NIP dari modal
+                const bulanId = $('#modalBulan').text(); // Ambil bulan ID dari modal
                 const row = $(`.gaji-row[data-id="${rowId}"]`); // Ambil elemen baris berdasarkan row ID
-            $.ajax({
-                url: '/manajer/gaji/kirim/' + karyawan_nip, // Endpoint dengan NIP
-                type: 'POST', // Metode HTTP POST
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Kirim CSRF token
-                },
-                data: {
-                    action: 'updateStatus',
-                    bulan_id: bulan_id, // Kirim bulan_id sebagai bagian dari data
-                    row_id: row.data('id'), // Kirimkan ID baris sebagai parameter
-                },
-                success: function (response) {
-                    // Tanggapan sukses dari server
-                    console.log('Status berhasil diperbarui');
-                    if (response.status) {
-                    // Ambil elemen kolom terakhir dan perbarui dengan status dari server
-                        row.find('td:last-child').text(response.status);
-                    } else {
-                        console.error('Status tidak ditemukan');
-                    }
-                    $('#confirmModal').modal('hide'); // Tutup modal konfirmasi
-                    $('#gajiModal').modal('hide'); // Tutup modal utama
 
-                },
-                error: function (xhr, status, error) {
-                    // Penanganan kesalahan jika terjadi
-                    console.error('Terjadi kesalahan:', error);
-                }
+                // Panggil fungsi untuk memproses pengiriman
+                processSalaryUpdate(karyawanNip, bulanId, row);
             });
-        });
 
             // Tombol "Batal" di modal konfirmasi
             $('#btnBatal').click(function () {
                 $('#confirmModal').modal('hide'); // Tutup modal konfirmasi tanpa aksi
             });
         });
+
+        /**
+         * Fungsi untuk memproses pembaruan status gaji
+         * @param {string} karyawanNip - NIP karyawan
+         * @param {string} bulanId - ID bulan
+         * @param {object} row - Elemen baris tabel yang berkaitan
+         */
+        function processSalaryUpdate(karyawanNip, bulanId, row) {
+            fetch(`/manajer/gaji/kirim/${encodeURIComponent(karyawanNip)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({
+                    action: 'updateStatus',
+                    bulan_id: bulanId,
+                    row_id: row.data('id'),
+                }),
+            })
+                .then((response) => {
+                    if (response.status === 403) {
+                        return response.json().then((data) => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Pengiriman Gagal',
+                                text: data.message,
+                                confirmButtonText: 'OK',
+                            });
+                            throw new Error(data.message); // Hentikan eksekusi lebih lanjut
+                        });
+                    }
+
+                    if (!response.ok) {
+                        throw new Error('Kesalahan jaringan atau server.');
+                    }
+
+                    return response.json();
+                })
+                .then((data) => {
+                    Swal.fire({
+                        title: 'Sukses',
+                        text: data.message,
+                        icon: 'success',
+                    }).then(() => {
+                        // Perbarui status di tabel
+                        window.location.reload();
+                        $('#confirmModal').modal('hide'); // Tutup modal konfirmasi
+                        $('#gajiModal').modal('hide'); // Tutup modal utama
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error.message);
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message || 'Terjadi kesalahan saat memproses data.',
+                        icon: 'error',
+                    });
+                });
+        }
     </script>
 
     <script>
