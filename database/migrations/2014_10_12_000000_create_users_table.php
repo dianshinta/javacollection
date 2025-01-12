@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('password');
             $table->enum('jabatan', ['manajer', 'supervisor', 'karyawan']);
             $table->rememberToken();
-            $table->integer('gaji_pokok');
             $table->timestamps();
         });
     }
