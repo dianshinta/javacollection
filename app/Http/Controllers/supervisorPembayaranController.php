@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use App\Models\Kasbon;
 
@@ -111,6 +112,8 @@ class supervisorPembayaranController extends Controller
                 'message' => 'Data kasbon tidak ditemukan untuk NIP terkait',
             ], 404);
         }
+
+        $karyawan = Karyawan::where('nip', $kasbon->nip)->first();
         
         // Update Database
         if ($request->action === 'terima') {
@@ -119,7 +122,7 @@ class supervisorPembayaranController extends Controller
             // Perbarui saldo_akhir pada kasbon pembayaran
             $kasbon->saldo_akhir = $kasbonSaldo->saldo_akhir;
             // Perbarui status berdasarkan saldo akhir
-            $kasbonSaldo->status_kasbon = $kasbonSaldo->saldo_akhir < 2000000 ? 'Belum Lunas' : 'Lunas';
+            $kasbonSaldo->status_kasbon = $kasbonSaldo->saldo_akhir < $karyawan->gaji_pokok ? 'Belum Lunas' : 'Lunas';
             // Perbarui status bayar menjadi "Disetujui"
             $kasbon->status_bayar = 'Disetujui';
             // Simpan perubahan saldo pada kasbon terkait NIP

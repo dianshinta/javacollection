@@ -5,7 +5,7 @@
     <small class="text-muted d-block">Informasi Karyawan</small>
     <h5 class="font-weight-bold">Daftar Karyawan</h5>
 </div>
-<div class="row align-items-start">
+<div class="row align-items-start text-capitalize">
     <div class="col-md-12">
         <div class="card ">
             <div class="card-body">
