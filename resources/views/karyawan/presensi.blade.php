@@ -81,6 +81,16 @@
       display: block;
       /* Show dropdown when active */
     }
+
+    .dropdown-item {
+      background-color: #fff2f2; /* Ubah background */
+      border-radius: 5px; /* Opsional */
+      transition: color 0.3s ease; /* Durasi transisi */
+    }
+
+    .dropdown-item:hover {
+      color: lightgrey;
+    }
   </style>
 </head>
 
@@ -162,23 +172,39 @@
         <!-- Navbar Collapse -->
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item {{ request()->is('karyawan/beranda') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('karyawan.beranda') }}">Beranda</a>
-            </li>
-            <li class="nav-item {{ request()->is('karyawan/presensi') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('karyawan.presensi') }}">Presensi</a>
-            </li>
-            <li class="nav-item {{ request()->is('karyawan/perizinan') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('karyawan.perizinan') }}">Perizinan</a>
-            </li>
-            <li class="nav-item {{ request()->is('karyawan/kasbon') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('karyawan.kasbon') }}">Kasbon</a>
-            </li>
-            <li class="nav-item {{ request()->is('karyawan/gaji') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('karyawan.gaji') }}">Gaji</a>
-            </li>
+          <!-- Beranda -->
+          <li class="nav-item {{ request()->is('karyawan/beranda') ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('karyawan.beranda') }}">
+              <i class="nc-icon nc-layout-11"></i> Beranda
+              </a>
+          </li>
+      
+          <!-- Presensi -->
+          <li class="nav-item {{ request()->is('karyawan/presensi') ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('karyawan.presensi') }}">
+              <i class="nc-icon nc-touch-id"></i> Presensi
+              </a>
+          </li>
+      
+          <!-- Dropdown Pengajuan -->
+          <li class="nav-item dropdown {{ request()->is('karyawan/perizinan') || request()->is('karyawan/kasbon') ? 'active' : '' }}">
+              <a class="nav-link dropdown-toggle" href="#" id="pengajuanDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="nc-icon nc-single-copy-04"></i> Pengajuan
+              </a>
+              <div class="dropdown-menu" aria-labelledby="pengajuanDropdown">
+              <a class="dropdown-item {{ request()->is('karyawan/perizinan') ? 'active' : '' }}" href="{{ route('karyawan.perizinan') }}">Perizinan</a>
+              <a class="dropdown-item {{ request()->is('karyawan/kasbon') ? 'active' : '' }}" href="{{ route('karyawan.kasbon') }}">Kasbon</a>
+              </div>
+          </li>
+      
+          <!-- Gaji -->
+          <li class="nav-item {{ request()->is('karyawan/gaji') ? 'active' : '' }}">
+              <a class="nav-link" href="{{ route('karyawan.gaji') }}">
+              <i class="nc-icon nc-money-coins"></i> Gaji
+              </a>
+          </li>
           </ul>
-        </div>
+      </div>
       </nav>
     <!-- <div class="sidebar" data-color="white" data-active-color="danger">
       <div class="logo">
