@@ -165,7 +165,7 @@
                         <!-- Pencarian -->
                         <form method="GET" action="" class="d-flex">
                             <div class="input-group search-bar">
-                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan..">
+                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." autocomplete="off">
                                 <span>
                                     <button type="submit" class="input-group-text">
                                         <i class="bi bi-search"></i>

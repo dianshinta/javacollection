@@ -18,14 +18,19 @@ class EmployerSalaryController extends Controller
      */
     public function index()
     {
+        // Inisialisasi query
+        $query = EmployerSalary::query();
+
         $this->updateInEmployerSalaries();
+
+        // Tambahkan filter pencarian jika input `search` tersedia
+        if (request('search')) {
+            $query->where('nama', 'like', '%' . request('search') . '%');
+        }
+
+        // Lakukan paginasi setelah filter diterapkan
+        $datas = $query->paginate(20);
         
-        //return view('/manajer/gajiKaryawan', ["title" => "Gaji", 'datas' => EmployerSalary::all()]);
-
-        // Query data pembayaran dengan filter berdasarkan input pencarian
-        $datas =  EmployerSalary::query()
-            ->paginate(20);
-
         // Kirim data ke view dengan header untuk mencegah caching
         return response()->view('/manajer/gajiKaryawan', [
             "title" => "Gaji",
