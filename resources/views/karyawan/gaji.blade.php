@@ -293,7 +293,7 @@
                         <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table id="gajiTable" class="table">
                                         <thead class="text-center text-primary">
                                             <th>
                                                 No
@@ -310,7 +310,8 @@
                                         </thead>
                                         <tbody>
                                           @foreach ($salaries as $index => $salary)
-                                            <tr class="text-center">
+                                            <tr class="text-center" 
+                                              data-id="{{ $salary->id }}">
                                                 <td>
                                                     {{ $index + 1 }}
                                                 </td>
@@ -322,7 +323,7 @@
                                                 </td>
                                                 <td class="text-right">
                                                     <div class="button-container">
-                                                        <button type="button" class="custom-button" data-toggle="modal"
+                                                        <button id="btn-unduh" type="button" class="custom-button" data-toggle="modal"
                                                             data-target="#lampiranModal">
                                                             Unduh
                                                         </button>
@@ -373,6 +374,18 @@
                 // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
                 demo.initChartsPages();
             });
+
+
+            const rows = document.querySelectorAll("#gajiTable tbody tr");
+            rows.forEach(row => {
+              row.addEventListener("click", () => {
+                $(document).on('click', '#btn-unduh', function () {
+                  const id = row.getAttribute("data-id");
+
+                }
+              });
+            });
+
         </script>
 </body>
 </html>
