@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
-class karyawanKasbonController extends Controller
+class KaryawanKasbonController extends Controller
 {
     public function index() {
         $nip = Auth::user()->nip;
