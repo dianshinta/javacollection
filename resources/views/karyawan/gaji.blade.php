@@ -299,10 +299,7 @@
                                                 No
                                             </th>
                                             <th>
-                                                Bulan
-                                            </th>
-                                            <th>
-                                                Tahun
+                                                Periode
                                             </th>
                                             <th>
                                                 Nominal
@@ -312,18 +309,16 @@
                                             </th>
                                         </thead>
                                         <tbody>
+                                          @foreach ($salaries as $index => $salary)
                                             <tr class="text-center">
                                                 <td>
-                                                    1
+                                                    {{ $index + 1 }}
                                                 </td>
                                                 <td>
-                                                    Januari
+                                                    {{ $salary->bulans->bulan_tahun }}
                                                 </td>
                                                 <td>
-                                                    2025
-                                                </td>
-                                                <td>
-                                                    3000000
+                                                    Rp {{ $salary->total_gaji }}
                                                 </td>
                                                 <td class="text-right">
                                                     <div class="button-container">
@@ -334,7 +329,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-            
+                                          @endforeach
                                         </tbody>
                                     </table>
                                 </div>
