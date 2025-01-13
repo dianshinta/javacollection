@@ -12,12 +12,20 @@ class supervisorPerizinanController extends Controller
      */
     public function index(Request $request)
     {
+        // Ambil user yang sedang login
+        $user = auth()->user();
+
+        // Ambil cabang yang diawasi oleh supervisor
+        $supervisedBranches = $user->supervisedBranches->pluck('id')->toArray();
+        
         // Ambil parameter pencarian 
         $search = $request->input('search');
         
         // Query data perizinan dengan filter pencarian
         if (strlen($search)){
-            $perizinan = Perizinan::when($search, function ($query, $search){
+            $perizinan = Perizinan::whereHas('karyawan', function ($query) use ($supervisedBranches){
+                $query->whereIn('toko_id', $supervisedBranches);
+            })->when($search, function ($query, $search){
                 $query -> where('nama', 'like',"%{$search}%")
                        -> orWhere('nip','like',"%{$search}%")
                        -> orWhere('tanggal','like',"%{$search}%")
@@ -25,12 +33,16 @@ class supervisorPerizinanController extends Controller
             })
             ->orderBy('updated_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
             ->orderBy('created_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-            ->paginate(20);
+            ->paginate(2);
         } else {
-            // Ambil data perizinan dari database
-            $perizinan = Perizinan::orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
-            -> orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
-            ->paginate(20);
+            // Query data perizinan
+            $perizinan = Perizinan::whereHas('karyawan', function ($query) use ($supervisedBranches) {
+                // Filter berdasarkan cabang yang diawasi oleh supervisor
+                $query->whereIn('toko_id', $supervisedBranches);
+            })
+            ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu pembaruan terbaru
+            ->orderBy('updated_at', 'desc') // Jika waktu pembaruan sama, urutkan berdasarkan waktu pembuatan
+            ->paginate(2);
         }
         
         // Kirim data ke view

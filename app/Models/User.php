@@ -57,7 +57,7 @@ class User extends Authenticatable
 
     public function supervisedBranches()
     {
-        return $this->belongsToMany(Toko::class, 'cabang_supervisor');
+        return $this->belongsToMany(Toko::class, 'cabang_supervisor', 'nip', 'toko_id');
     }
 
     public function karyawan() 

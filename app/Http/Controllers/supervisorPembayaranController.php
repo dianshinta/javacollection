@@ -13,31 +13,43 @@ class supervisorPembayaranController extends Controller
      */
     public function index(Request $request)
     {
+        // Ambil user yang sedang login
+        $user = auth()->user();
+        
+        // Ambil cabang yang diawasi oleh supervisor
+        $supervisedBranches = $user->supervisedBranches->pluck('id')->toArray();
+
         // Ambil parameter pencarian 
         $search = $request->input('search');
         
         // Query data pembayaran 
         if (strlen($search)){
-            // Jika ada input pencarian, filter data berdasarkan keterangan "Pembayaran"
-            $pembayaran = Kasbon::where('keterangan', 'Pembayaran')
-                                ->when($search, function ($query, $search) {
-                                    $query->where('nip', 'like', "%{$search}%")
-                                        ->orWhere('nama', 'like', "%{$search}%")
-                                        ->orWhere('tanggal_pembayaran', 'like', "%{$search}%")
-                                        ->orWhere('nominal_dibayar','like',"%{$search}%")
-                                        ->orWhere('status_kasbon', 'like', "%{$search}%")
-                                        ->orWhere('status_bayar', 'like', "%{$search}%")
-                                        ->orWhere('saldo_akhir', 'like', "%{$search}%");
-                                })
-                                ->orderBy('updated_at', 'desc')
-                                ->orderBy('updated_at', 'desc')
-                                ->paginate(20); 
+                // Jika ada input pencarian, filter data berdasarkan keterangan "Pembayaran"
+                $pembayaran = Kasbon::whereHas('karyawan', function($query) use ($supervisedBranches){
+                    $query->whereIn('toko_id', $supervisedBranches);
+            })
+            ->where('keterangan', 'Pembayaran')
+            ->when($search, function ($query, $search) {
+                $query->where('nip', 'like', "%{$search}%")
+                    ->orWhere('nama', 'like', "%{$search}%")
+                    ->orWhere('tanggal_pembayaran', 'like', "%{$search}%")
+                    ->orWhere('nominal_dibayar','like',"%{$search}%")
+                    ->orWhere('status_kasbon', 'like', "%{$search}%")
+                    ->orWhere('status_bayar', 'like', "%{$search}%")
+                    ->orWhere('saldo_akhir', 'like', "%{$search}%");
+                })
+                ->orderBy('updated_at', 'desc')
+                ->orderBy('updated_at', 'desc')
+                ->paginate(20); 
         } else {
-            // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
-            $pembayaran = Kasbon::where('keterangan', 'Pembayaran') 
-                                ->orderBy('updated_at', 'desc') 
-                                ->orderBy('created_at', 'desc')
-                                ->paginate(20);
+                // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
+                $pembayaran = Kasbon::whereHas('karyawan', function($query) use ($supervisedBranches){
+                    $query->whereIn('toko_id', $supervisedBranches);
+            })
+            ->where('keterangan', 'Pembayaran') 
+            ->orderBy('updated_at', 'desc') 
+            ->orderBy('created_at', 'desc')
+             ->paginate(20);
         }
             
         // Kirim data ke view dengan header untuk mencegah caching

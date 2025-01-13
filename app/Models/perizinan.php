@@ -39,6 +39,11 @@ class perizinan extends Model
         'status' => 'string',
     ];
 
+    public function karyawan(): BelongsTo
+    {
+        return $this->belongsTo(Karyawan::class, 'nip', 'nip');
+    }
+
     //fungsi save ke database
     protected static function boot()
     {

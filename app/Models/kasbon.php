@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class kasbon extends Model
 {
@@ -33,6 +34,11 @@ class kasbon extends Model
         'status_kasbon' => 'string',
         'status_bayar' => 'string',
     ];
+
+    public function karyawan(): BelongsTo
+    {
+        return $this->belongsTo(Karyawan::class, 'nip', 'nip');
+    }
 
     //fungsi save ke database
     protected static function boot()

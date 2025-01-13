@@ -13,10 +13,22 @@ class SupervisorPengajuanController extends Controller
      */
     public function index(Request $request)
     {
+        // Ambil user yang sedang login
+        $user = auth()->user();
+    
+        // Ambil cabang yang diawasi oleh supervisor
+        $supervisedBranches = $user->supervisedBranches->pluck('id')->toArray();
+
         // Ambil parameter pencarian 
         $search = $request->input('search');
+        
+        // Query data pengajuan kasbon
         if (strlen($search)){
-            $pengajuan = kasbon::where('keterangan', 'Pengajuan') // Filter hanya data dengan keterangan "Pengajuan"
+            $pengajuan = kasbon::whereHas('karyawan', function ($query) use ($supervisedBranches){
+                // Filter berdasarkan cabang yang diawasi
+                $query->whereIn('toko_id', $supervisedBranches);
+            })
+            ->where('keterangan', 'Pengajuan') // Filter hanya data dengan keterangan "Pengajuan"
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('nip', 'like', "%{$search}%")
@@ -29,10 +41,14 @@ class SupervisorPengajuanController extends Controller
             ->paginate(20); 
         } else {
             // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
-            $pengajuan = kasbon::where('keterangan', 'Pengajuan') 
-                                ->orderBy('updated_at', 'desc') 
-                                ->orderBy('created_at', 'desc')
-                                ->paginate(20);
+            $pengajuan = kasbon::whereHas('karyawan', function ($query) use ($supervisedBranches){
+                // Filter berdasarkan cabang yang diawasi
+                $query->whereIn('toko_id', $supervisedBranches);
+            })
+            ->where('keterangan', 'Pengajuan') 
+            ->orderBy('updated_at', 'desc') 
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
         }
 
         // Kirim data ke view
