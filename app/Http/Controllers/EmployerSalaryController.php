@@ -19,7 +19,7 @@ class EmployerSalaryController extends Controller
     public function index()
     {
         // Inisialisasi query
-        $query = EmployerSalary::query();
+        $query = EmployerSalary::with(['karyawan', 'bulans']);
 
         $this->updateInEmployerSalaries();
 
@@ -30,7 +30,7 @@ class EmployerSalaryController extends Controller
 
         // Lakukan paginasi setelah filter diterapkan
         $datas = $query->paginate(20);
-        
+
         // Kirim data ke view dengan header untuk mencegah caching
         return response()->view('/manajer/gajiKaryawan', [
             "title" => "Gaji",
