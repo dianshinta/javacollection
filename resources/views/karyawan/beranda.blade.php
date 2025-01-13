@@ -38,6 +38,9 @@
   <link href="../assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/dashboard.css">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
 
   <style>
     .top-right-logout {
@@ -260,8 +263,8 @@
               <div class="d-flex align-items-center mr-5">
                 <i class="nc-icon nc-calendar-60 text-primary mr-2"></i>
                 <div>
-                  <span>{{ \Carbon\Carbon::now()->translatedFormat('l') }}</span> <!-- Nama Hari -->
-                  <small class="text-muted d-block">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</small> <!-- Tanggal -->
+                  <span id="current-day">{{ \Carbon\Carbon::now()->translatedFormat('l') }}</span> <!-- Nama Hari -->
+                  <small id="current-date" class="text-muted d-block">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</small> <!-- Tanggal -->
                 </div>
               </div>
 
