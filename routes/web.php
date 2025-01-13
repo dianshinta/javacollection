@@ -94,8 +94,11 @@ Route::middleware(['auth', 'role:karyawan'])->group(function () {
     Route::get('/karyawan/gaji/', function () {
         return view('/karyawan/gaji');
     })->name('karyawan.gaji');
+
     Route::get('/karyawan/gaji', [SlipGajiController::class, 'index'])
         ->name('karyawan.gaji');
+
+    Route::get('/generate-pdf/{id}', [SlipGajiController::class, 'generatePDF']);
 });
 
 // BAGIAN HALAMAN SUPERVISOR

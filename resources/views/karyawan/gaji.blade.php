@@ -319,7 +319,7 @@
                                                     {{ $salary->bulans->bulan_tahun }}
                                                 </td>
                                                 <td>
-                                                    Rp {{ $salary->total_gaji }}
+                                                    Rp {{number_format($salary->total_gaji, 0, ',', '.') }}
                                                 </td>
                                                 <td class="text-right">
                                                     <div class="button-container">
@@ -382,10 +382,15 @@
                 $(document).on('click', '#btn-unduh', function () {
                   const id = row.getAttribute("data-id");
 
-                }
+                  generatePDF(id);
+                });
               });
             });
 
+            function generatePDF(id) {
+              // You can send an AJAX request to the server to generate and download the PDF
+              window.location.href = `/generate-pdf/${id}`;
+            }
         </script>
 </body>
 </html>
