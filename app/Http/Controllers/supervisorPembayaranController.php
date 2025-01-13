@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use App\Models\Kasbon;
 
@@ -30,13 +31,13 @@ class supervisorPembayaranController extends Controller
                                 })
                                 ->orderBy('updated_at', 'desc')
                                 ->orderBy('updated_at', 'desc')
-                                ->paginate(2); 
+                                ->paginate(20); 
         } else {
             // Jika tidak ada input pencarian, ambil semua data dengan filter keterangan "Pembayaran"
             $pembayaran = Kasbon::where('keterangan', 'Pembayaran') 
                                 ->orderBy('updated_at', 'desc') 
                                 ->orderBy('created_at', 'desc')
-                                ->paginate(2);
+                                ->paginate(20);
         }
             
         // Kirim data ke view dengan header untuk mencegah caching
@@ -111,6 +112,8 @@ class supervisorPembayaranController extends Controller
                 'message' => 'Data kasbon tidak ditemukan untuk NIP terkait',
             ], 404);
         }
+
+        $karyawan = Karyawan::where('nip', $kasbon->nip)->first();
         
         // Update Database
         if ($request->action === 'terima') {
@@ -119,7 +122,7 @@ class supervisorPembayaranController extends Controller
             // Perbarui saldo_akhir pada kasbon pembayaran
             $kasbon->saldo_akhir = $kasbonSaldo->saldo_akhir;
             // Perbarui status berdasarkan saldo akhir
-            $kasbonSaldo->status_kasbon = $kasbonSaldo->saldo_akhir < 2000000 ? 'Belum Lunas' : 'Lunas';
+            $kasbonSaldo->status_kasbon = $kasbonSaldo->saldo_akhir < $karyawan->gaji_pokok ? 'Belum Lunas' : 'Lunas';
             // Perbarui status bayar menjadi "Disetujui"
             $kasbon->status_bayar = 'Disetujui';
             // Simpan perubahan saldo pada kasbon terkait NIP

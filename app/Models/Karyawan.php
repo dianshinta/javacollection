@@ -12,12 +12,22 @@ class Karyawan extends Model
     protected $table = 'karyawans'; // Nama tabel di database
 
     protected $fillable = [
-        'nip', 'nama', 'jabatan','tempat_lahir', 'tanggal_lahir',
-        'gender', 'toko_id', 'alamat', 'no_telp',
-        'bank', 'no_rek', 'kasbon'
+        'nip',
+        'nama',
+        'jabatan',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'gender',
+        'toko_id',
+        'alamat',
+        'no_telp',
+        'bank',
+        'no_rek',
+        'gaji_pokok',
     ];
 
-    public function toko() {
+    public function toko()
+    {
         return $this->belongsTo(Toko::class, 'toko_id', 'id');
     }
 }

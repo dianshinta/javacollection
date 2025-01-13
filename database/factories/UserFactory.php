@@ -23,20 +23,12 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $gajiPokok = [1700000, 1800000, 1900000, 2000000];
         return [
-            // 'name' => fake()->name(),
-            // 'email' => fake()->unique()->safeEmail(),
-            // 'email_verified_at' => now(),
-            // 'password' => static::$password ??= Hash::make('password'),
-            // 'remember_token' => Str::random(10),
-
-            'nip' => fake()->unique()->numerify('####'),
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'password' => static::$password ??= Hash::make('password'),
-            'gaji_pokok' => fake()->randomElement($gajiPokok),
-
+            'nip' => '1',
+            'name' => 'Rafli',
+            'email' => '1@stis.ac.id',
+            'password' => 111111,
+            'jabatan'=>'manajer',
         ];
     }
 

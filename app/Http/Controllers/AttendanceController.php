@@ -6,38 +6,54 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Toko;
 use App\Models\presensi;
+use App\Models\CabangSupervisor;
 use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
     public function index(Request $request)
-    {   
-        $attendances = presensi::with(['toko:id,name'])
-            ->get(['toko_id'])
-            ->unique('toko_id')
-            ->values(); // Untuk mereset indeks setelah penghapusan duplikasi
+    {
+        $user = auth()->user();
 
-        $result = $attendances->map(function ($attendance) {
-            return [
-                'toko_id' => $attendance->toko_id,
-                'nama' => $attendance->toko->name, // Ambil nama toko
-            ];
-        });
+        // Pastikan $result diinisialisasi
+        $result = [];
 
-        /*$user = $request->user();
+        if ($user->jabatan === 'manajer') {
+            $attendances = presensi::with(['toko:id,name'])
+                ->get(['toko_id'])
+                ->unique('toko_id')
+                ->values(); // Untuk mereset indeks setelah penghapusan duplikasi
 
-        if ($user->role === 'manager') {
-            $attendances = presensi::with(['user', 'branch'])->get();
-        } elseif ($user->role === 'supervisor') {
-            $attendances = presensi::with(['user', 'branch'])
-                ->whereIn('branch_id', $user->supervisedBranches->pluck('id'))
+            $result = $attendances->map(function ($attendance) {
+                return [
+                    'toko_id' => $attendance->toko_id,
+                    'nama' => $attendance->toko->name, // Ambil nama toko
+                ];
+            });
+        } elseif ($user->jabatan === 'supervisor') {
+            $attendances = CabangSupervisor::where('nip', $user->nip)
+                ->with('toko') // Memuat relasi toko
                 ->get();
-        } else {
-            $attendances = presensi::with(['user', 'branch'])
-                ->where('user_id', $user->id)
-                ->get();
-        }*/
 
+            // Transformasi data untuk memasukkan nama cabang
+            $result = $attendances->map(function ($attendance) {
+                return [
+                    'toko_id' => $attendance->toko_id,
+                    'nama' => $attendance->toko ? $attendance->toko->name : null, // Nama cabang dari tabel `Toko`
+                ];
+            });
+        } elseif ($user->jabatan === 'karyawan') {
+            $attendances = presensi::where('nip', $user->nip)->get();
+
+            $result = $attendances->map(function ($attendance) {
+                return [
+                    'tanggal' => $attendance->tanggal,
+                    'status' => $attendance->status,
+                ];
+            });
+        }
+
+        // Return JSON response
         return response()->json($result);
     }
 
@@ -56,7 +72,7 @@ class AttendanceController extends Controller
 
         // Filter data mingguan untuk barChart
         $weeklyData = Presensi::where('toko_id', $toko)
-            ->whereDate('tanggal', '>=', Carbon::now()->subDays(7)->toDateString()) // Tanggal minimal
+            ->whereDate('tanggal', '>=', $now->subDays(7)->toDateString()) // Tanggal minimal
             ->whereDate('tanggal', '<=', Carbon::now()->toDateString()) // Tanggal maksimal
             ->orderBy('tanggal', 'asc')
             ->get(['nip', 'toko_id', 'status', 'tanggal']);
@@ -67,9 +83,24 @@ class AttendanceController extends Controller
             ->whereMonth('tanggal', $now->month) // Bulan ini
             ->get(['nip', 'toko_id', 'status', 'tanggal']);
 
+        // Output JSON sesuai format yang diinginkan
         return response()->json([
-            'weeklyData' => $weeklyData,
-            'monthlyData' => $monthlyData,
+            'weeklyData' => $weeklyData->map(function ($item) {
+                return [
+                    'nip' => $item->nip,
+                    'toko_id' => $item->toko_id,
+                    'status' => $item->status,
+                    'tanggal' => $item->tanggal, // Format tanggal
+                ];
+            }),
+            'monthlyData' => $monthlyData->map(function ($item) {
+                return [
+                    'nip' => $item->nip,
+                    'toko_id' => $item->toko_id,
+                    'status' => $item->status,
+                    'tanggal' => $item->tanggal, // Format tanggal
+                ];
+            }),
         ]);
     }
 }

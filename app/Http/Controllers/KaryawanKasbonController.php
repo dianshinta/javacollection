@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployerSalary;
 use App\Models\kasbon;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -14,10 +16,12 @@ class karyawanKasbonController extends Controller
     public function index() {
         $nip = Auth::user()->nip;
         // $nip = 1;
-        $riwayatKasbon = kasbon::where('nip', $nip)->orderBy('created_at', 'desc')->get();
+        $riwayatKasbon = kasbon::where('nip', $nip)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate(20);
 
         // Kirim data ke view 'karyawan.kasbon'
-        return view('karyawan.kasbon', compact('riwayatKasbon'));
+        return view('karyawan.kasbon', compact('riwayatKasbon'))->with('title', 'Kasbon');
     }
 
     public function save(Request $request)
@@ -37,8 +41,15 @@ class karyawanKasbonController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        // Tentukan limit awal kasbon (misal: 2.000.000)
-        $limit_awal = 2000000;
+        // Limit kasbon berdasarkan gaji pokok karyawan
+        $karyawan = Karyawan::where('nip', $nip)->first();
+        if (!$karyawan) {
+            return response()->json([
+                'message' => 'Karyawan tidak ditemukan.',
+            ], 404);
+        }
+
+        $limit_awal = $karyawan->gaji_pokok;
 
         // Jika belum ada kasbon sebelumnya, maka gunakan limit awal
         $sisa_limit = $limit_awal;
@@ -78,35 +89,41 @@ class karyawanKasbonController extends Controller
     public function getSisaLimit()
     {
         $nip = Auth::user()->nip;
-        // $nip = 1;
 
-        // Limit kasbon berdasarkan gaji pokok karyawan
-        // $karyawan = Karyawan::where('nip', $nip)->first();
-        // if (!$karyawan) {
-        //     return response()->json([
-        //         'message' => 'Karyawan tidak ditemukan.',
-        //     ], 404);
-        // }
+        // Ambil data karyawan berdasarkan NIP
+        $karyawan = Karyawan::where('nip', $nip)->first();
+        if (!$karyawan) {
+            return response()->json([
+                'message' => 'Karyawan tidak ditemukan.',
+            ], 404);
+        }
 
-        // $limit_awal = $karyawan->gaji_pokok;
+        // Default saldo akhir
+        $saldo_akhir = 0;
 
-        $limit_awal = 2000000;
-        Log::info('Limit', ['limit_awal' => $limit_awal]);
+        // Cek apakah gaji sudah terkirim
+        $gajiTerkirim = EmployerSalary::where('karyawan_nip', $karyawan->nip)
+            ->where('status', 'terkirim') // Asumsi status "terkirim" menunjukkan gaji sudah dikirim
+            ->exists();
 
-        // Hitung total pengajuan dan total pembayaran
-        $total_pengajuan = kasbon::where('nip', $nip)
-            ->where('keterangan', 'Pengajuan')
-            ->sum('nominal_diajukan');
+        if ($gajiTerkirim) {
+            // Jika gaji terkirim, saldo akhir = gaji pokok
+            $saldo_akhir = $karyawan->gaji_pokok;
+        } else {
+            // Jika gaji belum terkirim, hitung saldo akhir berdasarkan transaksi kasbon
+            $total_pengajuan = kasbon::where('nip', $nip)
+                ->where('keterangan', 'Pengajuan')
+                ->sum('nominal_diajukan');
 
-        $total_pembayaran = kasbon::where('nip', $nip)
-            ->where('keterangan', 'Pembayaran')
-            ->where('status_bayar', 'Disetujui')
-            ->sum('nominal_dibayar');
+            $total_pembayaran = kasbon::where('nip', $nip)
+                ->where('keterangan', 'Pembayaran')
+                ->where('status_bayar', 'Disetujui')
+                ->sum('nominal_dibayar');
 
-        // Hitung sisa limit
-        $saldo_akhir = $limit_awal - $total_pengajuan + $total_pembayaran;
+            $saldo_akhir = $karyawan->gaji_pokok - $total_pengajuan + $total_pembayaran;
+        }
 
-        // Update limit di database
+        // Update saldo akhir di kasbon aktif jika ada
         $kasbonAktif = kasbon::where('nip', $nip)
             ->orderBy('created_at', 'desc')
             ->first();
@@ -114,10 +131,10 @@ class karyawanKasbonController extends Controller
         if ($kasbonAktif) {
             $kasbonAktif->saldo_akhir = $saldo_akhir;
             $kasbonAktif->update();
-        } 
+        }
 
         return response()->json([
-            'limit_awal' => $limit_awal,
+            'limit_awal' => $karyawan->gaji_pokok,
             'sisa_limit' => $saldo_akhir,
         ], 200);
     }
@@ -146,19 +163,18 @@ class karyawanKasbonController extends Controller
 
         $nip = Auth::user()->nip;
 
-        // Ambil data kasbon terkait nip
-        $kasbonAktif = kasbon::where('nip', $nip)
-            ->where('status_kasbon', 'Belum Lunas')
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        // Pastikan kasbon aktif ditemukan
-        if (!$kasbonAktif) {
-            return response()->json(['error' => 'Tidak ada kasbon aktif yang ditemukan.'], 400);
+        // Ambil data karyawan berdasarkan NIP
+        $karyawan = Karyawan::where('nip', $nip)->first();
+        if (!$karyawan) {
+            return response()->json(['error' => 'Karyawan tidak ditemukan.'], 404);
         }
 
-        // Periksa apakah nominal pembayaran valid
-        $limit_awal = 2000000;
+        // Ambil status apakah gaji sudah terkirim
+        $gajiTerkirim = EmployerSalary::where('karyawan_nip', $karyawan->nip)
+            ->where('status', 'Telah Dikirim')
+            ->exists();
+
+        // Hitung total pengajuan dan pembayaran
         $total_pengajuan = kasbon::where('nip', $nip)
             ->where('keterangan', 'Pengajuan')
             ->sum('nominal_diajukan');
@@ -167,23 +183,25 @@ class karyawanKasbonController extends Controller
             ->where('keterangan', 'Pembayaran')
             ->sum('nominal_dibayar');
 
-        // Hitung saldo akhir baru
-        $saldo_akhir_sekarang = $limit_awal - $total_pengajuan + $total_pembayaran;
+        // Default saldo akhir
+        $saldo_akhir = $karyawan->gaji_pokok;
 
-        if ($validated['nominal_pembayaran'] > $saldo_akhir_sekarang) {
-            return response()->json(['error' => 'Nominal pembayaran melebihi sisa kasbon.'], 400);
+        // Jika gaji sudah terkirim, reset saldo akhir ke gaji pokok
+        if ($gajiTerkirim) {
+            $saldo_akhir = $karyawan->gaji_pokok;
+        } else {
+            $saldo_akhir = $karyawan->gaji_pokok - $total_pengajuan + $total_pembayaran;
         }
 
-        // $saldo_akhir_baru = $saldo_akhir_sekarang + $validated['nominal_pembayaran'];
-
+        // Proses pembayaran
         $pembayaran = kasbon::create([
             'status_kasbon' => 'Belum Lunas', // Default
             'status_bayar' => 'Diproses',
             'tanggal_pembayaran' => $validated['tanggal_pembayaran'],
-            'alasan' => '-',
+            'alasan' => '-', // Default alasan
             'keterangan' => 'Pembayaran',
             'nominal_dibayar' => $validated['nominal_pembayaran'],
-            'saldo_akhir' => $saldo_akhir_sekarang,
+            'saldo_akhir' => $saldo_akhir,
             'lampiran' => Storage::url($filePath),
             'nama' => Auth::user()->name,
             'nip' => $nip,
@@ -194,7 +212,7 @@ class karyawanKasbonController extends Controller
 
         return response()->json([
             'success' => 'Pembayaran Kasbon berhasil!',
-            'saldo_akhir_baru' => $saldo_akhir_sekarang,
+            'saldo_akhir_baru' => $saldo_akhir,
         ], 200);
     }
 }

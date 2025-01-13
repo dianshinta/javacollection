@@ -22,7 +22,7 @@ class ModifyKaryawansTable extends Migration
             $table->string('no_telp', 15)->nullable()->change();
             $table->string('bank')->nullable()->change();
             $table->string('no_rek')->nullable()->change();
-            $table->decimal('kasbon', 15, 2)->default(0)->nullable()->change();
+            $table->integer('gaji_pokok')->default(0)->nullable()->change();
         });
     }
 

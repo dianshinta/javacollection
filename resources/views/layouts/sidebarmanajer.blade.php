@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Beranda | JAVA COLLECTION
+    {{ $title }} | JAVA COLLECTION
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -124,17 +124,26 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item {{ request()->is('manajer/beranda') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('manager.beranda') }}">Beranda</a>
+              <a class="nav-link" href="{{ route('manager.beranda') }}">
+                <i class="nc-icon nc-layout-11"></i>
+                <p>Beranda</p>
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('manajer.gaji') }}">Gaji</a>
+              <a class="nav-link" href="{{ route('manajer.gaji') }}">
+                <i class="nc-icon nc-money-coins"></i>
+                <p>Gaji</p>
+              </a>
             </li>
             <li class="nav-item {{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
-              <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">Karyawan</a>
+              <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">
+                <i class="nc-icon nc-single-02"></i>
+                <p>Karyawan</p>
+              </a>
             </li>
-          </ul>        
+          </ul>
         </div>
-      </nav>
+      </nav>      
 
   <script>
       function clearSession(event) {

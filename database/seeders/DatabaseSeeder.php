@@ -9,6 +9,7 @@ use App\Models\Toko;
 use App\Models\Karyawan;
 use App\Models\kasbon;
 use App\Models\perizinan;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,11 +21,35 @@ class DatabaseSeeder extends Seeder
         // $this->call(ChartSeeder::class);
         // $this->call(TokoSeeder::class);
         // $this->call(kar$karyawanSeeder::class);
-        // $this->call(CabangSupervisorSeeder::class);
+        $this->call(CabangSupervisorSeeder::class);
         // $this->call(KehadiranSeeder::class);
 
         // Buat data Toko
+        User::factory()->create([
+            'nip' => '1',
+            'name' => 'Rafli',
+            'email' => '1@stis.ac.id',
+            'password' => 111111, // Password harus di-hash
+            'jabatan' => 'manajer',
+        ]);
+
+        User::factory()->create([
+            'nip' => '2',
+            'name' => 'Rafli',
+            'email' => '2@stis.ac.id',
+            'password' => 222222,
+            'jabatan' => 'supervisor',
+        ]);
+
+        User::factory()->create([
+            'nip' => '3',
+            'name' => 'Rafli',
+            'email' => '3@stis.ac.id',
+            'password' => 333333,
+            'jabatan' => 'karyawan',
+        ]);
         Toko::factory(10)->create();
+
 
         // Buat 10 data pengguna
         $karyawans = Karyawan::factory(10)->create();

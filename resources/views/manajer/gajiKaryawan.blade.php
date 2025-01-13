@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="../assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
-        JAVA COLLECTION | Gaji
+        {{ $title }} | JAVA COLLECTION
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!--     Fonts and icons     -->
@@ -21,44 +22,129 @@
     <link href="../assets/demo/demo.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" >
-  <!-- Alert -->
+    <!-- Alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .top-right-logout {
+          position: absolute;
+          top: 8px;
+          right: 15px;
+          z-index: 999;
+        }
+    
+        /* Change navbar background color to maroon */
+        .navbar {
+          background-color: #fff2f2 !important; 
+        }
+    
+        /* Active link color */
+        .navbar-nav .nav-item.active .nav-link {
+          color: #500606 !important; /* Change active link color to red */
+        }
+    
+        /* Hover link color */
+        .navbar-nav .nav-item .nav-link:hover {
+          color: #c8cbcf !important; /* Change hover link color to light gray */
+        }
+    
+        /* Optional: ensure navbar text is white when not active */
+        .navbar-nav .nav-item .nav-link {
+          color: grey !important;
+        }
+    
+        /* Set the color of the hamburger bars (three lines) to white */
+        .navbar-toggler-icon {
+          background-color: transparent !important; /* Set the bars (lines) to white */
+        }
+    
+        /* Change hamburger icon color when it’s clicked (active state) */
+        .navbar-toggler.collapsed .navbar-toggler-icon {
+          background-color: transparent !important; /* Change color to maroon when collapsed */
+        }
+    
+        </style>
 </head>
 <body>
-    <div class="wrapper m-auto">
-        {{-- navbar --}}
-        <div class="sidebar" data-color="white" data-active-color="danger">
-            <div class="logo">
-              <span class="simple-text font-weight-bold">
-                JAVA COLLECTION
-              </span>
-            </div>
-            <div class="sidebar-wrapper">
-              <ul class="nav">
-                <li>
-                  <a href="{{route('manager.beranda')}}">
-                    <i class="nc-icon nc-layout-11"></i>
-                    <p>Beranda</p>
-                  </a>
+    <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
+        <div class="logo">
+            <span class="simple-text font-weight-bold">
+            JAVA COLLECTION
+            </span>
+        </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="{{ request()->is('manajer/beranda') ? 'active' : '' }}">
+                    <a href="{{route('manager.beranda')}}">
+                        <i class="nc-icon nc-layout-11"></i>
+                        <p>Beranda</p>
+                    </a>
                 </li>
-                <li class="active">
-                  <a href="{{route('manajer.gaji')}}">
-                    <i class="nc-icon nc-money-coins"></i>
-                    <p>Gaji</p>
-                  </a>
+                <li class ="active">
+                    <a href="{{route('manajer.gaji')}}">
+                        <i class="nc-icon nc-money-coins"></i>
+                        <p>Gaji</p>
+                    </a>
                 </li>
-                <li>
-                <a href="{{ route('manajer.editkaryawan') }}">
-                    <i class="nc-icon nc-single-02"></i>
-                    <p>Karyawan</p>
-                  </a>
+                <li class="{{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
+                    <a href="{{ route('manajer.editkaryawan') }}">
+                        <i class="nc-icon nc-single-02"></i>
+                        <p>Karyawan</p>
+                    </a>
                 </li>
-              </ul>
+            </ul>
+  
+            <div class="mt-auto p-3">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-block">
+                        <i class="nc-icon nc-button-power"></i> Logout
+                    </button>
+                </form>
             </div>
         </div>
+    </div>
     
         <!-- Content -->
         <div class="main-panel">
+            <!-- Navbar for mobile view -->
+            <!-- Navbar for mobile view -->
+            <div class="top-right-logout d-block d-lg-none">
+                <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    <i class="nc-icon nc-button-power"></i> Logout
+                </button>
+                </form>
+            </div>
+                    
+            <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item {{ request()->is('manajer/beranda') ? 'active' : '' }}">
+                      <a class="nav-link" href="{{ route('manager.beranda') }}">
+                        <i class="nc-icon nc-layout-11"></i>
+                        <p>Beranda</p>
+                      </a>
+                    </li>
+                    <li class="nav-item {{ request()->is('manajer/gaji') ? 'active' : '' }}">
+                      <a class="nav-link" href="{{ route('manajer.gaji') }}">
+                        <i class="nc-icon nc-money-coins"></i>
+                        <p>Gaji</p>
+                      </a>
+                    </li>
+                    <li class="nav-item {{ request()->is('karyawan') || request()->is('editkaryawan') ? 'active' : '' }}">
+                      <a class="nav-link" href="{{ route('manajer.editkaryawan') }}">
+                        <i class="nc-icon nc-single-02"></i>
+                        <p>Karyawan</p>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+              
             <div class="content">
                 <div class="mb-4">
                     <small class="text-muted d-block">Gaji</small>
@@ -92,22 +178,36 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>NIP</th>
                                     <th>NAMA</th>
-                                    <th>JABATAN</th>
+                                    <th>TOTAL GAJI</th>
+                                    <th>BULAN</th>
+                                    <th>STATUS</th>
                                 </tr>
                             </thead>
                             @foreach ($datas as $data)
-                            <tbody class="gaji-row" data-id="{{ $data['karyawan_nip'] }}">
-                                <tr>
-                                    <td> {{ $data['karyawan_nip'] }}</td> 
+                            <tbody >
+                                <tr class="gaji-row" data-id="{{ $data['id'] }}" >
                                     <td>{{ Str::limit($data->karyawan->nama, 20) }}</td>
-                                    <td>{{ $data->karyawan->jabatan }}</td>
+                                    <td> {{ 'Rp ' . number_format($data['total_gaji'], 0, ',', '.') }}</td>
+                                    <td data-bulan-id="{{ $data['bulan_id'] }}"> {{ $data->bulans->bulan_tahun ?? 'Bulan tidak tersedia' }} </td>
+                                    <td> <!-- Status Pengiriman Gaji -->
+                                        @if ($data->status === 'Telah Dikirim')
+                                            <span class="badge bg-success">Telah Dikirim</span>
+                                        @else
+                                            <span class="badge bg-warning">Belum Dikirim</span>
+                                        @endif
+                                    </td>
                                 </tr>
                             </tbody>   
                             @endforeach
                         </table>
-                    </div>
+                        </div>
+                          <!-- Tambahkan pagination -->
+                          <div class="d-flex justify-content-center">
+                            <nav>
+                                {{ $datas->links('pagination::bootstrap-4') }}
+                            </nav>
+                        </div>
                 </div>
             
                 <!-- Modal Box for Atur Bonus -->
@@ -153,12 +253,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <p class="tanggal">    Tanggal : 
-                                    @isset($data->created_at)
-                                        {{ $data->created_at->format('j F Y') }}
-                                    @else
-                                        ""
-                                    @endisset</p>
+                                <p class="tanggal">    Bulan : <span id="modalBulanView"> </span> <span id="modalBulan" hidden> </span> </p>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -200,21 +295,13 @@
                                 </div>    
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn success sendSalary">
+                                <button type="button" class="btn success sendSalary">  
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 20">
                                         <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518z"/>
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                         <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11m0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12"/>
                                     </svg>
-                                    Kirim
-                                </button>
-                                <button type="button" class="btn edit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 20">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                                    </svg>
-                                    Edit
-                                </button>
+                                    Kirim Gaji
                             </div>
                         </div>
                     </div>
@@ -309,11 +396,14 @@
     <script>
         $(document).ready(function () {
             $('.gaji-row').click(function () {
-                const nip = $(this).data('id');
+                const id = $(this).data('id');
 
-                // Cari data yang cocok dengan NIP tersebut
-                const data = @json($datas).find(item => item.karyawan_nip == nip);
-       
+                // Mendeklarasikan data JSON sebagai variabel
+                const allData = @json($datas->items());
+
+                // Cari data berdasarkan id
+                const data = allData.find(item => item.id == id);
+                    
             
             // Isi data ke dalam modal
             if (data) {
@@ -327,6 +417,8 @@
                 $('#modalDenda').text(data.denda);
                 $('#modalKasbon').text(data.kasbon);
                 $('#modalTotal').text(data.total_gaji);
+                $('#modalBulan').text(data.bulan_id);
+                $('#modalBulanView').text(data.bulans ? data.bulans.bulan_tahun : 'Bulan tidak ditemukan');
 
                 // Tampilkan modal
                 $('#gajiModal').modal('show');
@@ -346,9 +438,13 @@
 
             // Tombol "Yakin" di modal konfirmasi
             $('#btnYakin').click(function () {
-                alert('Data berhasil dikirim!'); // Eksekusi aksi pengiriman
-                $('#confirmModal').modal('hide'); // Tutup modal konfirmasi
-                $('#gajiModal').modal('hide'); // Tutup modal utama
+                const rowId = $(this).data('id'); // Ambil row ID dari elemen terdekat
+                const karyawanNip = $('#modalNip').text(); // Ambil NIP dari modal
+                const bulanId = $('#modalBulan').text(); // Ambil bulan ID dari modal
+                const row = $(`.gaji-row[data-id="${rowId}"]`); // Ambil elemen baris berdasarkan row ID
+
+                // Panggil fungsi untuk memproses pengiriman
+                processSalaryUpdate(karyawanNip, bulanId, row);
             });
 
             // Tombol "Batal" di modal konfirmasi
@@ -356,6 +452,66 @@
                 $('#confirmModal').modal('hide'); // Tutup modal konfirmasi tanpa aksi
             });
         });
+
+        /**
+         * Fungsi untuk memproses pembaruan status gaji
+         * @param {string} karyawanNip - NIP karyawan
+         * @param {string} bulanId - ID bulan
+         * @param {object} row - Elemen baris tabel yang berkaitan
+         */
+        function processSalaryUpdate(karyawanNip, bulanId, row) {
+            fetch(`/manajer/gaji/kirim/${encodeURIComponent(karyawanNip)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({
+                    action: 'updateStatus',
+                    bulan_id: bulanId,
+                    row_id: row.data('id'),
+                }),
+            })
+                .then((response) => {
+                    if (response.status === 403) {
+                        return response.json().then((data) => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Pengiriman Gagal',
+                                text: data.message,
+                                confirmButtonText: 'OK',
+                            });
+                            throw new Error(data.message); // Hentikan eksekusi lebih lanjut
+                        });
+                    }
+
+                    if (!response.ok) {
+                        throw new Error('Kesalahan jaringan atau server.');
+                    }
+
+                    return response.json();
+                })
+                .then((data) => {
+                    Swal.fire({
+                        title: 'Sukses',
+                        text: data.message,
+                        icon: 'success',
+                    }).then(() => {
+                        // Perbarui status di tabel
+                        window.location.reload();
+                        $('#confirmModal').modal('hide'); // Tutup modal konfirmasi
+                        $('#gajiModal').modal('hide'); // Tutup modal utama
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error:', error.message);
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.message || 'Terjadi kesalahan saat memproses data.',
+                        icon: 'error',
+                    });
+                });
+        }
     </script>
 
     <script>

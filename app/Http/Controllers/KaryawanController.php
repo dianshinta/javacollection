@@ -33,12 +33,12 @@ class KaryawanController extends Controller
             'no_telp' => 'required',
             'bank' => 'required',
             'no_rek' => 'required',
-            'kasbon' => 'required',
+            'gaji_pokok' => 'required',
         ]);
 
         Karyawan::updateOrCreate(
             ['id' => $request->id],
-            $request->only('nip', 'nama', 'jabatan','tempat_lahir','tanggal_lahir','gender','toko_id','alamat','no_telp','bank','no_rek','kasbon')
+            $request->only('nip', 'nama', 'jabatan','tempat_lahir','tanggal_lahir','gender','toko_id','alamat','no_telp','bank','no_rek','gaji_pokok')
         );
 
         return redirect()->route('manajer.editkaryawan')->with('success', 'Data berhasil disimpan');
@@ -75,7 +75,7 @@ class KaryawanController extends Controller
             'no_telp' => 'required',
             'bank' => 'required',
             'no_rek' => 'required',
-            'kasbon' => 'required',
+            'gaji_pokok' => 'required',
         ]);
 
         // Update data karyawan
@@ -92,7 +92,7 @@ class KaryawanController extends Controller
         $karyawan->no_telp = $request->input('no_telp');
         $karyawan->bank = $request->input('bank');
         $karyawan->no_rek = $request->input('no_rek');
-        $karyawan->kasbon = $request->input('kasbon');
+        $karyawan->gaji_pokok = $request->input('gaji_pokok');
 
         $karyawan->save();
 
@@ -110,12 +110,12 @@ class KaryawanController extends Controller
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'gender' => 'required|in:Laki-laki,Perempuan',
-            'toko_id' => 'required',
+            'toko_id' => 'required|in:Tanah Abang,Thamrin City',
             'alamat' => 'required',
             'no_telp' => 'required',
             'bank' => 'required',
             'no_rek' => 'required',
-            'kasbon' => 'required',
+            'gaji_pokok' => 'required',
         ]);
 
         // Simpan data karyawan baru
@@ -128,8 +128,18 @@ class KaryawanController extends Controller
 
     public function create()
     {
-        return view('manajer.create'); // Pastikan file view bernama create.blade.php
+        return view('manajer.create')->with('title', 'Karyawan'); // Pastikan file view bernama create.blade.php
     }
+
+    public function search(Request $request)
+{
+    $query = $request->get('q');
+    $karyawans = Karyawan::where('nama', 'LIKE', "%$query%")->get();
+
+    return response()->json($karyawans);
+}
+
+
 
 }
 

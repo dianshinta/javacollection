@@ -25,20 +25,152 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- CSS for Mobile Phone -->
+  <style>
+    .top-right-logout {
+      position: absolute;
+      top: 8px;
+      right: 15px;
+      z-index: 999;
+    }
+
+    .navbar {
+      background-color: #fff2f2 !important;
+      margin-bottom: 0;
+      /* Pink color */
+    }
+  
+    .navbar-toggler-icon {
+      background-color: transparent !important;
+      /* Warna icon hamburger */
+    }
+  
+    .navbar-nav .nav-item.active .nav-link {
+      color: #500606 !important;
+      /* Warna teks menu yang aktif */
+    }
+  
+    .navbar-nav .nav-item .nav-link:hover {
+      color: lightgrey !important;
+      /* Warna teks menu saat hover */
+    }
+  
+    /* Navbar text color */
+    .navbar-nav .nav-item .nav-link {
+      color: grey !important;
+      /* Set text color to  */
+    }
+  
+    /* Change hamburger icon color when it’s clicked (active state) */
+    .navbar-toggler.collapsed .navbar-toggler-icon {
+      background-color: transparent !important;
+      /* Change color to maroon when collapsed */
+    }
+  
+    /* .navbar-collapse {
+        display: none !important;
+      }
+  
+      .navbar-collapse.show {
+        display: block !important;
+      } */
+  
+    .dropdown-menu {
+      display: none;
+      /* Hide dropdown by default */
+    }
+  
+    .dropdown-menu.show {
+      display: block;
+      /* Show dropdown when active */
+    }
+
+    .dropdown-item {
+        background-color: #fff2f2; /* Ubah background */
+        border-radius: 5px; /* Opsional */
+        transition: color 0.3s ease; /* Durasi transisi */
+    }
+
+    .dropdown-item:hover {
+      color: lightgrey;
+    }
+  </style> 
 </head>
 
 <body class="">
     <div class="wrapper ">
-        <div class="sidebar" data-color="white" data-active-color="danger">
+        <!-- Head Role -->
+        <div class="sidebar d-none d-lg-block" data-color="white" data-active-color="danger">
             <div class="logo">
                 <span class="simple-text font-weight-bold">
                 JAVA COLLECTION
                 </span>
             </div>
-            <!-- Menu -->
+            
+            <!--  MENU -->  
             @include('supervisor.menu')
             <!-- END MENU -->
         </div>
+  
+        <!-- Navbar for mobile -->
+        <div class="top-right-logout d-block d-lg-none">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    <i class="nc-icon nc-button-power"></i> Logout
+                </button>
+            </form>
+        </div>
+
+        <!-- Tombol Hamburger -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light d-lg-none">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                  <!-- Beranda -->
+                  <li class="nav-item {{ request()->is('supervisor/beranda') ? 'active' : '' }}">
+                      <a class="nav-link" href="{{ route('supervisor.beranda') }}">
+                          <i class="nc-icon nc-layout-11"></i> Beranda
+                      </a>
+                  </li>
+  
+                  <!-- Karyawan -->
+                  <li class="nav-item dropdown {{ ($title === 'Perizinan' || $title === 'Informasi') ? 'active' : '' }}">
+                    <a class="nav-link dropdown-toggle" href="#" id="karyawanDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="nc-icon nc-single-02"></i> Karyawan
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="karyawanDropdown">
+                        <a style="background-color: #fff2f2" class="dropdown-item {{ $title === 'Perizinan' ? 'active' : '' }}" href="{{ route('supervisor.perizinan') }}">
+                            Perizinan
+                        </a>
+                        <a style="background-color: #fff2f2" class="dropdown-item {{ request()->is('supervisor/infokaryawan') ? 'active' : '' }}" href="{{ route('supervisor.infokaryawan') }}">
+                            Informasi Karyawan
+                        </a>
+                    </div>
+                </li>
+  
+                <!-- Kasbon -->
+                <li class="nav-item dropdown {{ ($title === 'Pengajuan' || $title === 'Pembayaran') ? 'active' : '' }}">
+                    <a class="nav-link dropdown-toggle" href="#" id="kasbonDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="nc-icon nc-money-coins"></i> Kasbon
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="kasbonDropdown">
+                        <a style="background-color: #fff2f2"  class="dropdown-item {{ $title === 'Pengajuan' ? 'active' : '' }}" href="{{ route('supervisor.pengajuan') }}">
+                            Pengajuan
+                        </a>
+                        <a style="background-color: #fff2f2" class="dropdown-item {{ $title === 'Pembayaran' ? 'active' : '' }}" href="{{ route('supervisor.pembayaran') }}">
+                            Pembayaran
+                        </a>
+                    </div>
+                </li>
+              </ul>
+            </div>
+        </nav>
 
         <!-- Content -->
         <div class="main-panel">
@@ -131,7 +263,7 @@
             </div>        
 
             <!-- Modal -->
-            <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true">
+            <div class="modal fade" id="perizinanModal" tabindex="-1" aria-labelledby="perizinanModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -200,11 +332,10 @@
             </div>
 
             <!-- Modal Konfirmasi -->
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p id="confirmMessage"></p> <!--Text confirm-->
@@ -370,10 +501,14 @@
                     });
                 });
             }
+
+            // Close modal by clicking the close button only
+            $('.close').on('click', function() {
+                $(this).closest('.modal').modal('hide');
+            });
         });
     </script>
 </body>
-
 </html>
 
 

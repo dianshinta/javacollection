@@ -16,8 +16,7 @@ class PerizinanFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            
+        return [ 
             'tanggal' => fake()->dateTimeBetween('2025-01-01', '2025-05-31')->format('Y-m-d'),
             'jenis' => fake()->randomElement(['Sakit', 'Cuti', 'Lainnya']),
             'keterangan' => fake()->sentence(),

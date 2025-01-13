@@ -19,27 +19,27 @@
                 </div>
             @endif
 
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form method="POST" action="{{ route('login') }}">
                 @csrf <!-- Token CSRF untuk Laravel -->
 
                 <div class="input-group">
                     <label for="nip">NIP</label>
                     <input type="text" id="nip" name="nip" placeholder="Masukkan NIP Pengguna" required>
+                    <!-- Pesan error untuk field NIP -->
+                    @error('nip')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
                 </div>
+
                 <div class="input-group">
                     <label for="password">Kata Sandi</label>
                     <input type="password" id="password" name="password" placeholder="Masukkan Kata Sandi" required>
+                    <!-- Pesan error untuk field Password -->
+                    @error('password')
+                        <small style="color: red;">{{ $message }}</small>
+                    @enderror
                 </div>
+
                 <button type="submit">Masuk</button>
             </form>
 
