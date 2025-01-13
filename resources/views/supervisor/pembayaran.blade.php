@@ -290,6 +290,7 @@
                                                     <td>{{ $data->nama }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}</td>
                                                     <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
+                                                    <td>{{ $data->karyawan->gaji_pokok ?? 'null' }}</td> 
                                                     <td>
                                                         <!-- Status Kasbon -->
                                                         @if ($data->status_kasbon === 'Lunas')
@@ -322,7 +323,8 @@
                                                         data-saldo-akhir="{{ $data->saldo_akhir }}"
                                                         data-status-bayar="{{ $data->status_bayar }}"
                                                         data-status-kasbon="{{ $data->status_kasbon }}"
-                                                        data-lampiran="{{ asset($data->lampiran) }}">
+                                                        data-lampiran="{{ asset($data->lampiran) }}"
+                                                        data-gaji-pokok="{{ preg_replace('/[^0-9]/', '', $data->karyawan->gaji_pokok ?? 0) }}">
                                                             <i class="bi bi-eye"></i> Lihat
                                                         </a>
                                                     </td>
@@ -376,6 +378,10 @@
                         <div class="row mb-2">
                             <div class="col-5 label-bold">Limit Kasbon:</div>
                             <div class="col-7" id="modal-saldo-akhir"></div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-5 label-bold">Gaji Pokok:</div>
+                            <div class="col-7" id="modal-gaji-pokok"></div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-5 label-bold">Bukti Pembayaran:</div>
@@ -462,10 +468,21 @@
                 const statusBayar = button.getAttribute('data-status-bayar'); // Ambil status bayar
                 const statusKasbon = button.getAttribute('data-status-kasbon'); // Ambil status kasbon
                 const lampiran = button.getAttribute('data-lampiran');
+                const gajiPokok = button.getAttribute('data-gaji-pokok');
+
+                // Log nilai mentah
+                // console.log('Data Gaji Pokok (mentah):', gajiPokok);
+
+                // Parse nilai
+                const parsedGajiPokok = parseInt(gajiPokok);
+
+                // Log nilai setelah parsing
+                // console.log('Data Gaji Pokok (parsed):', parsedGajiPokok);
 
                 // Format nominal dengan Rp
                 const formattedNominalDibayar = formatRupiah(nominalDibayar);
                 const formattedSaldoAkhir = formatRupiah(saldoAkhir);
+                const formattedGajiPokok = formatRupiah(parsedGajiPokok);
 
                 // Isi elemen modal dengan data
                 document.getElementById('modal-nip').textContent = nip;
@@ -473,11 +490,13 @@
                 document.getElementById('modal-tanggal-bayar').textContent = tanggalBayar;
                 document.getElementById('modal-nominal-dibayar').textContent = formattedNominalDibayar;
                 document.getElementById('modal-saldo-akhir').textContent = formattedSaldoAkhir;
+                document.getElementById('modal-gaji-pokok').textContent = formattedGajiPokok;
 
                 // Simpan status bayar dan status kasbon di modal sebagai atribut data
                 pembayaranModal.setAttribute('data-status-bayar', statusBayar);
                 pembayaranModal.setAttribute('data-status-kasbon', statusKasbon);
-                 pembayaranModal.setAttribute('data-id', id);
+                pembayaranModal.setAttribute('data-id', id);
+                pembayaranModal.setAttribute('data-gaji-pokok', gajiPokok);
 
                 // Update link di modal
                 const modalLampiran = document.getElementById('modal-lampiran');
@@ -527,11 +546,13 @@
                     const statusKasbon = pembayaranModal.getAttribute('data-status-kasbon').toLowerCase();
                     const saldo = parseInt(document.getElementById('modal-saldo-akhir').textContent.replace(/[^0-9-]/g, ''));
                     const nominalPembayaran = parseInt(document.getElementById('modal-nominal-dibayar').textContent.replace(/[^0-9]/g, ''));
-
-                    console.log('Status Bayar:', statusBayar);
-                    console.log('Status Kasbon:', statusKasbon);
-                    console.log('Nominal bayar:', nominalPembayaran);
-                    console.log('Saldo:', saldo);
+                    const gajipokok = parseInt(pembayaranModal.getAttribute('data-gaji-pokok'));
+                    
+                    // console.log('Status Bayar:', statusBayar);
+                    // console.log('Status Kasbon:', statusKasbon);
+                    // console.log('Nominal bayar:', nominalPembayaran);
+                    // console.log('Saldo:', saldo);
+                    // console.log('Gaji pokok:', gajipokok);
 
                     // 1. Validasi: Status sudah disetujui atau ditolak
                     if (statusBayar === 'disetujui' || statusBayar === 'ditolak') {
@@ -545,7 +566,8 @@
                     }
 
                     // Validasi 2: Limit kasbon sudah melebihi 2 juta
-                    if (saldo >= 2000000 || statusKasbon === 'lunas') {
+                    if (saldo >= gajipokok) {
+                        // console.log('Validasi gagal: Saldo >= Gaji Pokok');
                         Swal.fire({
                             icon: 'error',
                             title: 'Pembayaran Tidak Valid',
@@ -556,7 +578,8 @@
                     }
 
                     // Validasi 3: Nominal pembayaran melebihi saldo kasbon
-                    if (saldo + nominalPembayaran > 2000000) {
+                    if (saldo + nominalPembayaran > gajipokok) {
+                        // console.log('Validasi gagal: Saldo + Nominal Pembayaran > Gaji Pokok');
                         Swal.fire({
                             icon: 'error',
                             title: 'Pembayaran Tidak Valid',

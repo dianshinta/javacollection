@@ -19,6 +19,9 @@ class supervisorPembayaranController extends Controller
         // Ambil cabang yang diawasi oleh supervisor
         $supervisedBranches = $user->supervisedBranches->pluck('id')->toArray();
 
+        // Debug log untuk memeriksa data cabang yang diawasi
+        // \Log::info('Cabang diawasi:', $supervisedBranches);
+
         // Ambil parameter pencarian 
         $search = $request->input('search');
         
@@ -38,6 +41,7 @@ class supervisorPembayaranController extends Controller
                     ->orWhere('status_bayar', 'like', "%{$search}%")
                     ->orWhere('saldo_akhir', 'like', "%{$search}%");
                 })
+                ->with('karyawan')
                 ->orderBy('updated_at', 'desc')
                 ->orderBy('updated_at', 'desc')
                 ->paginate(20); 
@@ -46,11 +50,21 @@ class supervisorPembayaranController extends Controller
                 $pembayaran = Kasbon::whereHas('karyawan', function($query) use ($supervisedBranches){
                     $query->whereIn('toko_id', $supervisedBranches);
             })
+            ->with('karyawan')
             ->where('keterangan', 'Pembayaran') 
             ->orderBy('updated_at', 'desc') 
             ->orderBy('created_at', 'desc')
-             ->paginate(20);
+            ->paginate(20);
         }
+
+        // Debug log untuk memeriksa data pembayaran yang diambil
+        // foreach ($pembayaran as $data) {
+        //     \Log::info('Data Pembayaran:', [
+        //         'nip' => $data->nip,
+        //         'gaji_pokok' => $data->karyawan->gaji_pokok ?? 'null', // Log gaji pokok
+        //         'saldo_akhir' => $data->saldo_akhir,
+        //     ]);
+        // }
             
         // Kirim data ke view dengan header untuk mencegah caching
         return response()->view('supervisor.pembayaran', [
