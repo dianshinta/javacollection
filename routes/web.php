@@ -193,5 +193,8 @@ Route::post('reset-password', [ResetPasswordController::class, 'store'])
 //Mengambil data untuk ditampilkan ke grafik
 Route::get('/api/chart-data', [AttendanceController::class, 'getChartData']);
 
+//Mengambil data untuk ditampilkan ke grafik
+Route::get('/api/riwayat-data', [AttendanceController::class, 'getRiwayatData']);
+
 //Mengambil data pilihan untuk ditampilkan pada grafik
 Route::get('/api/index-data', [AttendanceController::class, 'index']);

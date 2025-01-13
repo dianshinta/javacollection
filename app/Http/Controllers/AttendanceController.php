@@ -103,4 +103,38 @@ class AttendanceController extends Controller
             }),
         ]);
     }
+
+    public function getRiwayatData(Request $request)
+    {
+        $namaCabang = $request->query('toko'); // Nama cabang dari query parameter
+        $startOfDay = Carbon::now()->startOfDay(); // Mendapatkan waktu pukul 00:00:00 hari ini
+        $now = Carbon::now();
+
+        // Cari toko_id berdasarkan nama cabang
+        $toko = Toko::where('name', $namaCabang)->value('id');
+
+        if (!$toko) {
+            return response()->json([
+                'message' => 'Cabang tidak ditemukan.',
+            ], 404);
+        }
+
+        // Filter data mingguan untuk barChart
+        $riwayatData = Presensi::with('karyawans:nip,nama') // Pastikan relasi 'karyawans' benar
+            ->where('toko_id', $toko)
+            ->whereBetween('waktu', [$startOfDay, $now]) // Filter waktu dari 00:00:00 hingga saat ini
+            ->orderBy('waktu', 'asc')
+            ->get(['nip', 'status', 'waktu']); // Pastikan atribut sesuai tabel
+
+        // Output JSON sesuai format yang diinginkan
+        return response()->json([
+            $riwayatData->map(function ($item) {
+                return [
+                    'nama' => $item->karyawans->nama ?? '-', // Mengambil nama dari relasi
+                    'status' => $item->status,
+                    'waktu' => $item->waktu, // Format waktu jika diperlukan
+                ];
+            }),
+        ]);
+    }
 }

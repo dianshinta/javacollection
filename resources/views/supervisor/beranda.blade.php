@@ -201,7 +201,7 @@
                         <div class="card-body ">
                           <div class="selected-menu">
                             <div class="selected-btn">
-                              <span class="sBtn-text">Cabang A</span>
+                              <span class="sBtn-text"></span>
                               <i class="bx bx-chevron-down"></i>
                             </div>
                           </div>
@@ -248,13 +248,10 @@
                           <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
                         </div>
                         <div class="legend-list">
-                          <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
-                        </div>
-                        <div class="legend-list">
                           <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
                         </div>
                         <div class="legend-list">
-                          <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+                          <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tidak Hadir
                         </div>
                       </div>
                     </div>
@@ -280,13 +277,10 @@
                           <i class="fa fa-circle" style="color: rgba(0, 183, 255, 0.8);"></i>Hadir
                         </div>
                         <div class="legend-list">
-                          <i class="fa fa-circle" style="color: rgba(139, 69, 19, 0.8);"></i>Izin
-                        </div>
-                        <div class="legend-list">
                           <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
                         </div>
                         <div class="legend-list">
-                          <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tanpa Keterangan
+                          <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tidak Hadir
                         </div>
                       </div>
                     </div>
@@ -296,40 +290,26 @@
 
             <!-- Tabel -->
             <div class="row">
-                <p class="font-weight-bold" style="margin-left: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Riwayat</p>
-                <div class="col-md-12">
-                    <div class="card ">
-                        <div class="card-body">
-                            <div class="table-responsive">
+              <p class="font-weight-bold" style="margin-left: 1rem; margin-bottom: 0.5rem; font-size: 1.2rem;">Riwayat</p>
+              <div class="col-md-12">
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="table-responsive">
                               <table class="table">
-                                  <thead class=" text-primary">
-                                  <th>Nama</th>
-                                  <th>Status</th>
-                                  <th>Waktu</th>
+                                  <thead class="text-primary">
+                                      <th>Nama</th>
+                                      <th>Status</th>
+                                      <th>Waktu</th>
                                   </thead>
-                                  <tbody>
-                                      <tr>
-                                          <td>Rafliansyah Dwi Setiawan Tondauu</td>
-                                          <td><span class="badge bg-success">Hadir</span></td>
-                                          <td>09.00</td>
-                                      </tr>
-                                      <tr>
-                                          <td>khaledd</td>
-                                          <td><span class="badge bg-secondary">none</span></td>
-                                          <td>none</td>
-                                      </tr>
-                                      <tr>
-                                          <td>khaledd</td>
-                                          <td><span class="badge bg-warning text-dark">terlambat</span></td>
-                                          <td>11.00</td>
-                                      </tr>
+                                  <tbody id="data-table-body">
+                                      <!-- Data akan diisi secara dinamis -->
                                   </tbody>
                               </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </div>
       </div>
       <!-- End Content -->
