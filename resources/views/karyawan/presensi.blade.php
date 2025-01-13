@@ -293,7 +293,12 @@
                   <div class="d-flex align-items-center me-4">
                     <i class="nc-icon nc-pin-3 text-primary mr-2"></i>
                     <div>
-                      <span>Tanah Abang</span>
+                      @if ($user && $user->karyawan && $user->karyawan->toko)
+                        <span
+                        style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; max-height: 3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ $user->karyawan->toko->name }}</span>
+                      @else
+                        <span>-</span>
+                      @endif
                     </div>
                 </div>
             </div>          

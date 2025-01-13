@@ -319,12 +319,12 @@
                                                     {{ $salary->bulans->bulan_tahun }}
                                                 </td>
                                                 <td>
-                                                    Rp {{number_format($salary->total_gaji, 0, ',', '.') }}
+                                                    Rp {{ $salary->status == 'Telah Dikirim' ? number_format($salary->total_gaji, 0, ',', '.') : '-' }}
                                                 </td>
                                                 <td class="text-right">
                                                     <div class="button-container">
                                                         <button id="btn-unduh" type="button" class="custom-button" data-toggle="modal"
-                                                            data-target="#lampiranModal">
+                                                            data-target="#lampiranModal" {{ $salary->status != 'Telah Dikirim' ? 'disabled' : '' }}>
                                                             Unduh
                                                         </button>
                                                     </div>
