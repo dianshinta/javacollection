@@ -69,7 +69,7 @@
                                 </tr>
     
                                 <!-- Modal for viewing and editing employee details -->
-                                <div class="modal fade" id="viewModal{{ $karyawan->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="viewModal{{ $karyawan->id }}" tabindex="-1" role="dialog" aria-labelledby="viewModalLabel" aria-hidden="true" data-bs-backdrop="static"> 
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -220,6 +220,11 @@
             } else {
                 location.reload();
             }
+        });
+
+        // Close modal by clicking the close button only
+        $('.close').on('click', function() {
+            $(this).closest('.modal').modal('hide');
         });
     });
 </script>

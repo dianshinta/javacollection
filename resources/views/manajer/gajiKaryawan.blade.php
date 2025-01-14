@@ -156,26 +156,35 @@
                     <div class="col-md-12">
                         {{-- Bulan --}}
                         <div class="cabang">
-                            <div class="row">
+                            <div class="row align-items-center">
+                                <!-- Dropdown Bulan -->
                                 <div class="col-lg-3 col-md-6 col-sm-6">
                                     <div class="card">
                                         <div class="card-body">
-                                            <div class="selected-menu">
-                                                <form id="bulanFilterForm" method="GET" action="{{ route('manajer.gaji') }}">
-                                                    <select class="form-control" id="bulanSelect" name="bulan_id" onchange="document.getElementById('bulanFilterForm').submit();">
-                                                        @foreach ($bulans as $bulan)
-                                                            <option value="{{ $bulan->id }}" {{ $bulan->id == $selectedBulan ? 'selected' : '' }}>
-                                                                {{ $bulan->bulan_tahun }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </form>
-                                            </div>
+                                            <form id="bulanFilterForm" method="GET" action="{{ route('manajer.gaji') }}">
+                                                <select class="form-control" id="bulanSelect" name="bulan_id" onchange="document.getElementById('bulanFilterForm').submit();">
+                                                    @foreach ($bulans as $bulan)
+                                                        <option value="{{ $bulan->id }}" {{ $bulan->id == $selectedBulan ? 'selected' : '' }}>
+                                                            {{ $bulan->bulan_tahun }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+                        
+                                <!-- Tombol Export Excel -->
+                                <div class="col-lg-9 col-md- col-sm-6 text-end">
+                                    <div class="text-end">
+                                        <a href="{{ route('export.salary', ['bulan_id' => $selectedBulan]) }}" class="btn btn-success pull-right">
+                                            Export Excel
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </div>                        
+
                         <!-- Pencarian -->
                         <form method="GET" action="" class="d-flex">
                             <div class="input-group search-bar">
@@ -225,7 +234,7 @@
                 </div>
             
                 <!-- Modal Box for Atur Bonus -->
-                <div class="modal fade" id="bonusModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" style="margin-top: 8%">
+                <div class="modal fade" id="bonusModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" style="margin-top: 8%" data-bs-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -263,7 +272,7 @@
                 </div>
             
                 <!-- Modal Box for Kirim Gaji -->
-                <div class="modal fade" id="gajiModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+                <div class="modal fade" id="gajiModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" data-bs-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -322,7 +331,7 @@
                 </div>
             
                 <!-- Modal Konfirmasi -->
-                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true" data-bs-backdrop="static">
                     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -572,6 +581,11 @@
                     $('.sendSalary').show();
                     isEditing = false;
                 }
+            });
+
+            // Close modal by clicking the close button only
+            $('.close').on('click', function() {
+                $(this).closest('.modal').modal('hide');
             });
         });
     </script>

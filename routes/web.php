@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SlipGajiController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\supervisorPerizinanController;
 use App\Http\Controllers\supervisorPembayaranController;
@@ -16,6 +15,11 @@ use App\Http\Controllers\EditKaryawanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Models\Bulan;
+use App\Exports\EmployerSalaryExport;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::post('forgot-password', [ForgotPasswordController::class, 'store'])->middleware('guest')->name('password.email');
 
@@ -180,6 +184,15 @@ Route::middleware(['auth', 'role:manajer'])->group(function () {
 
     Route::get('/manajer/editkaryawan/{id}', [KaryawanController::class, 'edit'])->name('manajer.editkaryawan');
 
+    Route::get('/export-salary/{bulan_id}', function ($bulan_id) {
+        // Ambil bulan dan tahun berdasarkan bulan_id
+        $bulan = Bulan::find($bulan_id);
+
+        // Buat nama file dengan format yang diinginkan
+        $fileName = 'Gaji Karyawan (' . $bulan->bulan_tahun . ').xlsx';
+        
+        return Excel::download(new EmployerSalaryExport($bulan_id), $fileName);
+    })->name('export.salary');
 });
 
 // Fitur reset password
