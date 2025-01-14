@@ -10,6 +10,8 @@ use App\Models\Kasbon;
 use App\Models\Bulan;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\EmployerSalaryExport;
 
 
 class EmployerSalaryController extends Controller
@@ -23,16 +25,16 @@ class EmployerSalaryController extends Controller
         $bulans = Bulan::orderBy('tahun', 'desc')
             ->orderBy('bulan', 'desc')
             ->get();
-    
+
         // Ambil bulan ID dari dropdown atau default ke bulan saat ini
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
         $selectedBulan = $request->get('bulan_id', Bulan::where('bulan', $currentMonth)->where('tahun', $currentYear)->value('id'));
-    
+
         // Inisialisasi query untuk EmployerSalary
         $query = EmployerSalary::with(['karyawan', 'bulans'])
             ->where('bulan_id', $selectedBulan);
-    
+
         // Tambahkan filter pencarian jika input `search` tersedia
         if ($request->has('search') && !empty($request->search)) {
             $searchTerm = $request->search;
@@ -40,10 +42,10 @@ class EmployerSalaryController extends Controller
                 $q->where('nama', 'like', '%' . $searchTerm . '%');
             });
         }
-    
+
         // Ambil data dengan paginasi
         $datas = $query->paginate(20);
-    
+
         // Kirim data ke view
         return view('/manajer/gajiKaryawan', [
             "title" => "Gaji",
@@ -143,5 +145,19 @@ class EmployerSalaryController extends Controller
         $rowId = $request->input('row_id'); // Ambil ID baris dari permintaan
         $status = EmployerSalary::find($rowId)->status; // Ambil status dari database
         return response()->json(['status' => $status]);
+    }
+
+    public function exportExcel(Request $request)
+    {
+        // Ambil bulan_id dari request
+        $bulan_id = $request->get('bulan_id');
+
+        // Validasi bulan_id
+        if (!$bulan_id || !Bulan::find($bulan_id)) {
+            return redirect()->route('manajer.gaji')->withErrors('Bulan tidak valid.');
+        }
+
+        // Ekspor file Excel
+        return Excel::download(new EmployerSalaryExport($bulan_id), 'employer_salaries.xlsx');
     }
 }

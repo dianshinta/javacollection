@@ -5,56 +5,43 @@ namespace App\Exports;
 use App\Models\EmployerSalary;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class EmployerSalaryExport implements FromCollection, WithHeadings
+class EmployerSalaryExport implements FromQuery, WithHeadings, ShouldAutoSize
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
     protected $bulan_id;
 
-    // Constructor untuk menerima parameter bulan_id
-    public function __construct(int $bulan_id)
+    // Constructor untuk menerima bulan_id
+    public function __construct($bulan_id)
     {
         $this->bulan_id = $bulan_id;
     }
 
-    // Data yang akan diexport
-    public function collection()
+    // Query untuk mengambil data
+    public function query()
     {
-        return EmployerSalary::with(['karyawan', 'bulans'])
+        return EmployerSalary::query()
             ->where('bulan_id', $this->bulan_id)
-            ->get()
-            ->map(function ($salary) {
-                return [
-                    'NIP' => $salary->karyawan->nip,
-                    'Nama Karyawan' => $salary->karyawan->nama,
-                    'Bulan' => $salary->bulans->bulan_tahun,
-                    'Gaji Pokok' => $salary->gaji_pokok,
-                    'Kehadiran' => $salary->hadir ?? 10,
-                    'Absen' => $salary->absen,
-                    'Izin' => $salary->izin,
-                    'Kasbon' => $salary->kasbon,
-                    'Denda' => $salary->denda,
-                    'Total Gaji' => $salary->total_gaji,
-                ];
-            });
+            ->with(['karyawan', 'bulans'])
+            ->select([
+                'karyawan_nip',
+                'nama',
+                'jabatan',
+                'total_gaji',
+                'status',
+            ]);
     }
 
-    // Header untuk Excel
+    // Header kolom di file Excel
     public function headings(): array
     {
         return [
             'NIP',
-            'Nama Karyawan',
-            'Bulan',
-            'Gaji Pokok',
-            'Kehadiran',
-            'Absen',
-            'Izin',
-            'Kasbon',
-            'Denda',
+            'Nama',
+            'Jabatan',
             'Total Gaji',
+            'Status',
         ];
     }
 }
