@@ -175,7 +175,7 @@
                                 </div>
                         
                                 <!-- Tombol Export Excel -->
-                                <div class="col-lg-9 col-md-6 col-sm-6 text-end">
+                                <div class="col-lg-9 col-md-6 col-sm-6 d-flex justify-content-end">
                                     <div class="text-end">
                                         <a href="{{ route('manajer.gaji.export', ['bulan_id' => $selectedBulan]) }}" class="btn btn-success">
                                             Export Excel

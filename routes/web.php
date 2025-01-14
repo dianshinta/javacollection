@@ -186,16 +186,6 @@ Route::middleware(['auth', 'role:manajer'])->group(function () {
     Route::get('karyawan/search', [KaryawanController::class, 'search'])->name('karyawan.search');
 
     Route::get('/manajer/editkaryawan/{id}', [KaryawanController::class, 'edit'])->name('manajer.editkaryawan');
-
-    Route::get('/export-salary/{bulan_id}', function ($bulan_id) {
-        // Ambil bulan dan tahun berdasarkan bulan_id
-        $bulan = Bulan::find($bulan_id);
-
-        // Buat nama file dengan format yang diinginkan
-        $fileName = 'Gaji Karyawan (' . $bulan->bulan_tahun . ').xlsx';
-        
-        return Excel::download(new EmployerSalaryExport($bulan_id), $fileName);
-    })->name('export.salary');
 });
 
 // Fitur reset password

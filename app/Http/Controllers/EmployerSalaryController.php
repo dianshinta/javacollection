@@ -157,7 +157,10 @@ class EmployerSalaryController extends Controller
             return redirect()->route('manajer.gaji')->withErrors('Bulan tidak valid.');
         }
 
+        // Buat nama file dengan format yang diinginkan
+        $fileName = 'Gaji Karyawan (' . Bulan::find($bulan_id)->bulan_tahun . ').xlsx';
+
         // Ekspor file Excel
-        return Excel::download(new EmployerSalaryExport($bulan_id), 'employer_salaries.xlsx');
+        return Excel::download(new EmployerSalaryExport($bulan_id), $fileName);
     }
 }
