@@ -46,7 +46,7 @@ const demo = {
 
             // Mengelompokkan data berdasarkan tanggal dengan nilai default
             const groupedData = getLastWeekDates().reduce((acc, date) => {
-                acc[date] = { hadir: 0, terlambat: 0, tidak: 0 }; // Nilai default
+                acc[date] = { hadir: 0, terlambat: 0}; // Nilai default
                 return acc;
             }, {});
 
@@ -57,8 +57,6 @@ const demo = {
                         groupedData[item.tanggal].hadir++;
                     } else if (item.status === "Terlambat") {
                         groupedData[item.tanggal].terlambat++;
-                    } else if (item.status === "Tidak Hadir") {
-                        groupedData[item.tanggal].tidak++;
                     }
                 }
             });
@@ -74,7 +72,6 @@ const demo = {
             const labels = Object.keys(groupedData).map(date => getDayName(date)); // Nama hari
             const hadirData = Object.keys(groupedData).map(date => groupedData[date].hadir);
             const terlambatData = Object.keys(groupedData).map(date => groupedData[date].terlambat);
-            const tidakData = Object.keys(groupedData).map(date => groupedData[date].tidak);
 
             // Buat chart dengan data baru
             barChartInstance = new Chart(barChartCtx, {
@@ -91,11 +88,6 @@ const demo = {
                             label: "Terlambat",
                             data: terlambatData,
                             backgroundColor: "rgba(255, 255, 0, 0.8)", // Warna kuning
-                        },
-                        {
-                            label: "Tidak Hadir",
-                            data: tidakData,
-                            backgroundColor: "rgba(255, 0, 0, 0.8)", // Warna merah
                         },
                     ],
                 },
@@ -147,20 +139,18 @@ const demo = {
           // Menghitung jumlah status kehadiran
           const totalKehadiran = monthlyData.filter(item => item.status === "Hadir").length;
           const totalKeterlambatan = monthlyData.filter(item => item.status === "Terlambat").length;
-          const totalTidak = monthlyData.filter(item => item.status === "Tidak Hadir").length;
   
           // Membuat grafik Doughnut
           doughnutChartInstance = new Chart(doughnutChartCtx, {
               type: "doughnut",
               data: {
-                  labels: ["Hadir", "Terlambat", "Tidak Hadir"], // Label untuk setiap status
+                  labels: ["Hadir", "Terlambat"], // Label untuk setiap status
                   datasets: [
                       {
-                          data: [totalKehadiran, totalKeterlambatan, totalTidak], // Data untuk setiap status
+                          data: [totalKehadiran, totalKeterlambatan], // Data untuk setiap status
                           backgroundColor: [
                               "rgba(0, 183, 255, 0.8)", // Warna biru untuk Hadir
                               "rgba(255, 255, 0, 0.8)", // Warna kuning untuk Terlambat
-                              "rgba(255, 0, 0, 0.8)",   // Warna merah untuk Tidak Hadir
                           ],
                       },
                   ],

@@ -325,9 +325,6 @@
                       <div class="legend-list">
                         <i class="fa fa-circle" style="color: rgba(255, 255, 0, 0.8);"></i>Terlambat
                       </div>
-                      <div class="legend-list">
-                        <i class="fa fa-circle" style="color: rgba(255, 0, 0, 0.8);"></i>Tidak Hadir
-                      </div>
                     </div>
                   </div>
                 </div>

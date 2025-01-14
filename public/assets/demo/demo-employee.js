@@ -45,14 +45,12 @@ const initBarChart = async () => {
             const date = new Date(item.tanggal);
             const month = date.getMonth(); // Index bulan (0 = Januari, 11 = Desember)
             if (!acc[month]) {
-                acc[month] = { hadir: 0, terlambat: 0, tidak: 0 };
+                acc[month] = { hadir: 0, terlambat: 0};
             }
             if (item.status === "Hadir") {
                 acc[month].hadir++;
             } else if (item.status === "Terlambat") {
                 acc[month].terlambat++;
-            } else if (item.status === "Tidak Hadir") {
-                acc[month].tidak++;
             }
             return acc;
         }, {});
@@ -64,8 +62,6 @@ const initBarChart = async () => {
             .map(monthIndex => groupedData[monthIndex].hadir);
         const terlambatData = Object.keys(groupedData)
             .map(monthIndex => groupedData[monthIndex].terlambat);
-        const tidakData = Object.keys(groupedData)
-            .map(monthIndex => groupedData[monthIndex].tidak);
 
         // Elemen canvas untuk chart
         const barChartCanvas = document.getElementById("barChart");
@@ -96,11 +92,6 @@ const initBarChart = async () => {
                         label: "Terlambat",
                         data: terlambatData,
                         backgroundColor: "rgba(255, 255, 0, 0.8)", // Warna kuning
-                    },
-                    {
-                        label: "Tidak Hadir",
-                        data: tidakData,
-                        backgroundColor: "rgba(255, 0, 0, 0.8)", // Warna merah
                     },
                 ],
             },

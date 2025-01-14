@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             // Panggil fetchData dan processData untuk memuat data awal
             await updateCharts(selectedCabang);
-            
+
             const initialData = await fetchData(selectedCabang);
             processData(initialData);
         } catch (error) {
@@ -98,8 +98,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return 'badge badge-success'; // Kelas untuk status "Hadir"
             case 'terlambat':
                 return 'badge badge-warning'; // Kelas untuk status "Terlambat"
-            case 'tidak hadir':
-                return 'badge badge-danger'; // Kelas untuk status "Tidak Hadir"
             default:
                 return 'badge badge-secondary'; // Default kelas
         }
