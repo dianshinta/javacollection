@@ -9,6 +9,7 @@ use App\Models\Presensi;
 use App\Models\Kasbon;
 use App\Models\Bulan;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 
 class EmployerSalaryController extends Controller
@@ -16,25 +17,40 @@ class EmployerSalaryController extends Controller
     /**
      * Menampilkan daftar gaji.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Inisialisasi query
-        $query = EmployerSalary::with(['karyawan', 'bulans']);
-
-        $this->updateInEmployerSalaries();
-
+        // Ambil data bulan dari tabel Bulan, diurutkan terbaru ke terlama
+        $bulans = Bulan::orderBy('tahun', 'desc')
+            ->orderBy('bulan', 'desc')
+            ->get();
+    
+        // Ambil bulan ID dari dropdown atau default ke bulan saat ini
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        $selectedBulan = $request->get('bulan_id', Bulan::where('bulan', $currentMonth)->where('tahun', $currentYear)->value('id'));
+    
+        // Inisialisasi query untuk EmployerSalary
+        $query = EmployerSalary::with(['karyawan', 'bulans'])
+            ->where('bulan_id', $selectedBulan);
+    
         // Tambahkan filter pencarian jika input `search` tersedia
-        if (request('search')) {
-            $query->where('nama', 'like', '%' . request('search') . '%');
+        if ($request->has('search') && !empty($request->search)) {
+            $searchTerm = $request->search;
+            $query->whereHas('karyawan', function ($q) use ($searchTerm) {
+                $q->where('nama', 'like', '%' . $searchTerm . '%');
+            });
         }
-
-        // Lakukan paginasi setelah filter diterapkan
+    
+        // Ambil data dengan paginasi
         $datas = $query->paginate(20);
-
-        // Kirim data ke view dengan header untuk mencegah caching
-        return response()->view('/manajer/gajiKaryawan', [
+    
+        // Kirim data ke view
+        return view('/manajer/gajiKaryawan', [
             "title" => "Gaji",
-            'datas' => $datas
+            "datas" => $datas,
+            "bulans" => $bulans,
+            "selectedBulan" => $selectedBulan,
+            "search" => $request->search, // Untuk mempertahankan nilai input pencarian di view
         ]);
     }
 

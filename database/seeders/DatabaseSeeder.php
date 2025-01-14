@@ -52,11 +52,11 @@ class DatabaseSeeder extends Seeder
 
 
         // Buat 10 data pengguna
-        $karyawans = Karyawan::factory(50)->create();
+        $karyawans = Karyawan::factory(5)->create();
 
         // Tentukan rentang tanggal untuk presensi
-        $startDate = '2025-01-01';
-        $endDate = '2025-05-31';
+        $startDate = '2024-05-01';
+        $endDate = '2025-01-14';
 
         // Loop setiap pengguna
         $karyawans->each(function ($karyawan) use ($startDate, $endDate) {

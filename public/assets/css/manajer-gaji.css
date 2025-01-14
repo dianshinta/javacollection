@@ -1,3 +1,66 @@
+/* Bulan dropdown copas cabang dari dasboard*/
+/* Cabang Container */
+.cabang {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Dropdown Styling */
+  .selected-menu {
+    width: 180px;
+  }
+  
+  .selected-menu .selected-btn {
+    display: flex;
+    height: 40px;
+    background-color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 8px;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  /* Dropdown Overlay */
+  .dropdown-overlay {
+    display: none;
+    position: relative;
+    margin-top: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+  }
+    
+  
+  /* Select Menu */
+  .dropdown select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .selected-menu {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.selected-menu select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
 /* pagination */
 .pagination {
     margin-top: 20px;

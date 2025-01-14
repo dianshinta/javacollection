@@ -154,14 +154,28 @@
                 <div class="row align-items-start">
                     <!-- Main Content -->
                     <div class="col-md-12">
-                        <!-- Button Atur Bonus -->
-                        <button class="btn-bonus mb-3" id="btnBonus">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 20">
-                                <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
-                                <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2z"/>
-                            </svg> 
-                            Atur Bonus
-                        </button>
+                        {{-- Bulan --}}
+                        <div class="cabang">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="selected-menu">
+                                                <form id="bulanFilterForm" method="GET" action="{{ route('manajer.gaji') }}">
+                                                    <select class="form-control" id="bulanSelect" name="bulan_id" onchange="document.getElementById('bulanFilterForm').submit();">
+                                                        @foreach ($bulans as $bulan)
+                                                            <option value="{{ $bulan->id }}" {{ $bulan->id == $selectedBulan ? 'selected' : '' }}>
+                                                                {{ $bulan->bulan_tahun }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Pencarian -->
                         <form method="GET" action="" class="d-flex">
                             <div class="input-group search-bar">

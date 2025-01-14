@@ -72,6 +72,15 @@ class Bulan extends Model
         }
     }
 
+     // Accessor untuk mengecek apakah bulan ini adalah bulan aktif
+     public function getIsCurrentMonthAttribute(): bool
+     {
+         $currentMonth = Carbon::now()->month;
+         $currentYear = Carbon::now()->year;
+ 
+         return $this->bulan == $currentMonth && $this->tahun == $currentYear;
+     }
+
     // Event saving untuk memastikan bulan_tahun terisi dalam format yang benar
     protected static function booted()
     {
