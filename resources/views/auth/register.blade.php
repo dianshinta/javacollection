@@ -12,23 +12,36 @@
             <div class="input-group">
                 <label for="nip">NIP</label>
                 <input type="text" id="nip" name="nip" placeholder="Masukkan NIP Anda" required>
+                @error('nip')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+
             </div>
             <div class="input-group">
                 <label for="name">Nama</label>
                 <input type="text" id="name" name="name" placeholder="Masukkan Nama Anda" required>
+                @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
             <div class="input-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Masukkan Email Anda" required>
+                @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
             <div class="input-group">
                 <label for="password">Kata Sandi</label>
                 <input type="password" id="password" name="password" placeholder="Buat Kata Sandi" required>
+                @error('password')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
             <div class="input-group">
-    <label for="jabatan">Jabatan</label>
-    <div class="radio-group">
-        <label>
+            <label for="jabatan">Jabatan</label>
+            <div class="radio-group">
+            <label>
             <input type="radio" id="karyawan" name="jabatan" value="karyawan" required>
             Karyawan
         </label>
@@ -41,6 +54,9 @@
             Supervisor
         </label>
     </div>
+    @error('jabatan')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 </div>
 
             <button type="submit">Daftar</button>

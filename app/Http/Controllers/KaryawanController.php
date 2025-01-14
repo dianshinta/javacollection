@@ -99,6 +99,29 @@ class KaryawanController extends Controller
         // Redirect ke halaman manajer dengan pesan sukses
         return redirect()->route('manajer.editkaryawan')->with('success', 'Data berhasil diperbarui');
 
+        $tokoNames = [
+            '1' => 'Hall 8m',
+            '2' => 'Grand Hall',
+            '3' => 'B6',
+            '4' => 'Lt. 2',
+            '5' => 'Batik Dasar',
+            '6' => 'Gaza',
+            '7' => 'B 16',
+            '8' => 'Hypermart',
+            '9' => 'Online',
+            '10' => 'Ladies',
+            '11' => 'D36',
+            '12' => 'B11',
+            '13' => 'Musholla E',
+            '14' => 'Batik Dasar 1',
+            '15' => 'Tanah Abang LG',
+            '16' => 'Tanah Abang Base',
+        ];
+        
+        // Kirim array ini ke view
+        return view('manajer.editkaryawan', compact('karyawan', 'tokoNames'));
+        
+
     }
     public function store(Request $request)
     {

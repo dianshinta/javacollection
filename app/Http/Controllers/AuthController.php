@@ -28,7 +28,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
+            return redirect()->back()
+                         ->withErrors($validator)
+                         ->withInput();
         }
 
         // Menyimpan data pengguna baru ke database
@@ -60,11 +62,22 @@ class AuthController extends Controller
             }
         }
 
+        
+
+
         // Dispatch event jika diperlukan
         UserCreated::dispatch($user);
 
         return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
+    
+public function showRegisterForm()
+{
+    return view('auth.register'); // Pastikan path view sesuai
+}
+
+
+
 
     // Fungsi untuk login
     public function login(Request $request)

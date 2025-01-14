@@ -42,8 +42,22 @@
             <div class="form-group">
                 <label for="toko_id">Toko</label>
                 <select class="form-control" id="toko_id" name="toko_id" required>
-                    <option value="Tanah Abang">Tanah Abang</option>
-                    <option value="Thamrin City">Thamrin City</option>
+                <option value="1" {{ $karyawan->toko_id == '1' ? 'selected' : '' }}>Hall 8m</option>
+                                                        <option value="2" {{ $karyawan->toko_id == '2' ? 'selected' : '' }}>Grand Hall</option>
+                                                        <option value="3" {{ $karyawan->toko_id == '3' ? 'selected' : '' }}>B6</option>
+                                                        <option value="4" {{ $karyawan->toko_id == '4' ? 'selected' : '' }}>Lt. 2</option>
+                                                        <option value="5" {{ $karyawan->toko_id == '5' ? 'selected' : '' }}>Batik Dasar</option>
+                                                        <option value="6" {{ $karyawan->toko_id == '6' ? 'selected' : '' }}>Gaza</option>
+                                                        <option value="7" {{ $karyawan->toko_id == '7' ? 'selected' : '' }}>B 16</option>
+                                                        <option value="8" {{ $karyawan->toko_id == '8' ? 'selected' : '' }}>Hypermart</option>
+                                                        <option value="9" {{ $karyawan->toko_id == '9' ? 'selected' : '' }}>Online</option>
+                                                        <option value="10" {{ $karyawan->toko_id == '10' ? 'selected' : '' }}>Ladies</option>
+                                                        <option value="11" {{ $karyawan->toko_id == '11' ? 'selected' : '' }}>D36</option>
+                                                        <option value="12" {{ $karyawan->toko_id == '12' ? 'selected' : '' }}>B11</option>
+                                                        <option value="13" {{ $karyawan->toko_id == '13' ? 'selected' : '' }}>Musholla E</option>
+                                                        <option value="14" {{ $karyawan->toko_id == '14' ? 'selected' : '' }}>Batik Dasar 1</option>
+                                                        <option value="15" {{ $karyawan->toko_id == '15' ? 'selected' : '' }}>Tanah Abang LG</option>
+                                                        <option value="16" {{ $karyawan->toko_id == '16' ? 'selected' : '' }}>Tanah Abang Base</option>
                 </select>
             </div>
             <div class="form-group">

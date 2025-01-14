@@ -51,6 +51,11 @@ Route::middleware(['web'])->group(function () {
     Route::get('/login', function () {
         return view('auth.login');
     });
+
+    Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register.form');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+    Route::get('/manajer/editkaryawan/{id}', [KaryawanController::class, 'edit'])->name('manajer.editkaryawan');
 });
 
 // BAGIAN HALAMAN KARYAWAN
@@ -172,6 +177,8 @@ Route::middleware(['auth', 'role:manajer'])->group(function () {
         ->name('karyawan.store');
     
     Route::get('karyawan/search', [KaryawanController::class, 'search'])->name('karyawan.search');
+
+    Route::get('/manajer/editkaryawan/{id}', [KaryawanController::class, 'edit'])->name('manajer.editkaryawan');
 
 });
 
