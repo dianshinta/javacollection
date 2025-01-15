@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\EmployerSalary;
 use App\Models\Karyawan;
 use App\Models\Presensi;
-use App\Models\Kasbon;
+use App\Models\kasbon;
+use App\Models\perizinan;
 use App\Models\Bulan;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -21,6 +22,8 @@ class EmployerSalaryController extends Controller
      */
     public function index(Request $request)
     {
+        $this->updateInEmployerSalaries();
+
         // Ambil data bulan dari tabel Bulan, diurutkan terbaru ke terlama
         $bulans = Bulan::orderBy('tahun', 'desc')
             ->orderBy('bulan', 'desc')
@@ -94,6 +97,7 @@ class EmployerSalaryController extends Controller
         }
     }
 
+    //OBSERVER
     //update nama dalam tabel employer salaries
     public function updateInEmployerSalaries()
     {
@@ -114,6 +118,60 @@ class EmployerSalaryController extends Controller
 
         return response()->json(['message' => 'Kolom nama berhasil diperbarui untuk semua data']);
     }
+    /**
+     * Update kolom hadir pada EmployerSalary berdasarkan perubahan di Presensi.
+     *
+     * @param string $nip
+     * @param int $bulanId
+     * @return void
+     */
+    public static function updateHadir(string $nip, int $bulanId): void
+    {
+        $hadir = Presensi::where('nip', $nip)
+            ->where('bulan_id', $bulanId)
+            ->whereIn('status', ['Hadir', 'Terlambat'])
+            ->count();
+
+        EmployerSalary::where('karyawan_nip', $nip)
+            ->where('bulan_id', $bulanId)
+            ->update(['hadir' => $hadir]);
+    }
+
+    /**
+     * Update kolom izin pada EmployerSalary berdasarkan perubahan di Perizinan.
+     *
+     * @param string $nip
+     * @param int $bulanId
+     * @return void
+     */
+    public static function updateIzin(string $nip, int $bulanId): void
+    {
+        $izin = Perizinan::where('nip', $nip)
+            ->where('bulan_id', $bulanId)
+            ->where('status', 'Disetujui')
+            ->count();
+
+        EmployerSalary::where('karyawan_nip', $nip)
+            ->where('bulan_id', $bulanId)
+            ->update(['izin' => $izin]);
+    }
+
+    /**
+     * Update kolom kasbon pada EmployerSalary berdasarkan perubahan di Kasbon.
+     *
+     * @param string $nip
+     * @param int $bulanId
+     * @param int $saldoAkhir
+     * @return void
+     */
+    public static function updateKasbon(string $nip, int $bulanId, int $saldoAkhir): void
+    {
+        EmployerSalary::where('karyawan_nip', $nip)
+            ->where('bulan_id', $bulanId)
+            ->update(['kasbon' => $saldoAkhir]);
+    }
+
+
 
     //MEMPERBARUI STATUS KIRIM GAJI
     public function updateStatus($karyawan_nip, Request $request)

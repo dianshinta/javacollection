@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Kasbon;
 use App\Models\EmployerSalary;
+use App\Http\Controllers\EmployerSalaryController;
 
 class KasbonObserver
 {
@@ -13,16 +14,7 @@ class KasbonObserver
      */
     public function updated(Kasbon $kasbon): void
     {
-        $nip = $kasbon->nip;
-        $bulanId = $kasbon->bulan_id;
-
-        // Ambil nilai saldo_akhir
-        $saldoAkhir = $kasbon->saldo_akhir;
-
-        // Perbarui kolom kasbon pada employer_salaries
-        EmployerSalary::where('karyawan_nip', $nip)
-            ->where('bulan_id', $bulanId)
-            ->update(['kasbon' => $saldoAkhir]);
+        EmployerSalaryController::updateKasbon($kasbon->nip, $kasbon->bulan_id, $kasbon->saldo_akhir);
     }
 
     /**

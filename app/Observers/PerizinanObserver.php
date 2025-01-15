@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Perizinan;
 use App\Models\EmployerSalary;
+use App\Http\Controllers\EmployerSalaryController;
 
 class PerizinanObserver
 {
@@ -13,19 +14,7 @@ class PerizinanObserver
     public function updated(Perizinan $perizinan): void
     {
         if ($perizinan->status === 'Disetujui') {
-            $nip = $perizinan->nip;
-            $bulanId = $perizinan->bulan_id;
-
-            // Hitung ulang jumlah izin untuk karyawan dan bulan tertentu
-            $izin = Perizinan::where('nip', $nip)
-                ->where('bulan_id', $bulanId)
-                ->where('status', 'Disetujui')
-                ->count();
-
-            // Perbarui kolom izin pada employer_salaries
-            EmployerSalary::where('karyawan_nip', $nip)
-                ->where('bulan_id', $bulanId)
-                ->update(['izin' => $izin]);
+            EmployerSalaryController::updateIzin($perizinan->nip, $perizinan->bulan_id);
         }
     }
 

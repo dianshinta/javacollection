@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Presensi;
 use App\Models\EmployerSalary;
+use App\Http\Controllers\EmployerSalaryController;
 
 class PresensiObserver
 {
@@ -12,19 +13,7 @@ class PresensiObserver
      */
     public function saved(Presensi $presensi): void
     {
-        $nip = $presensi->nip;
-        $bulanId = $presensi->bulan_id;
-
-        // Hitung ulang kehadiran untuk karyawan dan bulan tertentu
-        $hadir = Presensi::where('nip', $nip)
-            ->where('bulan_id', $bulanId)
-            ->whereIn('status', ['Hadir', 'Terlambat'])
-            ->count();
-
-        // Perbarui kolom hadir pada employer_salaries
-        EmployerSalary::where('karyawan_nip', $nip)
-            ->where('bulan_id', $bulanId)
-            ->update(['hadir' => $hadir]);
+        EmployerSalaryController::updateHadir($presensi->nip, $presensi->bulan_id);
     }
 
     /**

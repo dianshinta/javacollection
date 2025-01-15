@@ -22,7 +22,6 @@ class presensiFactory extends Factory
         return [
             //'nip' => User::inRandomOrder()->value('nip'),
             'status' => fake()->randomElement($statusKehadiran),
-            'tanggal' => fake()->dateTimeBetween('2024-05-01', '2025-01-31')->format('Y-m-d'),
             'waktu' => fake()->time('H:i:s', '10:00:00'),
             'toko_id' => Toko::inRandomOrder()->value('id') ?: Toko::factory()->create()->id, // Ambil atau buat data toko
         ];
