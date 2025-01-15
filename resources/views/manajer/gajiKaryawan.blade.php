@@ -189,7 +189,7 @@
                         <form method="GET" action="{{ route('manajer.gaji') }}" class="d-flex">
                             <input type="hidden" name="bulan_id" value="{{ $selectedBulan }}">
                             <div class="input-group search-bar">
-                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." autocomplete="off" value="{{ $search }}">
+                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." autocomplete="off" >
                                 <span>
                                     <button type="submit" class="input-group-text">
                                         <i class="bi bi-search"></i>
