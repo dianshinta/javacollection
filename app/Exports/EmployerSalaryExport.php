@@ -5,13 +5,12 @@ namespace App\Exports;
 use App\Models\EmployerSalary;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class EmployerSalaryExport implements FromCollection, WithHeadings, ShouldAutoSize
+class EmployerSalaryExport implements FromCollection, WithHeadings
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     protected $bulan_id;
 
     // Constructor untuk menerima parameter bulan_id
