@@ -373,8 +373,14 @@
                 });
               </script>
               <script>
-                const targetCoords = { latitude: -6.225796, longitude: 106.876853 }; // Lokasi tujuan
-                const radiusAllowed = 4000; // Radius dalam meter
+                var toko = @json($user->karyawan->toko_id);
+              
+                if(toko >= 1 && toko <= 14) {
+                  const targetCoords =  { latitude: -6.225796, longitude: 106.876853 };
+                } else {
+                  const targetCoords =  { latitude: -6.225796, longitude: 106.876853 };
+                }                
+                const radiusAllowed = 200; // Radius dalam meter
 
                 // Fungsi untuk menghitung jarak dengan formula Haversine
                 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -459,7 +465,7 @@
                                       status: statusPresensi, 
                                       tanggal: today,
                                       waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).slice(0, 5), // Format HH:MM
-                                      toko_id: {{ $user->karyawan->toko->id }}, // Ganti dengan toko yang sesuai
+                                      toko_id: {{ isset($user->karyawan->toko) ? $user->karyawan->toko->id : '-' }}, // Ganti dengan toko yang sesuai
                                       // nip: "5943" // NIP yang sesuai
                                   },
                                   success: function (response) {
