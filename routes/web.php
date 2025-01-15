@@ -150,9 +150,9 @@ Route::middleware(['auth', 'role:manajer'])->group(function () {
 
     // mengupdate status pengiriman gaji
     Route::post('/manajer/gaji/kirim/{karyawan_nip}', [EmployerSalaryController::class, 'updateStatus'])->name('manajer.gaji.kirim');
+    
     //export gaji
     Route::get('/manajer/gaji/export', [EmployerSalaryController::class, 'exportExcel'])->name('manajer.gaji.export');
-
 
     // Menampilkan halaman edit karyawan manajer
     Route::get('/manajer/editkaryawan', function () {
