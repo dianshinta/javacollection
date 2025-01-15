@@ -12,6 +12,7 @@ class Bulan extends Model
     use HasFactory;
 
     protected $table = 'bulans';
+    
 
     protected $fillable = ['bulan', 'tahun'];
 
@@ -49,6 +50,7 @@ class Bulan extends Model
             ['bulan_tahun' => $date->translatedFormat('F Y')] // Format nama bulan dan tahun
         );
     }
+    
 
     //Fungsi Membaca dan Menambahkan Bulan dari Tabel Lain Secara Otomatis
     public static function sinkronisasiBulan(): void

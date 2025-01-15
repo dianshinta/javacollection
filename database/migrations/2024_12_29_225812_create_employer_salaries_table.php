@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('karyawan_nip'); // Foreign key
             $table->unsignedBigInteger('bulan_id');
             $table->string('nama')->nullable();
-            $table->string('jabatan')->nullable();
             $table->integer('hadir')->default(0)->nullable();
             $table->integer('absen')->default(0)->nullable();
             $table->integer('izin')->default(0)->nullable();

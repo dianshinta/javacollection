@@ -233,44 +233,6 @@
                         </div>
                 </div>
             
-                <!-- Modal Box for Atur Bonus -->
-                <div class="modal fade" id="bonusModal" tabindex="-1" role="dialog" aria-labelledby="bonusModalLabel" aria-hidden="true" style="margin-top: 8%" data-bs-backdrop="static">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <h5 class="modal-title pb-3" id="bonusModalLabel">Atur Bonus</h5>
-                                <form class="bonus-body">
-                                    <!-- Dropdown for Cabang -->
-                                    <div class="form-group">
-                                        <select class="form-select form-select-sm fw-bold" id="branchSelect">
-                                            <option value="cabang1">Cabang 1</option>
-                                            <option value="cabang2">Cabang 2</option>
-                                            <option value="cabang3">Cabang 3</option>
-                                            <option value="cabang4">Cabang 4</option>
-                                        </select>
-                                    </div>
-            
-                                    <!-- Input for Bonus Amount -->
-                                    <div class="form-group">
-                                        <label for="bonusAmount">Penjualan per Bulan</label>
-                                        <input type="number" class="form-control" id="bonusAmount" placeholder="Masukkan Jumlah Penjualan">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer mx-auto">
-                                <button type="button" class="btn btn-atur" id="saveBonus">
-                                    Atur
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            
                 <!-- Modal Box for Kirim Gaji -->
                 <div class="modal fade" id="gajiModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true" data-bs-backdrop="static">
                     <div class="modal-dialog" role="document">
@@ -283,40 +245,54 @@
                             </div>
                             <h5 class="modal-title" id="modalTitle">Rincian Gaji</h5>
                             <div class="modal-body">
-                                <p>NIP: <span id="modalNip"> </span></p>
-                                <p>Nama: <span id="modalNama"></span></p>
-                                <p>Status: <span id="modalStatus"></span></p>
+                                <!-- NIP, Nama, Status -->
+                                <div class="d-flex justify-content-between">
+                                    <p>NIP:</p>
+                                    <span id="modalNip"></span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Nama:</p>
+                                    <span id="modalNama"></span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Status Slip Gaji:</p>
+                                    <span id="modalStatus"></span>
+                                </div>
                                 <!-- Modal Edit Gaji -->
                                 <div class="editable-gaji pt-3">
-                                    <div>
-                                        <label for="editKehadiran">Hadir: </label>
+                                    <div class="d-flex justify-content-between">
+                                        <label for="editKehadiran">Hadir :</label>
                                         <span id="modalKehadiran"></span>
                                     </div>
-                                    <div>
-                                        <label for="editIzin">Izin: </label>
+                                   <div class="d-flex justify-content-between">
+                                        <label for="editIzin">Izin  :</label>
                                         <span id="modalIzin"></span>
                                     </div>
-                                    <div>
-                                        <label for="editAbsen">Absen: </label>
+                                    <div class="d-flex justify-content-between">
+                                        <label for="editAbsen">Absen :</label>
                                         <span id="modalAbsen"></span>
                                     </div>
-                                    <div>
-                                        <label for="editGajiPokok">Gaji Pokok: </label>
-                                        <span id="modalGajiPokok"></span>
+                                    <p>Perhitungan Gaji  </p>
+                                    <div class="d-flex justify-content-between">
+                                        <label for="editGajiPokok">Gaji Pokok :</label>
+                                        <p>+ <span id="modalGajiPokok">Rp 0</span></p>
                                     </div>
-                                    <div>
-                                        <label for="editDenda">denda: </label>
-                                        <span id="modalDenda"></span>
+                                     <div class="d-flex justify-content-between">
+                                        <label for="editDenda">Denda      :</label>
+                                        <p>- <span id="modalDenda">Rp 0</span></p>
                                     </div>
-                                    <div>
-                                        <label for="editKasbon">Kasbon: </label>
-                                        <span id="modalKasbon"></span>
+                                    <div class="d-flex justify-content-between">
+                                        <label for="editKasbon">Kasbon     :</label>
+                                        <p>- <span id="modalKasbon">Rp 0</span></p>
                                     </div>
-                                    <div style="text-align: right;">
-                                        <p>Jumlah <br>Rp.  <span id="modalTotal"></span></p>
+                                    <hr class="separator-line">
+                                    <div class="d-flex justify-content-between">
+                                        <label>Total Gaji:</label>
+                                        <span id="modalTotal">Rp 0</span>
                                     </div>
-                                </div>    
+                                </div>
                             </div>
+                            @if(!$data->bulans->is_current_month)
                             <div class="modal-footer">
                                 <button 
                                     type="button" 
@@ -334,6 +310,7 @@
                                 </button>
 
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -425,6 +402,10 @@
 
     <!-- Script to handle kirim gaji modal opening -->
     <script>
+        // Fungsi untuk memformat angka ke format Rupiah
+        function formatRupiah(angka) {
+            return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
         $(document).ready(function () {
             $('.gaji-row').click(function () {
                 const id = $(this).data('id');
@@ -440,21 +421,20 @@
             if (data) {
                 $('#modalNip').text(data.karyawan_nip);
                 $('#modalNama').text(data.nama);
-                $('#modalJabatan').text(data.jabatan);
                 $('#modalKehadiran').text(data.hadir);
                 $('#modalIzin').text(data.izin);
-                $('#modalGajiPokok').text(data.gaji_pokok);
                 $('#modalAbsen').text(data.absen);
-                $('#modalDenda').text(data.denda);
-                $('#modalKasbon').text(data.kasbon);
-                $('#modalTotal').text(data.total_gaji);
+                $('#modalGajiPokok').text(formatRupiah(data.gaji_pokok));
+                $('#modalDenda').text(formatRupiah(data.denda));
+                $('#modalKasbon').text(formatRupiah(data.kasbon));
+                $('#modalTotal').text(formatRupiah(data.total_gaji));
                 $('#modalBulan').text(data.bulan_id);
                 $('#modalStatus').text(data.status);
                 $('#modalBulanView').text(data.bulans ? data.bulans.bulan_tahun : 'Bulan tidak ditemukan');
-
+                
                 // Perbarui tombol berdasarkan status
                 const sendSalaryButton = $('.sendSalary');
-                if (data.status === "Telah Dikirim" || data.bulans.is_current_month) {
+                if (data.status === "Telah Dikirim" ) {
                     sendSalaryButton.addClass('btn-secondary').removeClass('btn-success');
                     sendSalaryButton.prop('disabled', true); // Nonaktifkan tombol
                 } else {
