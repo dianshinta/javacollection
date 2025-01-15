@@ -23,6 +23,7 @@ class EmployerSalaryController extends Controller
     public function index(Request $request)
     {
         $this->updateInEmployerSalaries();
+        
 
         // Ambil data bulan dari tabel Bulan, diurutkan terbaru ke terlama
         $bulans = Bulan::orderBy('tahun', 'desc')
