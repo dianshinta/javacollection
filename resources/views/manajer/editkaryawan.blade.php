@@ -114,6 +114,7 @@
                                                     <div class="form-group">
                                                         <label for="toko_id">Toko</label>
                                                         <select class="form-control" id="toko_id" name="toko_id" required>
+                                                        <option>Pilih cabang</option>
                                                         <option value="1" {{ $karyawan->toko_id == '1' ? 'selected' : '' }}>Hall 8m</option>
                                                         <option value="2" {{ $karyawan->toko_id == '2' ? 'selected' : '' }}>Grand Hall</option>
                                                         <option value="3" {{ $karyawan->toko_id == '3' ? 'selected' : '' }}>B6</option>

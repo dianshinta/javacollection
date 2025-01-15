@@ -271,6 +271,7 @@
                                                 <th>Nama</th>
                                                 <th>Tanggal Pembayaran</th>
                                                 <th>Nominal Bayar</th>
+                                                <th>Gaji</th>
                                                 <th>Status Kasbon</th>
                                                 <th>Status Bayar</th>
                                                 <th>Lampiran</th>
@@ -290,7 +291,7 @@
                                                     <td>{{ $data->nama }}</td>
                                                     <td>{{ \Carbon\Carbon::parse($data->tanggal_pembayaran)->translatedFormat('j F Y') }}</td>
                                                     <td>{{ 'Rp ' . number_format($data->nominal_dibayar, 0, ',', '.') }}</td>
-                                                    <td>{{ $data->karyawan->gaji_pokok ?? 'null' }}</td> 
+                                                    <td>{{ 'Rp ' . number_format($data->karyawan->gaji_pokok, 0, ',', '.') }}</td> 
                                                     <td>
                                                         <!-- Status Kasbon -->
                                                         @if ($data->status_kasbon === 'Lunas')

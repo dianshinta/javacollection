@@ -48,7 +48,7 @@ class Kasbon extends Model
         //save kolom bulan_id
         static::saving(function ($kasbon) {
             //jika kolom tanggal_pengajuan sudah ada sebelum menjalankan logika tambahBulanBaru:
-            if ($kasbon->tanggal_pengajuan) {
+            if ($kasbon->tanggal_pengajuan || $kasbon->tanggal_pembayaran) {
                 $bulan = Bulan::tambahBulanBaru($kasbon->tanggal_pengajuan);
                 $kasbon->bulan_id = $bulan->id;
             }
