@@ -103,9 +103,9 @@
             </div>
         </div>
     </div>
-    
+
         <!-- Content -->
-        <div class="main-panel">
+        <div class="main-panel container-fluid vh-100">
             <!-- Navbar for mobile view -->
             <!-- Navbar for mobile view -->
             <div class="top-right-logout d-block d-lg-none">
