@@ -186,9 +186,10 @@
                         </div>                        
 
                         <!-- Pencarian -->
-                        <form method="GET" action="" class="d-flex">
+                        <form method="GET" action="{{ route('manajer.gaji') }}" class="d-flex">
+                            <input type="hidden" name="bulan_id" value="{{ $selectedBulan }}">
                             <div class="input-group search-bar">
-                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." autocomplete="off">
+                                <input type="text" class="form-control search-bar" name="search" id="searchBar" placeholder="Cari Karyawan.." autocomplete="off" value="{{ $search }}">
                                 <span>
                                     <button type="submit" class="input-group-text">
                                         <i class="bi bi-search"></i>
