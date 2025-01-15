@@ -349,9 +349,9 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                Apakah Anda yakin ingin mengirim data ini?
+                                Ingin mengirim gaji?
                                 <br>
-                                <button type="button" class="btn success" id="btnYakin">Yakin</button>
+                                <button type="button" class="btn success" id="btnYakin">Ya, Kirim</button>
                                 <button type="button" class="btn btn-danger" id="btnBatal">Batal</button>
                             </div>
                         </div>

@@ -112,9 +112,25 @@ class EmployerSalary extends Model
 
     public static function calculateKasbon(string $user_nip, int $bulan_id): int
     {
-        return kasbon::where('nip', $user_nip)
+        // return kasbon::where('nip', $user_nip)
+        //     ->where('bulan_id', $bulan_id)
+        //     ->value('saldo_akhir') ?? 0; // Nilai default 0 jika tidak ditemukan
+        
+        // Ambil gaji pokok
+        $gaji_pokok = Karyawan::where('nip', $user_nip)
+            ->value('gaji_pokok') ?? 0;
+
+        // Ambil saldo akhir kasbon
+        $saldo_akhir = Kasbon::where('nip', $user_nip)
             ->where('bulan_id', $bulan_id)
-            ->value('saldo_akhir') ?? 0; // Nilai default 0 jika tidak ditemukan
+            ->orderBy('created_at', 'desc') // Urutkan berdasarkan created_at terbaru
+            ->value('saldo_akhir') ?? 0;
+
+        // Hitung kasbon
+        $kasbon = $gaji_pokok - $saldo_akhir;
+
+        // Pastikan kasbon tidak bernilai negatif
+        return max(0, $kasbon);
     }
 
     protected static function boot()
