@@ -327,7 +327,7 @@ Coded by www.creative-tim.com
                                     </div>
                                 </div>
                                 <small class="form-text text-muted mt-1">
-                                    Dapat mengunggah file dengan format: JPG, PNG, PDF, DOC, DOCX.
+                                    File JPG, PNG, PDF, DOC, DOCX. Maks 2MB.
                                 </small>
                             </div>
                             <!-- Display Nama File -->
