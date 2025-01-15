@@ -17,7 +17,7 @@ class KasbonFactory extends Factory
     public function definition(): array
     {
         return [
-            'tanggal_pengajuan'=> fake()->dateTimeBetween('2025-01-01', '2025-05-31')->format('Y-m-d'),
+            'tanggal_pengajuan'=> fake()->dateTimeBetween('2025-01-01', now())->format('Y-m-d'),
             'status_kasbon' => fake()->randomElement(['Lunas', 'Belum Lunas']),
             'status_bayar' => fake()->randomElement(['Diproses', 'Disetujui', 'Ditolak']),
             'keterangan' => fake()->randomElement(['Pengajuan', 'Pembayaran']),

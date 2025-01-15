@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
 
 
         // Buat 10 data pengguna
-        $karyawans = Karyawan::factory(50)->create();
+        $karyawans = Karyawan::factory(3)->create();
 
         // Tentukan rentang tanggal untuk presensi
         $startDate = '2024-05-01';
@@ -62,10 +62,10 @@ class DatabaseSeeder extends Seeder
         $karyawans->each(function ($karyawan) use ($startDate, $endDate) {
             // Loop setiap hari dalam rentang tanggal
             $currentDate = $startDate;
-            perizinan::factory(100)->create([
+            perizinan::factory(10)->create([
                 'nip' => $karyawan->nip,
             ]);
-            kasbon::factory(100)->create([
+            kasbon::factory(10)->create([
                 'nip' => $karyawan->nip,
             ]);
             while ($currentDate <= $endDate) {

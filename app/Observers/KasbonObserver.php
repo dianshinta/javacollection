@@ -14,7 +14,7 @@ class KasbonObserver
      */
     public function updated(Kasbon $kasbon): void
     {
-        EmployerSalaryController::updateKasbon($kasbon->nip, $kasbon->bulan_id, $kasbon->saldo_akhir);
+        EmployerSalaryController::updateKasbon($kasbon->nip, $kasbon->bulan_id);
     }
 
     /**

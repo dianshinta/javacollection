@@ -23,7 +23,7 @@ class EmployerSalaryController extends Controller
     public function index(Request $request)
     {
         $this->updateInEmployerSalaries();
-        
+
 
         // Ambil data bulan dari tabel Bulan, diurutkan terbaru ke terlama
         $bulans = Bulan::orderBy('tahun', 'desc')
@@ -165,11 +165,15 @@ class EmployerSalaryController extends Controller
      * @param int $saldoAkhir
      * @return void
      */
-    public static function updateKasbon(string $nip, int $bulanId, int $saldoAkhir): void
+    public static function updateKasbon(string $nip, int $bulanId): void
     {
+        $totalKasbon = Kasbon::where('nip', $nip)
+            ->where('bulan_id', $bulanId)
+            ->value('saldo_akhir');
+
         EmployerSalary::where('karyawan_nip', $nip)
             ->where('bulan_id', $bulanId)
-            ->update(['kasbon' => $saldoAkhir]);
+            ->update(['kasbon' => $totalKasbon]);
     }
 
 
