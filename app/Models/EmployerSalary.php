@@ -96,7 +96,7 @@ class EmployerSalary extends Model
         $izin = self::calculateIzin($user_nip, $bulan_id);
 
         // Hitung absen menggunakan rumus
-        $absen = $hariDalamBulan - $hadir + $izin;
+        $absen = $hariDalamBulan - $hadir - $izin;
 
         return max($absen, 0); // Pastikan absen tidak negatif
     }
@@ -115,7 +115,7 @@ class EmployerSalary extends Model
         // return kasbon::where('nip', $user_nip)
         //     ->where('bulan_id', $bulan_id)
         //     ->value('saldo_akhir') ?? 0; // Nilai default 0 jika tidak ditemukan
-        
+
         // Ambil gaji pokok
         $gaji_pokok = Karyawan::where('nip', $user_nip)
             ->value('gaji_pokok') ?? 0;
@@ -124,7 +124,7 @@ class EmployerSalary extends Model
         $saldo_akhir = Kasbon::where('nip', $user_nip)
             ->where('bulan_id', $bulan_id)
             ->orderBy('created_at', 'desc') // Urutkan berdasarkan created_at terbaru
-            ->value('saldo_akhir') ?? 0;
+            ->value('saldo_akhir')?? $gaji_pokok;
 
         // Hitung kasbon
         $kasbon = $gaji_pokok - $saldo_akhir;
