@@ -286,7 +286,6 @@
                                 <p>NIP: <span id="modalNip"> </span></p>
                                 <p>Nama: <span id="modalNama"></span></p>
                                 <p>Status: <span id="modalStatus"></span></p>
-                                <p>Jabatan: <span id="modalJabatan"></span></p>
                                 <!-- Modal Edit Gaji -->
                                 <div class="editable-gaji pt-3">
                                     <div>

@@ -88,7 +88,6 @@
                 <div class="modal-body">
                     <p>NIP<span id="modalNip" style="margin-left: 43px;">: {{ $salary->karyawan_nip }}</span></p>
                     <p>Nama<span id="modalNama" style="margin-left: 28px;">: {{ $salary->nama }}</span></p>
-                    <p>Jabatan<span id="modalJabatan" style="margin-left: 15px;">: Karyawan</span></p>
                 </div>
 
                 <div class="modal-body">
