@@ -637,14 +637,19 @@
 
                 // Mengambil tanggal yang sudah digunakan
                 var existingDates = @json($existingDates);
+                var hasPresensiToday = @json($hasPresensiToday);
 
                 // Mengatur input tanggal
                 $('#tanggal').on('input', function () {
                     var selectedDate = $(this).val();
+                    var today = new Date().toISOString().split('T')[0];
 
                     // Jika tanggal yang dipilih ada dalam daftar tanggal yang sudah digunakan
                     if (existingDates.includes(selectedDate)) {
                         alert('Tanggal ini sudah digunakan untuk izin sebelumnya.');
+                        $(this).val(''); // Mengosongkan input tanggal
+                    } else if (selectedDate === today && hasPresensiToday) {
+                        alert('Anda sudah presensi hari ini.');
                         $(this).val(''); // Mengosongkan input tanggal
                     }
                 });

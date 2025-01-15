@@ -317,7 +317,7 @@
                             <input type="hidden" name="toko" value="Toko A"> Isi sesuai kebutuhan -->
                             <!-- <input type="hidden" name="nip" value="5943"> Isi sesuai kebutuhan -->
                             <!-- <input type="hidden" name="redirect_to" value="karyawan.presensi"> -->
-                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden; text-overflow: ellipsis;" {{ $hasPresensiToday || $hasPermissionToday? 'disabled' : ''}}>
+                            <button id="btn-presensi" type="submit" class="btn btn-success" style="font-size: 1rem; color: black; padding: 0.6em; width: 100%; overflow: hidden; text-overflow: ellipsis;" {{ $hasPresensiToday || $hasPermissionToday ? 'disabled' : ''}}>
                                 Presensi
                             </button>
                           </form>
@@ -413,7 +413,7 @@
   </script>
   <script>
     const targetCoords = { latitude: -6.225796, longitude: 106.876853 }; // Lokasi tujuan
-    const radiusAllowed = 2000; // Radius dalam meter
+    const radiusAllowed = 4000; // Radius dalam meter
 
     // Fungsi untuk menghitung jarak dengan formula Haversine
     function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -480,9 +480,9 @@
 
       let statusPresensi = (hours > batasJam || (hours === batasJam && minutes > batasMenit)) ? 'Terlambat' : 'Hadir';
 
-      // if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
-      //   $('#btn-presensi').prop('disabled', true);
-      // }
+      if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
+        $('#btn-presensi').prop('disabled', true);
+      }
 
       // Menambahkan statusPresensi ke data presensi saat submit
       $('#form-presensi').on('submit', function(event) {
@@ -498,7 +498,7 @@
                           status: statusPresensi, // Status yang dipilih
                           tanggal: today, // Format YYYY-MM-DD
                           waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).slice(0, 5), // Format HH:MM
-                          toko_id: 1, // Ganti dengan toko yang sesuai
+                          toko_id: {{ $user->karyawan->toko->id }}, // Ganti dengan toko yang sesuai
                           // nip: "222212822" // NIP yang sesuai
                       },
                       success: function (response) {

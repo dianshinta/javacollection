@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\perizinan;
 
@@ -99,6 +100,7 @@ class PerizinanController extends Controller
     public function index(Request $request)
     {
         $nip = Auth::user()->nip;
+        $today = date('Y-m-d');
 
         // Ambil tanggal-tanggal izin yang sudah diajukan
         $existingDates = perizinan::where('nip', $nip)
@@ -123,8 +125,15 @@ class PerizinanController extends Controller
         // Mengambil data perizinan dari database (opsional, tambahkan jika diperlukan)
         $perizinans = perizinan::where('nip', $nip)->orderBy('updated_at', 'desc')
                                 ->get();
+
+
+        $hasPresensiToday = DB::table('kehadiran')
+                            ->where('nip', $nip)
+                            ->whereDate('tanggal', $today)
+                            ->exists(); // Mengecek apakah ada data perizinan untuk tanggal hari ini
+
         // Tampilkan halaman dengan data perizinan (gunakan view yang sesuai)
-        return view('karyawan.perizinan', compact('perizinans', 'izinTaken', 'existingDates'))->with('title', 'Perizinan');
+        return view('karyawan.perizinan', compact('perizinans', 'izinTaken', 'existingDates', 'hasPresensiToday'))->with('title', 'Perizinan');
     }
 
     public function destroy(Request $request)

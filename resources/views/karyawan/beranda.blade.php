@@ -14,6 +14,7 @@
   $hasPermissionToday = DB::table('perizinan')
                             ->where('nip', $nip)
                             ->whereDate('tanggal', $today)
+                            ->where('status',  'Disetujui')
                             ->exists(); // Mengecek apakah ada data perizinan untuk tanggal hari ini
 @endphp
 
@@ -373,7 +374,7 @@
               </script>
               <script>
                 const targetCoords = { latitude: -6.225796, longitude: 106.876853 }; // Lokasi tujuan
-                const radiusAllowed = 2000; // Radius dalam meter
+                const radiusAllowed = 4000; // Radius dalam meter
 
                 // Fungsi untuk menghitung jarak dengan formula Haversine
                 function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -429,14 +430,6 @@
                 $(document).ready(function() {
                   const today = new Date().toISOString().split('T')[0]; // Mendapatkan tanggal hari ini dalam format YYYY-MM-DD
 
-                  // // Cek apakah tombol harus dinonaktifkan (sudah klik presensi di menit ini)
-                  // const presensiDisabled = sessionStorage.getItem('presensiDisabled') === 'true';
-                  // const presensiDate = sessionStorage.getItem('presensiDate');
-
-                  // if (presensiDisabled && presensiDate === today) {
-                  //     $('#btn-presensi').prop('disabled', true);
-                  // }
-
                   // Logika presensi (terlambat atau hadir)
                   const now = new Date();
                   const hours = now.getHours();
@@ -448,9 +441,9 @@
 
                   let statusPresensi = (hours > batasJam || (hours === batasJam && minutes > batasMenit)) ? 'Terlambat' : 'Hadir';
 
-                  // if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
-                  //   $('#btn-presensi').prop('disabled', true);
-                  // }
+                  if ((hours < 8 || (hours === 8 && minutes < 30)) || (hours > 17 || (hours === 17 && minutes > 30))) {
+                    $('#btn-presensi').prop('disabled', true);
+                  }
 
                   // Menambahkan statusPresensi ke data presensi saat submit
                   $('#form-presensi').on('submit', function(event) {
@@ -466,8 +459,8 @@
                                       status: statusPresensi, 
                                       tanggal: today,
                                       waktu: new Date().toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).slice(0, 5), // Format HH:MM
-                                      toko_id: 1, // Ganti dengan toko yang sesuai
-                                      nip: "5943" // NIP yang sesuai
+                                      toko_id: {{ $user->karyawan->toko->id }}, // Ganti dengan toko yang sesuai
+                                      // nip: "5943" // NIP yang sesuai
                                   },
                                   success: function (response) {
                                     sessionStorage.setItem('presensiStatus', 'success');
