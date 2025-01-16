@@ -43,16 +43,9 @@
             <div class="radio-group">
             <label>
             <input type="radio" id="karyawan" name="jabatan" value="karyawan" required>
-            Karyawan
-        </label>
-        <label>
-            <input type="radio" id="manajer" name="jabatan" value="manajer" required>
-            Manajer
-        </label>
-        <label>
-            <input type="radio" id="supervisor" name="jabatan" value="supervisor" required>
-            Supervisor
-        </label>
+                Karyawan
+            </label>
+        
     </div>
     @error('jabatan')
                     <small class="text-danger">{{ $message }}</small>

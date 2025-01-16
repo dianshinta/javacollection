@@ -29,11 +29,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `karyawan` (
   `nip` varchar(20) NOT NULL,
-  `nama` varchar(100) NOT NULL,
+  `nama` varchar(50) NOT NULL,
   `tempat_lahir` varchar(50) NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `gender` enum('L','P') NOT NULL,
-  `toko_id` int(11) NOT NULL,
+  `gender` enum('Laki-laki','Perempuan') NOT NULL,
+  `toko_id` int(3) NOT NULL,
   `alamat` text NOT NULL,
   `no_telp` varchar(15) NOT NULL,
   `bank` varchar(50) NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE `toko` (
 CREATE TABLE `users` (
   `nip` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(50) NOT NULL,
   `jabatan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
